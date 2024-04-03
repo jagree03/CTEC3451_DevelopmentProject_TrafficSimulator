@@ -14,12 +14,12 @@ import javax.swing.*;
 
 public class TrafficSimulator_Editor extends VBox {
 
-    private TrafficSimulatorRootMenuBar menuBar;
+    private TrafficSimulator_EditorMenuBar menuBar;
     private TrafficSimulator_EditorEditorPane editorPane;
     private TrafficSimulator_EditorBottomPane tsebp;
 
     public TrafficSimulator_Editor() {
-        menuBar = new TrafficSimulatorRootMenuBar();
+        menuBar = new TrafficSimulator_EditorMenuBar();
         editorPane = new TrafficSimulator_EditorEditorPane();
         tsebp = new TrafficSimulator_EditorBottomPane();
         tsebp.setPadding(new Insets(0,0,15,15));
@@ -28,7 +28,7 @@ public class TrafficSimulator_Editor extends VBox {
         this.getChildren().addAll(menuBar, editorPane, tsebp);
     }
 
-    public TrafficSimulatorRootMenuBar getTSE_MenuBar() {
+    public TrafficSimulator_EditorMenuBar getTSE_MenuBar() {
         return menuBar;
     }
 

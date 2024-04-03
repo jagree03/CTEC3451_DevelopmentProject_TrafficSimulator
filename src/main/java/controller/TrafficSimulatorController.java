@@ -11,6 +11,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import view.*;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 public class TrafficSimulatorController {
 
 	//fields to be used throughout class
@@ -116,8 +119,15 @@ public class TrafficSimulatorController {
 				scene.setRoot(editorView); // change the root node of the current scene to the new screen
 				scene.setOnKeyPressed(e -> { // KeyPressEvents generated in the scene, links to the TrafficSimulator_EditorController
 					// in terms of the piece rotation handling and deselecting pieces from the mouse cursor.
-					if (e.getCode() == KeyCode.R)
-						editorController.handleKeyPress();
+					if (e.getCode() == KeyCode.R) {
+						try {
+							editorController.handleKeyPress();
+						} catch (UnsupportedAudioFileException ex) {
+							throw new RuntimeException(ex);
+						} catch (IOException ex) {
+							throw new RuntimeException(ex);
+						}
+					}
 					else if (e.getCode() == KeyCode.F) {
 						editorController.handleKeyPressDeselect();
 					}

@@ -1,25 +1,34 @@
 package model;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.File;
 
 public class Vehicle {
     private String type;
     private String color;
-    private Image sprite;
+    private ImageView sprite;
     private Double fuelLevel;
     private Boolean indicator_L;
     private Boolean indicator_R;
 
     public Vehicle() {
+        File red_car = new File("img\\vehicles\\car\\car_red.png");
         this.type = "Coupe";
-        this.color = "White";
-        this.sprite = null;
+        this.color = "Red";
+        this.sprite = new ImageView(new Image(red_car.toURI().toString())); // red car default
+        this.sprite.setFitWidth(25
+
+        );
+        this.sprite.setFitHeight(25);
+        this.sprite.setPreserveRatio(true);
         this.fuelLevel = 5.0;
         this.indicator_L = false;
         this.indicator_R = false;
     }
 
-    public Vehicle(String type, String color, Image sprite, Double fuelLevel) {
+    public Vehicle(String type, String color, ImageView sprite, Double fuelLevel) {
         this.type = type;
         this.color = color;
         this.sprite = sprite;
@@ -43,10 +52,14 @@ public class Vehicle {
     }
 
     public void setSprite(Image sprite) {
-        this.sprite = sprite;
+        this.sprite.setImage(sprite);
     }
 
     public Image getSprite() {
+        return sprite.getImage();
+    }
+
+    public ImageView getSpriteImageView() {
         return sprite;
     }
 
@@ -76,6 +89,6 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle:[Type=" + type + ", Color=" + color + ", Sprite=" + sprite + ", fuelLevel=" + fuelLevel + ", indicator_L=" + indicator_L + ", indicator_R=" + indicator_R +"]";
+        return "Vehicle:[Type=" + type + ", Color=" + color + ", Sprite=" + sprite.getImage().getUrl() + ", fuelLevel=" + fuelLevel + ", indicator_L=" + indicator_L + ", indicator_R=" + indicator_R +"]";
     }
 }

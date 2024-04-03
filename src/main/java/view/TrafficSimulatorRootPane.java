@@ -22,7 +22,7 @@ public class TrafficSimulatorRootPane extends VBox {
 	private TrafficSimulator_Editor editorView = new TrafficSimulator_Editor();
 	
 	public TrafficSimulatorRootPane() {
-		Label lblAuthorAndVersion = new Label("Jagjeet Reehal, Version 1.0");
+		Label lblAuthorAndVersion = new Label("Jagjeet Reehal P2652829, Final Year Project 2024");
 		lblAuthorAndVersion.setPadding(new Insets(10,10,10,10));
 		//lblAuthorAndVersion.setAlignment();
 
@@ -30,6 +30,7 @@ public class TrafficSimulatorRootPane extends VBox {
 		tsmb = new TrafficSimulatorRootMenuBar();
 		tsrmb = new TrafficSimulatorRootMenuButtons();
 		tsrmbbp = new TrafficSimulatorRootMenuBottomButtonPanel();
+		tsrmbbp.setPadding(new Insets(30,0,0,0));
 
 
 		this.setAlignment(Pos.TOP_CENTER);
