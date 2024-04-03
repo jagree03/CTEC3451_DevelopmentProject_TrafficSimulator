@@ -1,5 +1,6 @@
 package view;
 
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -7,6 +8,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
 
@@ -38,12 +40,14 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
 
         HBox numOfDrivers = new HBox(20);
         numOfDriversLabel = new Label("Number of drivers: ");
-        numOfDriversInput = new TextField("0");
+        numOfDriversInput = new TextField("1");
+        numOfDriversInput.setPrefWidth(50);
         numOfDrivers.getChildren().addAll(numOfDriversLabel, numOfDriversInput);
 
         HBox carSpawnChance = new HBox(20);
         carSpawnChanceLabel = new Label("Car spawn chance: ");
         carSpawnChanceInput = new TextField("50%");
+        carSpawnChanceInput.setPrefWidth(50);
         carSpawnChanceSlider = new Slider(0, 100, 50);
         carSpawnChanceSlider.setOrientation(Orientation.HORIZONTAL);
         carSpawnChance.getChildren().addAll(carSpawnChanceLabel, carSpawnChanceInput, carSpawnChanceSlider);
@@ -51,6 +55,7 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
         HBox vanSpawnChance = new HBox(20);
         vanSpawnChanceLabel = new Label("Van spawn chance: ");
         vanSpawnChanceInput = new TextField("50%");
+        vanSpawnChanceInput.setPrefWidth(50);
         vanSpawnChanceSlider = new Slider(0, 100, 50);
         vanSpawnChanceSlider.setOrientation(Orientation.HORIZONTAL);
         vanSpawnChance.getChildren().addAll(vanSpawnChanceLabel, vanSpawnChanceInput, vanSpawnChanceSlider);
@@ -80,4 +85,33 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
     public void addGoBackHandler(EventHandler<ActionEvent> handler) {
         Back.setOnAction(handler);
     }
+    public void addStartHandler(EventHandler<ActionEvent> handler) {
+        Start.setOnAction(handler);
+    }
+
+    public void addCarSpawnChanceSliderHandler(ChangeListener<Number> listener) {
+        carSpawnChanceSlider.valueProperty().addListener(listener);
+    }
+
+    public void setCarSpawnChanceInput(int value) {
+        carSpawnChanceInput.setText("" + value + "%");
+    }
+
+    public int getCarSpawnChanceSliderValue() {
+        return (int) carSpawnChanceSlider.getValue();
+    }
+
+    public void addVanSpawnChanceSliderHandler(ChangeListener<Number> listener) {
+        vanSpawnChanceSlider.valueProperty().addListener(listener);
+    }
+
+    public void setVanSpawnChanceInput(int value) {
+        vanSpawnChanceInput.setText("" + value + "%");
+    }
+
+    public int getVanSpawnChanceSliderValue() {
+        return (int) vanSpawnChanceSlider.getValue();
+    }
+
+
 }

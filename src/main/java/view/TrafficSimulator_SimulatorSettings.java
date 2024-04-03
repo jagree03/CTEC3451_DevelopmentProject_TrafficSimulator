@@ -29,4 +29,6 @@ public class TrafficSimulator_SimulatorSettings extends VBox {
     public TrafficSimulator_SimulatorSettingsBottomPane getTSS_BottomPane() {
         return tssbp;
     }
+
+    public TrafficSimulator_EditorEditorPane getTSS_EditorPane() {return editorPane;}
 }
