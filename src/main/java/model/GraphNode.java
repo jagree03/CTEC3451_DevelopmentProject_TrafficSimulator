@@ -5,20 +5,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
-public class GraphNode {
-    private Node parent;
+import java.io.Serializable;
 
+public class GraphNode implements Serializable {
     private String id;
     private Double xCoordinate;
     private Double yCoordinate;
-    private int gCost;
-    private int hCost;
-    private int fCost;
-    private boolean start;
-    private boolean goal;
-    private boolean solid;
-    private boolean open;
-    private boolean checked;
 
     private StackPane stack;
 
@@ -38,18 +30,6 @@ public class GraphNode {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
-
-    public void setAsStart() {
-        start = true;
-    }
-
-    public void setAsGoal() {
-        goal = true;
-    }
-
-//    public void setAsSolid() {
-//        solid = true;
-//    }
 
     public Double getXCoordinate() {
         return this.xCoordinate;

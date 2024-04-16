@@ -31,20 +31,21 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
     private Image slot6_img;
     private ImageView slot6;
 
+    private Image slot7_img;
+    private ImageView slot7;
+
     public TrafficSimulator_EditorPieceSelection() {
         File slot1_tempImg = new File("img\\2_EditorScreen\\roads\\1_straightRoad.png");
         File slot2_tempImg = new File("img\\2_EditorScreen\\roads\\2_turnLeft.png");
-        File slot3_tempImg = new File("img\\2_EditorScreen\\roads\\3_turnRight.png");
-        File slot4_tempImg = new File("img\\2_EditorScreen\\4_straightRoadTrafficLeft.png");
-        File slot5_tempImg = new File("img\\2_EditorScreen\\5_straightRoadTrafficRight.png");
-        File slot6_tempImg = new File("img\\2_EditorScreen\\roads\\4_intersection.png");
+        File slot3_tempImg = new File("img\\2_EditorScreen\\roads\\4_intersection.png");
+        File slot4_tempImg = new File("img\\2_EditorScreen\\grass.png");
+//        File slot5_tempImg = new File("");
 
         slot1_img = new Image(slot1_tempImg.toURI().toString());
         slot2_img = new Image(slot2_tempImg.toURI().toString());
         slot3_img = new Image(slot3_tempImg.toURI().toString());
         slot4_img = new Image(slot4_tempImg.toURI().toString());
-        slot5_img = new Image(slot5_tempImg.toURI().toString());
-        slot6_img = new Image(slot6_tempImg.toURI().toString());
+//        slot5_img = new Image(slot5_tempImg.toURI().toString());
 
         slot1 = new ImageView(slot1_img);
         slot1.setFitWidth(70);
@@ -76,10 +77,20 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         slot6.setFitHeight(70);
         slot6.setPreserveRatio(true);
 
+        slot7 = new ImageView(slot7_img);
+        slot7.setFitWidth(70);
+        slot7.setFitHeight(70);
+        slot7.setPreserveRatio(true);
+
+        slot6.setVisible(false);
+        slot6.setDisable(true);
+        slot7.setVisible(false);
+        slot7.setDisable(true);
+
         this.setSpacing(5);
         this.setPadding(new Insets(0,0,0,100));
         this.setAlignment(Pos.CENTER);
-        this.getChildren().addAll(slot1, slot2, slot3, slot4, slot5, slot6);
+        this.getChildren().addAll(slot1, slot2, slot3, slot4, slot5, slot6, slot7);
     }
 
     public TrafficSimulator_EditorPieceSelection getTS_EditorPiecesSelection() {
@@ -89,24 +100,33 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
     public void setToRoadSurfacePieces() {
         File slot1_tempImg = new File("img\\2_EditorScreen\\roads\\1_straightRoad.png");
         File slot2_tempImg = new File("img\\2_EditorScreen\\roads\\2_turnLeft.png");
-        File slot3_tempImg = new File("img\\2_EditorScreen\\roads\\3_turnRight.png");
-        File slot4_tempImg = new File("img\\2_EditorScreen\\4_straightRoadTrafficLeft.png");
-        File slot5_tempImg = new File("img\\2_EditorScreen\\5_straightRoadTrafficRight.png");
-        File slot6_tempImg = new File("img\\2_EditorScreen\\roads\\4_intersection.png");
+        File slot3_tempImg = new File("img\\2_EditorScreen\\roads\\4_intersection.png");
+        File slot4_tempImg = new File("img\\2_EditorScreen\\grass.png");
+        //File slot5_tempImg = new File("");
+        //File slot6_tempImg = new File("img\\2_EditorScreen\\roads\\null.png");
 
         slot1_img = new Image(slot1_tempImg.toURI().toString());
         slot2_img = new Image(slot2_tempImg.toURI().toString());
         slot3_img = new Image(slot3_tempImg.toURI().toString());
         slot4_img = new Image(slot4_tempImg.toURI().toString());
-        slot5_img = new Image(slot5_tempImg.toURI().toString());
-        slot6_img = new Image(slot6_tempImg.toURI().toString());
+        //slot5_img = new Image(slot5_tempImg.toURI().toString());
+        //slot6_img = new Image(slot6_tempImg.toURI().toString());
 
         slot1.setImage(slot1_img);
         slot2.setImage(slot2_img);
         slot3.setImage(slot3_img);
         slot4.setImage(slot4_img);
-        slot5.setImage(slot5_img);
-        slot6.setImage(slot6_img);
+        //slot5.setImage(slot5_img);
+        //slot6.setImage(slot6_img);
+
+        slot5.setVisible(false);
+        slot5.setDisable(true);
+
+        slot6.setVisible(false);
+        slot6.setDisable(true);
+
+        slot7.setVisible(false);
+        slot7.setDisable(true);
     }
 
     public void setToDestinationPieces() {
@@ -124,6 +144,7 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         slot4_img = new Image(slot4_tempImg.toURI().toString());
         slot5_img = new Image(slot5_tempImg.toURI().toString());
         slot6_img = new Image(slot6_tempImg.toURI().toString());
+        slot7_img = new Image(slot7_tempImg.toURI().toString());
 
         slot1.setImage(slot1_img);
         slot2.setImage(slot2_img);
@@ -131,6 +152,11 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         slot4.setImage(slot4_img);
         slot5.setImage(slot5_img);
         slot6.setImage(slot6_img);
+        slot6.setVisible(true);
+        slot6.setDisable(false);
+        slot7.setImage(slot7_img);
+        slot7.setVisible(true);
+        slot7.setDisable(false);
     }
 
     public void setToDecorativePieces() {
@@ -154,44 +180,52 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         slot4.setImage(slot4_img);
         slot5.setImage(slot5_img);
         slot6.setImage(slot6_img);
+        slot7.setVisible(false);
+        slot7.setDisable(true);
     }
 
     public void setToHazardPieces() {
-        File slot1_tempImg = new File("C:\\Users\\jagre\\Documents\\IntelliJ\\Projects\\TrafficSimulator_CTEC3451\\img\\2_EditorScreen\\hazards\\1_cone.png");
-        File slot2_tempImg = new File("C:\\Users\\jagre\\Documents\\IntelliJ\\Projects\\TrafficSimulator_CTEC3451\\img\\2_EditorScreen\\hazards\\2_barrier.png");
-        File slotNull_tempImg = new File("C:\\Users\\jagre\\Documents\\IntelliJ\\Projects\\TrafficSimulator_CTEC3451\\img\\2_EditorScreen\\null.png");
+        File slot1_tempImg = new File("img\\2_EditorScreen\\hazards\\1_cone.png");
+        File slot2_tempImg = new File("img\\2_EditorScreen\\hazards\\2_barrier.png");
+        File slot3_tempImg = new File("img\\2_EditorScreen\\hazards\\2_barrier_90.png");
+        File slot4_tempImg = new File("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
+
         /*
-        File slot3_tempImg = new File("C:\\Users\\jagre\\Documents\\IntelliJ\\Projects\\TrafficSimulator_CTEC3451\\img\\2_EditorScreen\\hazards\\3_bin.png");
         File slot4_tempImg = new File("C:\\Users\\jagre\\Documents\\IntelliJ\\Projects\\TrafficSimulator_CTEC3451\\img\\2_EditorScreen\\hazards\\4_plant.png");
         File slot5_tempImg = new File("C:\\Users\\jagre\\Documents\\IntelliJ\\Projects\\TrafficSimulator_CTEC3451\\img\\2_EditorScreen\\hazards\\5_plant2.png");
          */
 
         slot1_img = new Image(slot1_tempImg.toURI().toString());
         slot2_img = new Image(slot2_tempImg.toURI().toString());
-        slot3_img = new Image(slotNull_tempImg.toURI().toString()); //placeholder for null - only 2 hazard objects so far: cone and barrier
-        /*
         slot3_img = new Image(slot3_tempImg.toURI().toString());
         slot4_img = new Image(slot4_tempImg.toURI().toString());
-        slot5_img = new Image(slot5_tempImg.toURI().toString());
-         */
 
         slot1.setImage(slot1_img);
         slot2.setImage(slot2_img);
         slot3.setImage(slot3_img);
-        slot4.setImage(slot3_img);
-        slot5.setImage(slot3_img);
-        slot6.setImage(slot3_img);
+        slot4.setImage(slot4_img);
+//        slot5.setImage(slot3_img);
+//        slot6.setImage(slot3_img))
+        slot4.setVisible(true);
+        slot4.setDisable(false);
 
+        slot5.setVisible(false);
+        slot5.setDisable(true);
+        slot6.setVisible(false);
+        slot6.setDisable(true);
+        slot7.setVisible(false);
+        slot7.setDisable(true);
     }
 
     public ImageView[] getSlots() {
-        ImageView[] array = new ImageView[6];
+        ImageView[] array = new ImageView[7];
         array[0] = slot1;
         array[1] = slot2;
         array[2] = slot3;
         array[3] = slot4;
         array[4] = slot5;
         array[5] = slot6;
+        array[6] = slot7;
         return array;
     }
 
@@ -202,5 +236,6 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         slot4.setOnMouseClicked(handler);
         slot5.setOnMouseClicked(handler);
         slot6.setOnMouseClicked(handler);
+        slot7.setOnMouseClicked(handler);
     }
 }

@@ -1,0 +1,26 @@
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+// Debug and checking coordinate locations
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+Circle circle = new Circle(rightLaneTop.getXCoordinate(), rightLaneTop.getYCoordinate(), 2.0f);
+circle.setFill(Color.RED);
+circle.setTranslateX(rightLaneTop.getXCoordinate());
+circle.setTranslateY(rightLaneTop.getYCoordinate());
+
+System.out.println(rightLaneTop);
+System.out.println("X coord: " + rightLaneTop.getXCoordinate());
+System.out.println("Y coord: " + rightLaneTop.getYCoordinate());
+tseep.getChildren().add(circle); // display the circle in the editor pane to identify the location of the node, comment this line before pressing "finish" in //editor mode to disable it
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+
+
+
+or simplified version here, assumes debugDisplayNodeLocation(GraphNode n) method is defined.
+
+
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+// Debug and checking coordinate locations
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+debugDisplayNodeLocation(<insert GraphNode here>);
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
