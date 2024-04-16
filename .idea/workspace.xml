@@ -15,6 +15,7 @@
       <list>
         <option value="Kotlin Class" />
         <option value="Interface" />
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -41,16 +42,26 @@
     &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;liberica-21&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/jagre/Documents/IntelliJ/Projects/TrafficSimulator_CTEC3451/tests&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jagre/Documents/IntelliJ/Projects/TrafficSimulator_CTEC3451&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/jagre/Documents/IntelliJ/Projects/TrafficSimulator_CTEC3451/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="controller" />
+      <recent name="model" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="view" />
       <recent name="controller" />
@@ -70,8 +81,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WeightedGraph" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="model.WeightedGraph" />
+    <configuration name="Controller_SimulationControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TrafficSimulator_CTEC3451" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="controller" />
+      <option name="MAIN_CLASS_NAME" value="controller.Controller_SimulationControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Model_VehicleTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TrafficSimulator_CTEC3451" />
       <extension name="coverage">
         <pattern>
@@ -79,6 +104,41 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.Model_VehicleTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Model_VehicleTest.getVehicle" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TrafficSimulator_CTEC3451" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.Model_VehicleTest" />
+      <option name="METHOD_NAME" value="getVehicle" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Model_VehicleTest.setVehicle" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TrafficSimulator_CTEC3451" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.Model_VehicleTest" />
+      <option name="METHOD_NAME" value="setVehicle" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -86,7 +146,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.ApplicationLoader" />
-        <item itemvalue="Application.WeightedGraph" />
+        <item itemvalue="JUnit.Model_VehicleTest" />
+        <item itemvalue="JUnit.Model_VehicleTest.setVehicle" />
+        <item itemvalue="JUnit.Model_VehicleTest.getVehicle" />
+        <item itemvalue="JUnit.Controller_SimulationControllerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -109,17 +172,8 @@
           <option name="timeStamp" value="1" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulatorSettingsController.java</url>
-          <line>51</line>
-          <properties class="controller.TrafficSimulator_SimulatorSettingsController" method="loadScenarioFromFile">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>98</line>
+          <line>100</line>
           <properties method="handle">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -127,34 +181,24 @@
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>336</line>
-          <option name="timeStamp" value="22" />
+          <url>file://$PROJECT_DIR$/src/main/java/model/Vehicle.java</url>
+          <line>118</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/model/Model_VehicleTest.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>546</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
-          <line>146</line>
-          <option name="timeStamp" value="24" />
+          <line>1611</line>
+          <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>316</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>72</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
-          <line>166</line>
-          <option name="timeStamp" value="27" />
+          <line>1641</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -166,10 +210,19 @@
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
+      <configuration name="JUnit">
+        <watch expression="packageNameRef" />
+      </configuration>
       <configuration name="Application">
         <watch expression="currentPieceSelected" language="JAVA" />
         <watch expression="this.this$0" custom="javafx.scene.image.ImageView,javafx.beans.property.ObjectPropertyBase" />
         <watch expression="fileChooser" />
+        <watch expression="iter" />
+        <watch expression="currentPieceSelected" language="JAVA" />
+        <watch expression="currentPieceSelected" language="JAVA" />
+        <watch expression="graph.routeList.get(1)" />
+        <watch expression="graph.routeList.get(1)" />
+        <watch expression="graph.routeList.get(1)" />
       </configuration>
     </watches-manager>
   </component>

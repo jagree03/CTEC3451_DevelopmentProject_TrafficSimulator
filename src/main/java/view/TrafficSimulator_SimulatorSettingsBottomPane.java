@@ -58,15 +58,28 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
         vanSpawnChanceInput.setPrefWidth(50);
         vanSpawnChanceSlider = new Slider(0, 100, 50);
         vanSpawnChanceSlider.setOrientation(Orientation.HORIZONTAL);
+
         vanSpawnChance.getChildren().addAll(vanSpawnChanceLabel, vanSpawnChanceInput, vanSpawnChanceSlider);
         fields_1.getChildren().addAll(numOfDrivers, carSpawnChance, vanSpawnChance);
 
 
-        busTransport = new CheckBox("Bus transport/route system");
+        busTransport = new CheckBox("Bus transportation");
+        // bus transportation is unchecked by default
+        busTransport.setSelected(false);
+
         HBox numOfBuses = new HBox(20);
         numOfBuseslabel = new Label("Number of buses: ");
-        numOfBusesInput = new TextField("-");
+        numOfBusesInput = new TextField("1");
+        numOfBusesInput.setPrefWidth(50);
+
+        // bus transportation is unchecked by default, so hide the input and label for it
+        numOfBuseslabel.setDisable(true);
+        numOfBuseslabel.setVisible(false);
+        numOfBusesInput.setDisable(true);
+        numOfBusesInput.setVisible(false);
+
         numOfBuses.getChildren().addAll(numOfBuseslabel, numOfBusesInput);
+
         fields_2.getChildren().addAll(busTransport, numOfBuses);
 
         Start = new Button("Start Simulation");
@@ -95,6 +108,7 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
 
     public void setCarSpawnChanceInput(int value) {
         carSpawnChanceInput.setText("" + value + "%");
+        carSpawnChanceSlider.setValue(value);
     }
 
     public int getCarSpawnChanceSliderValue() {
@@ -107,11 +121,44 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
 
     public void setVanSpawnChanceInput(int value) {
         vanSpawnChanceInput.setText("" + value + "%");
+        vanSpawnChanceSlider.setValue(value);
     }
 
     public int getVanSpawnChanceSliderValue() {
         return (int) vanSpawnChanceSlider.getValue();
     }
 
+    public void addBusTransportCheckBoxHandler(EventHandler<ActionEvent> handler) {
+        busTransport.setOnAction(handler);
+    }
+
+    public void enableNumberOfBusesInput(boolean value) {
+        if (value) {
+            numOfBuseslabel.setDisable(false);
+            numOfBuseslabel.setVisible(true);
+            numOfBusesInput.setDisable(false);
+            numOfBusesInput.setVisible(true);
+        } else {
+            numOfBuseslabel.setDisable(true);
+            numOfBuseslabel.setVisible(false);
+            numOfBusesInput.setDisable(true);
+            numOfBusesInput.setVisible(false);
+        }
+    }
+    public int getNumberOfDrivers() {
+        return Integer.parseInt(numOfDriversInput.getText());
+    }
+
+    public boolean getBusTransportEnabled() {
+        return busTransport.isSelected();
+    }
+
+    public int getNumberOfBuses() {
+        if (!this.getBusTransportEnabled()) { //if bus transport checkbox is NOT checked
+            return 0;
+        } else { // if it is checked
+            return Integer.parseInt(numOfBusesInput.getText());
+        }
+    }
 
 }

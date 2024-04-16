@@ -21,10 +21,10 @@ public class TrafficSimulator_EditorPiecesButtonsPane extends VBox {
     public TrafficSimulator_EditorPiecesButtonsPane() {
         title = new Label("Pieces");
         title.setAlignment(Pos.CENTER);
-        road_surface = new Button("Road Surface");
+        road_surface = new Button("Surfaces");
         destinations = new Button("Destinations");
         decorative = new Button("Decorative");
-        hazards = new Button("Hazards");
+        hazards = new Button("Hazards & Misc");
 
         road_surface.setPrefWidth(100);
         destinations.setPrefWidth(100);
