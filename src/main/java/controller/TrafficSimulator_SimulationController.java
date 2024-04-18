@@ -277,7 +277,10 @@ public class TrafficSimulator_SimulationController {
 
 
         // create temp driver
-        Driver one = new Driver();
+        Driver one = new Driver("left", graph.getRouteList(), graph.getRouteList().get(0), graph.getRouteList().get(111));
+        //System.out.println(graph.getRouteList().get(111).getXCoordinate());
+        //System.out.println(graph.getRouteList().get(111).getYCoordinate());
+        //System.out.println(graph.getRouteList().get(111).getId());
         Driver two = new Driver();
         HBox h = new HBox();
 
@@ -292,6 +295,7 @@ public class TrafficSimulator_SimulationController {
         ImageView vehicle = one.getVehicle().getSpriteImageView();
         h.getChildren().add(vehicle);
 
+
         PathTransitionArray = new ArrayList<PathTransition>();
         PathTransition transition = new PathTransition();
         PathTransitionArray.add(transition);
@@ -301,12 +305,11 @@ public class TrafficSimulator_SimulationController {
         transition.setOrientation(PathTransition.OrientationType.NONE);
 
         transition.setDuration(Duration.seconds(30));
+        transition.setRate(2);
         // driver one
         Path path = new Path();
-        one.setStartingPosX(graph.getRouteList().get(0).getXCoordinate());
-        one.setStartingPosY(graph.getRouteList().get(0).getYCoordinate());
-        path.getElements().add(new MoveTo(one.getStartingPosX(), one.getStartingPosY()+20));
 
+        /*
         for (GraphNode node : graph.getRouteList()) {
             if (node.getId().contains("left_")) {
                 System.out.println(node.getXCoordinate() + " " + node.getYCoordinate());
@@ -315,6 +318,14 @@ public class TrafficSimulator_SimulationController {
             }
         }
         path.getElements().add(new ClosePath());
+         */
+
+        ArrayList<GraphNode> p = one.autoSearch();
+        path.getElements().add(new MoveTo(p.get(0).getXCoordinate(), p.get(1).getYCoordinate()+20));
+        for (int i = 1; i < p.size(); i++) {
+            LineTo l = new LineTo(p.get(i).getXCoordinate(), p.get(i).getYCoordinate()+20);
+            path.getElements().add(l);
+        }
 
         Label tst = new Label("A");
         tss_editorpane.getChildren().add(tst);
