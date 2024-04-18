@@ -192,13 +192,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>1611</line>
+          <line>1678</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>1641</line>
+          <line>1708</line>
           <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/model/Driver.java</url>
+          <line>261</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/model/Driver.java</url>
+          <line>360</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -223,6 +233,7 @@
         <watch expression="graph.routeList.get(1)" />
         <watch expression="graph.routeList.get(1)" />
         <watch expression="graph.routeList.get(1)" />
+        <watch expression="checkedList.get(56)" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

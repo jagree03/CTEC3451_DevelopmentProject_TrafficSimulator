@@ -1393,78 +1393,145 @@ public class TrafficSimulator_EditorController {
                             incrementPieceCounter();
                         }
 
-                        // if the currentPiece that was added is a destination piece (PETROL STATION) THEN
+                        // if the currentPiece that was added is a general destination piece THEN
                         // map the node
-                        if (currentPieceSelected.contains("1_petrolStation.png")) {
+
+                        if (currentPieceSelected.contains("dest_")) {
+                            GraphNode dest1_entrance = new GraphNode(b.getMinX()+0, b.getMinY()-5);
+                            GraphNode dest1_0 = new GraphNode(b.getMinX()+5, b.getMinY()-5);
+                            GraphNode dest1_1 = new GraphNode(b.getMinX()+10, b.getMinY()-5);
+                            GraphNode dest1_2 = new GraphNode(b.getMinX()+15, b.getMinY()-5);
+                            GraphNode dest1_3 = new GraphNode(b.getMinX()+20, b.getMinY()-5);
+                            GraphNode dest1_4 = new GraphNode(b.getMinX()+25, b.getMinY()-5);
+                            GraphNode dest1_5 = new GraphNode(b.getMinX()+30, b.getMinY()-5);
+                            GraphNode dest1_exit = new GraphNode(b.getMinX()+35, b.getMinY()-5);
+
+                            GraphNode dest6_entrance = new GraphNode(b.getMinX()+35, b.getMinY()+5);
+                            GraphNode dest6_0 = new GraphNode(b.getMinX()+30, b.getMinY()+5);
+                            GraphNode dest6_1 = new GraphNode(b.getMinX()+25, b.getMinY()+5);
+                            GraphNode dest6_2 = new GraphNode(b.getMinX()+20, b.getMinY()+5);
+                            GraphNode dest6_3 = new GraphNode(b.getMinX()+15, b.getMinY()+5);
+                            GraphNode dest6_4 = new GraphNode(b.getMinX()+10, b.getMinY()+5);
+                            GraphNode dest6_5 = new GraphNode(b.getMinX()+5, b.getMinY()+5);
+                            GraphNode dest6_exit = new GraphNode(b.getMinX()+0, b.getMinY()+5);
+
+                            GraphNode dest3_entrance = new GraphNode(b.getMinX()+10, b.getMinY()+20);
+                            GraphNode dest3_0 = new GraphNode(b.getMinX()+10, b.getMinY()+15);
+                            GraphNode dest3_1 = new GraphNode(b.getMinX()+10, b.getMinY()+10);
+                            GraphNode dest3_2 = new GraphNode(b.getMinX()+10, b.getMinY()+5);
+                            GraphNode dest3_3 = new GraphNode(b.getMinX()+10, b.getMinY()+0);
+                            GraphNode dest3_4 = new GraphNode(b.getMinX()+10, b.getMinY()-5);
+                            GraphNode dest3_5 = new GraphNode(b.getMinX()+10, b.getMinY()-10);
+                            GraphNode dest3_6 = new GraphNode(b.getMinX()+10, b.getMinY()-15);
+                            GraphNode dest3_exit = new GraphNode(b.getMinX()+10, b.getMinY()-20);
+
+                            GraphNode dest4_entrance = new GraphNode(b.getMinX()+25, b.getMinY()+20);
+                            GraphNode dest4_0 = new GraphNode(b.getMinX()+25, b.getMinY()+15);
+                            GraphNode dest4_1 = new GraphNode(b.getMinX()+25, b.getMinY()+10);
+                            GraphNode dest4_2 = new GraphNode(b.getMinX()+25, b.getMinY()+5);
+                            GraphNode dest4_3 = new GraphNode(b.getMinX()+25, b.getMinY()+0);
+                            GraphNode dest4_4 = new GraphNode(b.getMinX()+25, b.getMinY()-5);
+                            GraphNode dest4_5 = new GraphNode(b.getMinX()+25, b.getMinY()-10);
+                            GraphNode dest4_6 = new GraphNode(b.getMinX()+25, b.getMinY()-15);
+                            GraphNode dest4_exit = new GraphNode(b.getMinX()+25, b.getMinY()-20);
+
+                            dest1_entrance.setId("d0_"+(getPieceCounterValue()));
+                            dest1_0.setId("d1_"+(getPieceCounterValue()));
+                            dest1_1.setId("d2_"+(getPieceCounterValue()));
+                            dest1_2.setId("destinationGoal_"+(getPieceCounterValue()));
+                            dest1_3.setId("destinationGoal_"+(getPieceCounterValue()));
+                            dest1_4.setId("d5_"+(getPieceCounterValue()));
+                            dest1_5.setId("d6_"+(getPieceCounterValue()));
+                            dest1_exit.setId("d7_"+(getPieceCounterValue()));
+
+                            dest6_entrance.setId("d8_"+(getPieceCounterValue()));
+                            dest6_0.setId("d9_"+(getPieceCounterValue()));
+                            dest6_1.setId("d10_"+(getPieceCounterValue()));
+                            dest6_2.setId("destinationGoal_"+(getPieceCounterValue()));
+                            dest6_3.setId("destinationGoal_"+(getPieceCounterValue()));
+                            dest6_4.setId("d13_"+(getPieceCounterValue()));
+                            dest6_5.setId("d14_"+(getPieceCounterValue()));
+                            dest6_exit.setId("d15_"+(getPieceCounterValue()));
+
+                            dest3_entrance.setId("d16_"+(getPieceCounterValue()));
+                            dest3_0.setId("d17_"+(getPieceCounterValue()));
+                            dest3_1.setId("d18_"+(getPieceCounterValue()));
+                            dest3_2.setId("d19_"+(getPieceCounterValue()));
+                            dest3_3.setId("d20_"+(getPieceCounterValue()));
+                            dest3_4.setId("d21_"+(getPieceCounterValue()));
+                            dest3_5.setId("d22_"+(getPieceCounterValue()));
+                            dest3_6.setId("d23_"+(getPieceCounterValue()));
+                            dest3_exit.setId("d24_"+(getPieceCounterValue()));
+
+                            dest4_entrance.setId("d25_"+(getPieceCounterValue()));
+                            dest4_0.setId("d26_"+(getPieceCounterValue()));
+                            dest4_1.setId("d27_"+(getPieceCounterValue()));
+                            dest4_2.setId("d28_"+(getPieceCounterValue()));
+                            dest4_3.setId("d29_"+(getPieceCounterValue()));
+                            dest4_4.setId("d30_"+(getPieceCounterValue()));
+                            dest4_5.setId("d31_"+(getPieceCounterValue()));
+                            dest4_6.setId("d32_"+(getPieceCounterValue()));
+                            dest4_exit.setId("d33_"+(getPieceCounterValue()));
+
+                            graph.addGraphNodeToList(dest1_entrance);
+                            graph.addGraphNodeToList(dest1_0);
+                            graph.addGraphNodeToList(dest1_1);
+                            graph.addGraphNodeToList(dest1_2);
+                            graph.addGraphNodeToList(dest1_3);
+                            graph.addGraphNodeToList(dest1_4);
+                            graph.addGraphNodeToList(dest1_5);
+                            graph.addGraphNodeToList(dest1_exit);
+
+                            graph.addGraphNodeToList(dest6_entrance);
+                            graph.addGraphNodeToList(dest6_0);
+                            graph.addGraphNodeToList(dest6_1);
+                            graph.addGraphNodeToList(dest6_2);
+                            graph.addGraphNodeToList(dest6_3);
+                            graph.addGraphNodeToList(dest6_4);
+                            graph.addGraphNodeToList(dest6_5);
+                            graph.addGraphNodeToList(dest6_exit);
+
+                            graph.addGraphNodeToList(dest3_entrance);
+                            graph.addGraphNodeToList(dest3_0);
+                            graph.addGraphNodeToList(dest3_1);
+                            graph.addGraphNodeToList(dest3_2);
+                            graph.addGraphNodeToList(dest3_3);
+                            graph.addGraphNodeToList(dest3_4);
+                            graph.addGraphNodeToList(dest3_5);
+                            graph.addGraphNodeToList(dest3_6);
+                            graph.addGraphNodeToList(dest3_exit);
+
+                            graph.addGraphNodeToList(dest4_entrance);
+                            graph.addGraphNodeToList(dest4_0);
+                            graph.addGraphNodeToList(dest4_1);
+                            graph.addGraphNodeToList(dest4_2);
+                            graph.addGraphNodeToList(dest4_3);
+                            graph.addGraphNodeToList(dest4_4);
+                            graph.addGraphNodeToList(dest4_5);
+                            graph.addGraphNodeToList(dest4_6);
+                            graph.addGraphNodeToList(dest4_exit);
+
+                            incrementPieceCounter();
+                        }
+
+
+                        // if the currentPiece that was added is a destination piece specifically BUS STATION THEN
+                        // map the node
+                        if (currentPieceSelected.contains("bus_station.png")) {
                             GraphNode dest = new GraphNode(b.getMinX()+17, b.getMinY()-2);
 
-                            dest.setId("destination_PetrolStation"+getPieceCounterValue());
+                            dest.setId("destination_bus_station"+getPieceCounterValue());
                             incrementPieceCounter();
 
                             graph.addGraphNodeToList(dest);
                         }
 
-                        // if the currentPiece that was added is a destination piece (SHOP) THEN
+                        // if the currentPiece that was added is a destination piece specifically a BUS STOP THEN
                         // map the node
-                        if (currentPieceSelected.contains("2_shop.png")) {
+                        if (currentPieceSelected.contains("bus_stop.png")) {
                             GraphNode dest = new GraphNode(b.getMinX()+17, b.getMinY()-2);
 
-                            dest.setId("destination_Shop"+getPieceCounterValue());
-                            incrementPieceCounter();
-
-                            graph.addGraphNodeToList(dest);
-                        }
-
-                        // if the currentPiece that was added is a destination piece (OFFICE) THEN
-                        // map the node
-                        if (currentPieceSelected.contains("3_office.png")) {
-                            GraphNode dest = new GraphNode(b.getMinX()+17, b.getMinY()-2);
-
-                            dest.setId("destination_Office"+getPieceCounterValue());
-                            incrementPieceCounter();
-
-                            graph.addGraphNodeToList(dest);
-                        }
-
-                        // if the currentPiece that was added is a destination piece (HOSPITAL) THEN
-                        // map the node
-                        if (currentPieceSelected.contains("4_hospital.png")) {
-                            GraphNode dest = new GraphNode(b.getMinX()+17, b.getMinY()-2);
-
-                            dest.setId("destination_Hospital"+getPieceCounterValue());
-                            incrementPieceCounter();
-
-                            graph.addGraphNodeToList(dest);
-                        }
-
-                        // if the currentPiece that was added is a destination piece (HOTEL) THEN
-                        // map the node
-                        if (currentPieceSelected.contains("5_hotel.png")) {
-                            GraphNode dest = new GraphNode(b.getMinX()+17, b.getMinY()-2);
-
-                            dest.setId("destination_Hotel"+getPieceCounterValue());
-                            incrementPieceCounter();
-
-                            graph.addGraphNodeToList(dest);
-                        }
-
-                        // if the currentPiece that was added is a destination piece (BUS STATION) THEN
-                        // map the node
-                        if (currentPieceSelected.contains("6_bus_station.png")) {
-                            GraphNode dest = new GraphNode(b.getMinX()+17, b.getMinY()-2);
-
-                            dest.setId("destination_BusStation"+getPieceCounterValue());
-                            incrementPieceCounter();
-
-                            graph.addGraphNodeToList(dest);
-                        }
-
-                        // if the currentPiece that was added is a destination piece (BUS STOP) THEN
-                        // map the node
-                        if (currentPieceSelected.contains("7_bus_stop.png")) {
-                            GraphNode dest = new GraphNode(b.getMinX()+17, b.getMinY()-2);
-
-                            dest.setId("destination_BusStop"+getPieceCounterValue());
+                            dest.setId("destination_bus_stop"+getPieceCounterValue());
                             incrementPieceCounter();
 
                             graph.addGraphNodeToList(dest);

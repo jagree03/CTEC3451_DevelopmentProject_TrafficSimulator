@@ -130,13 +130,13 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
     }
 
     public void setToDestinationPieces() {
-        File slot1_tempImg = new File("img\\2_EditorScreen\\destinations\\1_petrolStation.png");
-        File slot2_tempImg = new File("img\\2_EditorScreen\\destinations\\2_shop.png");
-        File slot3_tempImg = new File("img\\2_EditorScreen\\destinations\\3_office.png");
-        File slot4_tempImg = new File("img\\2_EditorScreen\\destinations\\4_hospital.png");
-        File slot5_tempImg = new File("img\\2_EditorScreen\\destinations\\5_hotel.png");
-        File slot6_tempImg = new File("img\\2_EditorScreen\\destinations\\6_bus_station.png");
-        File slot7_tempImg = new File("img\\2_EditorScreen\\destinations\\7_bus_stop.png");
+        File slot1_tempImg = new File("img\\2_EditorScreen\\destinations\\dest_1_petrolStation.png");
+        File slot2_tempImg = new File("img\\2_EditorScreen\\destinations\\dest_2_shop.png");
+        File slot3_tempImg = new File("img\\2_EditorScreen\\destinations\\dest_3_office.png");
+        File slot4_tempImg = new File("img\\2_EditorScreen\\destinations\\dest_4_hospital.png");
+        File slot5_tempImg = new File("img\\2_EditorScreen\\destinations\\dest_5_hotel.png");
+        File slot6_tempImg = new File("img\\2_EditorScreen\\destinations\\bus_station.png");
+        File slot7_tempImg = new File("img\\2_EditorScreen\\destinations\\bus_stop.png");
 
         slot1_img = new Image(slot1_tempImg.toURI().toString());
         slot2_img = new Image(slot2_tempImg.toURI().toString());
