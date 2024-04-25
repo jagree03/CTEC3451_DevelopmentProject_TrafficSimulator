@@ -4,41 +4,30 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import jfxtras.scene.control.ImageViewButton;
-import model.AStarGraph;
-import model.Driver;
-import model.GraphNode;
+import model.*;
 import view.*;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class TrafficSimulator_SimulationController {
 
     private TrafficSimulator_Simulation view;
 
-    private TrafficSimulatorRootMenuBar tss_menubar;
+    private TrafficSimulator_SimulationMenuBar tss_menubar;
 
     private TrafficSimulator_EditorEditorPane tss_editorpane;
 
@@ -59,6 +48,7 @@ public class TrafficSimulator_SimulationController {
     private ArrayList<Driver> drivers;
     private ArrayList<ImageView> trafficLights;
     private ArrayList<ImageView> hazards;
+    private ArrayList<ImageView> petrolStations;
 
 
     private AnimationTimer at;
@@ -83,10 +73,12 @@ public class TrafficSimulator_SimulationController {
         drivers = new ArrayList<>();
         hazards = new ArrayList<>();
         trafficLights = new ArrayList<>();
+        petrolStations = new ArrayList<>();
         // load scenario
         loadScenarioFromFile();
         readGraphNodesFromFile();
         readSimulationSettingsFromFile();
+        instantiatePieceClasses();
         spawnDriversAndGeneratePath();
     }
 
@@ -109,6 +101,23 @@ public class TrafficSimulator_SimulationController {
         });
 
         tss_menubar.addExitHandler(e -> System.exit(0));
+
+        tss_menubar.addDisplayBoundingHandler(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (tss_menubar.getDisplayBoundingMenuItemName().equals("Display Driver Boundaries")) {
+                    for (Driver d : drivers) {
+                        d.setHBoxStyle(true);
+                    }
+                    tss_menubar.setDisplayBoundingMenuItemName("Hide Driver Boundaries");
+                } else {
+                    for (Driver d : drivers) {
+                        d.setHBoxStyle(false);
+                    }
+                    tss_menubar.setDisplayBoundingMenuItemName("Display Driver Boundaries");
+                }
+            }
+        });
 
         tss_bottompane.addGoBackHandler(new EventHandler<ActionEvent>() {
             @Override
@@ -189,6 +198,8 @@ public class TrafficSimulator_SimulationController {
                     n.setTranslateY(y);
                     if (n.getImage().getUrl().contains("trafficLight.png")) {
                         trafficLights.add(n);
+                    } else if (n.getImage().getUrl().contains("dest_1_petrolStation.png")) {
+                        petrolStations.add(n);
                     }
                     tss_editorpane.getChildren().add(n);
                     continue;
@@ -250,6 +261,19 @@ public class TrafficSimulator_SimulationController {
         }
     }
 
+    /**
+     * To instantiate classes for TrafficLights and PetrolStations
+     */
+    private void instantiatePieceClasses() {
+        for (ImageView ps : petrolStations) {
+            PetrolStation p = new PetrolStation();
+            p.setImageView(ps);
+        }
+        for (ImageView ts : trafficLights) {
+            TrafficLight t = new TrafficLight();
+        }
+    }
+
     private void spawnDriversAndGeneratePath() {
 
         System.out.println("drivers: " + numOfDrivers);
@@ -258,11 +282,17 @@ public class TrafficSimulator_SimulationController {
         System.out.println("buses: " + numOfBuses);
 
 
-        /*
+
         for (int i = 1; i <= numOfDrivers; i++) { // instantiate all drivers, based on the passed in number of drivers value
-            Driver d = new Driver();  // instantiate a driver, that has a random coloured vehicle, such that the vehicle is a van or normal car
-            // based on the parameters of spawn chances, additionally a randomized lane (left/right) string value.
-            // starting nodes of drivers can be assigned later.
+            Vehicle v = new Vehicle();
+            v.setARandomType(0, 0);   // set the vehicle type based on the parameters of spawn chances, van or car?
+            v.setColor(v.getRandomColour()); // give the vehicle a random colour
+
+
+
+            Driver d = new Driver();    // instantiate a driver
+                                        // additionally a randomized lane (left/right) string value.
+                                        // starting nodes of drivers can be assigned later.
             drivers.add(d);
         }
 
@@ -273,35 +303,27 @@ public class TrafficSimulator_SimulationController {
                 drivers.add(d);
             }
         }
-        */
+
 
 
         // create temp driver
-        Driver one = new Driver("left", graph.getRouteList(), graph.getRouteList().get(0), graph.getRouteList().get(111));
+        //Driver one = new Driver("left", graph.getRouteList(), graph.getRouteList().get(0), graph.getRouteList().get(310), true);
         //System.out.println(graph.getRouteList().get(111).getXCoordinate());
         //System.out.println(graph.getRouteList().get(111).getYCoordinate());
         //System.out.println(graph.getRouteList().get(111).getId());
         Driver two = new Driver();
-        HBox h = new HBox();
 
-        // for debug purposes, shows the surrounding box
-        h.setStyle("-fx-padding: 0;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 1;" +
-                "-fx-border-radius: 1;" +
-                "-fx-border-color: blue;");
 
-        h.setAlignment(Pos.CENTER);
         ImageView vehicle = one.getVehicle().getSpriteImageView();
-        h.getChildren().add(vehicle);
+
 
 
         PathTransitionArray = new ArrayList<PathTransition>();
         PathTransition transition = new PathTransition();
         PathTransitionArray.add(transition);
 
-        tss_editorpane.getChildren().add(h);
-        transition.setNode(h);
+        tss_editorpane.getChildren().add(one.getHBox());
+        transition.setNode(one.getHBox());
         transition.setOrientation(PathTransition.OrientationType.NONE);
 
         transition.setDuration(Duration.seconds(30));
@@ -343,11 +365,11 @@ public class TrafficSimulator_SimulationController {
             public void handle(long now) {
 
                 // test method to check if something can intersect with the hbox, then do something
-                if (h.getBoundsInParent().intersects(tst.getBoundsInParent())) {
+                if (one.getHBox().getBoundsInParent().intersects(tst.getBoundsInParent())) {
                     System.out.println("tst detected");
                 }
                 for (ImageView i : trafficLights) { // traffic light detection
-                    if (h.getBoundsInParent().intersects(i.getBoundsInParent())) {
+                    if (one.getHBox().getBoundsInParent().intersects(i.getBoundsInParent())) {
                         System.out.println("traffic light detected");
                     }
                 }
@@ -355,39 +377,6 @@ public class TrafficSimulator_SimulationController {
         };
 
         at.start();
-
-        h.translateXProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if (!(oldValue.doubleValue() == 0.0)) {
-                    if (newValue.doubleValue() > oldValue.doubleValue()) {
-                        //System.out.println("initiate 90 degree rotate");
-                        h.setRotate(90);
-                    }
-                    if (newValue.doubleValue() < oldValue.doubleValue()) {
-                        h.setRotate(270);
-                    }
-                }
-            }
-        });
-
-        h.translateYProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                //System.out.println("entered    " + "oldVal: " + oldValue.doubleValue() + "   newVal: " + newValue.doubleValue());
-                if (!(oldValue.doubleValue() == 0.0)) {
-                    if (newValue.doubleValue() < oldValue.doubleValue()) {
-                        //System.out.println("initiate rotation removal, so back to 0 degrees");
-                        h.setRotate(0);
-                    }
-                    if (newValue.doubleValue() > oldValue.doubleValue()) {
-                        h.setRotate(180);
-                    }
-                }
-            }
-        });
-
-
 
         // driver two
 //        Path path2 = new Path();
@@ -400,7 +389,19 @@ public class TrafficSimulator_SimulationController {
 //        transition2.setPath(path2);
 //        transition2.setCycleCount(PathTransition.INDEFINITE);
 //        transition2.pause();
-    }
+
+
+
+    } // end of spawn drivers and generate path method
+
+
+
+
+
+
+
+
+
 
     public static void wait(int ms)
     {

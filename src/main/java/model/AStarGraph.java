@@ -35,6 +35,11 @@ public class AStarGraph implements Serializable {
         routeList.clear();
     }
 
+    @Override
+    public String toString() {
+        return "AStarGraph:[routeList=" + routeList + "]";
+    }
+
 
     //////////////////////
     // A* Pathfinding related methods

@@ -83,11 +83,13 @@ public class TrafficSimulator_EditorController {
                         + "\n\n"
                         + "F Key - Deselect Piece"
                         + "\n\n"
+                        + "V key - Invert Lanes (only for turn pieces)"
+                        + "\n\n"
                         + "R key - Rotate Piece By 90 Degrees"
                         + "\n\n"
                         + "When rotating road surfaces, an icon will appear at the bottom right corner to display the rotated piece."
-                        + '\n'
-                        + "The green arrow represents the LEFT lane, whereas the yellow arrow represents the RIGHT lane.");
+                        + "\n\n"
+                        + "GREEN arrow represents the LEFT lane, whereas the YELLOW arrow represents the RIGHT lane.");
                 about.show();
             }
         });
@@ -390,7 +392,6 @@ public class TrafficSimulator_EditorController {
                                 }
                             }
                         }
-
                         obj.setImage(new Image(currentPieceSelected));
                         //obj.setRotate(currentRotationDeg);
                         obj.setFitHeight(45);
@@ -719,6 +720,70 @@ public class TrafficSimulator_EditorController {
                             graph.addGraphNodeToList(rightLane_4);
                         }
 
+                        // if the currentPiece that was added is a turn left piece with no rotation applied but inversion is applied THEN
+                        // map the nodes
+                        if (currentPieceSelected.contains("2_turnLeft_inv.png")) {
+                            GraphNode leftLane_0 = new GraphNode(b.getMinX()+0, b.getMinY()-5);
+                            GraphNode leftLane_1 = new GraphNode(b.getMinX()+5, b.getMinY()-5);
+                            GraphNode leftLane_2 = new GraphNode(b.getMinX()+10, b.getMinY()-5);
+                            GraphNode leftLane_3 = new GraphNode(b.getMinX()+15, b.getMinY()-5);
+                            GraphNode leftLane_4 = new GraphNode(b.getMinX()+20, b.getMinY()-5);
+                            GraphNode leftLaneTurnRight = new GraphNode(b.getMinX()+25, b.getMinY()-5);
+                            GraphNode leftLane_5 = new GraphNode(b.getMinX()+25, b.getMinY()+0);
+                            GraphNode leftLane_6 = new GraphNode(b.getMinX()+25, b.getMinY()+5);
+                            GraphNode leftLane_7 = new GraphNode(b.getMinX()+25, b.getMinY()+10);
+                            GraphNode leftLane_8 = new GraphNode(b.getMinX()+25, b.getMinY()+15);
+                            GraphNode leftLane_9 = new GraphNode(b.getMinX()+25, b.getMinY()+20);
+
+                            GraphNode rightLane_0 = new GraphNode(b.getMinX()+10, b.getMinY()+20);
+                            GraphNode rightLane_1 = new GraphNode(b.getMinX()+10, b.getMinY()+15);
+                            GraphNode rightLane_2 = new GraphNode(b.getMinX()+10, b.getMinY()+10);
+                            GraphNode rightLaneTurnLeft = new GraphNode(b.getMinX()+10, b.getMinY()+5);
+                            GraphNode rightLane_3 = new GraphNode(b.getMinX()+5, b.getMinY()+5);
+                            GraphNode rightLane_4 = new GraphNode(b.getMinX()+0, b.getMinY()+5);
+
+                            leftLaneTurnRight.setId("right_"+getPieceCounterValue());
+                            rightLaneTurnLeft.setId("left_"+getPieceCounterValue());
+
+                            leftLane_0.setId("right_"+(getPieceCounterValue()));
+                            leftLane_1.setId("right_"+(getPieceCounterValue()));
+                            leftLane_2.setId("right_"+(getPieceCounterValue()));
+                            leftLane_3.setId("right_"+(getPieceCounterValue()));
+                            leftLane_4.setId("right_"+(getPieceCounterValue()));
+                            leftLane_5.setId("right_"+(getPieceCounterValue()));
+                            leftLane_6.setId("right_"+(getPieceCounterValue()));
+                            leftLane_7.setId("right_"+(getPieceCounterValue()));
+                            leftLane_8.setId("right_"+(getPieceCounterValue()));
+                            leftLane_9.setId("right_"+(getPieceCounterValue()));
+
+                            rightLane_0.setId("left_"+(getPieceCounterValue()));
+                            rightLane_1.setId("left_"+(getPieceCounterValue()));
+                            rightLane_2.setId("left_"+(getPieceCounterValue()));
+                            rightLane_3.setId("left_"+(getPieceCounterValue()));
+                            rightLane_4.setId("left_"+(getPieceCounterValue()));
+
+                            incrementPieceCounter();
+
+                            graph.addGraphNodeToList(leftLane_0);
+                            graph.addGraphNodeToList(leftLane_1);
+                            graph.addGraphNodeToList(leftLane_2);
+                            graph.addGraphNodeToList(leftLane_3);
+                            graph.addGraphNodeToList(leftLane_4);
+                            graph.addGraphNodeToList(leftLaneTurnRight);
+                            graph.addGraphNodeToList(leftLane_5);
+                            graph.addGraphNodeToList(leftLane_6);
+                            graph.addGraphNodeToList(leftLane_7);
+                            graph.addGraphNodeToList(leftLane_8);
+                            graph.addGraphNodeToList(leftLane_9);
+
+                            graph.addGraphNodeToList(rightLane_0);
+                            graph.addGraphNodeToList(rightLane_1);
+                            graph.addGraphNodeToList(rightLane_2);
+                            graph.addGraphNodeToList(rightLaneTurnLeft);
+                            graph.addGraphNodeToList(rightLane_3);
+                            graph.addGraphNodeToList(rightLane_4);
+                        }
+
                         // if the currentPiece that was added is a turn left piece with 90 degrees rotation applied THEN
                         // map the nodes
                         if (currentPieceSelected.contains("2_turnLeft_90.png")) {
@@ -762,6 +827,72 @@ public class TrafficSimulator_EditorController {
                             rightLane_2.setId("right_"+(getPieceCounterValue()));
                             rightLane_3.setId("right_"+(getPieceCounterValue()));
                             rightLane_4.setId("right_"+(getPieceCounterValue()));
+
+                            incrementPieceCounter();
+
+                            graph.addGraphNodeToList(leftLane_0);
+                            graph.addGraphNodeToList(leftLane_1);
+                            graph.addGraphNodeToList(leftLane_2);
+                            graph.addGraphNodeToList(leftLane_3);
+                            graph.addGraphNodeToList(leftLane_4);
+                            graph.addGraphNodeToList(leftLaneTurnRight);
+                            graph.addGraphNodeToList(leftLane_5);
+                            graph.addGraphNodeToList(leftLane_6);
+                            graph.addGraphNodeToList(leftLane_7);
+                            graph.addGraphNodeToList(leftLane_8);
+                            graph.addGraphNodeToList(leftLane_9);
+
+                            graph.addGraphNodeToList(rightLane_0);
+                            graph.addGraphNodeToList(rightLane_1);
+                            graph.addGraphNodeToList(rightLane_2);
+                            graph.addGraphNodeToList(rightLaneTurnLeft);
+                            graph.addGraphNodeToList(rightLane_3);
+                            graph.addGraphNodeToList(rightLane_4);
+                        }
+
+                        // if the currentPiece that was added is a turn left piece with 90 degrees rotation applied and there's inversion THEN
+                        // map the nodes
+                        if (currentPieceSelected.contains("2_turnLeft_90_inv.png")) {
+                            GraphNode leftLane_0 = new GraphNode(b.getMinX()+25, b.getMinY()-20);
+                            GraphNode leftLane_1 = new GraphNode(b.getMinX()+25, b.getMinY()-15);
+                            GraphNode leftLane_2 = new GraphNode(b.getMinX()+25, b.getMinY()-10);
+                            GraphNode leftLane_3 = new GraphNode(b.getMinX()+25, b.getMinY()-5);
+                            GraphNode leftLane_4 = new GraphNode(b.getMinX()+25, b.getMinY()+0);
+                            GraphNode leftLaneTurnRight = new GraphNode(b.getMinX()+25, b.getMinY()+5);
+                            GraphNode leftLane_5 = new GraphNode(b.getMinX()+20, b.getMinY()+5);
+                            GraphNode leftLane_6 = new GraphNode(b.getMinX()+15, b.getMinY()+5);
+                            GraphNode leftLane_7 = new GraphNode(b.getMinX()+10, b.getMinY()+5);
+                            GraphNode leftLane_8 = new GraphNode(b.getMinX()+5, b.getMinY()+5);
+                            GraphNode leftLane_9 = new GraphNode(b.getMinX()+0, b.getMinY()+5);
+
+
+                            GraphNode rightLane_0 = new GraphNode(b.getMinX()+10, b.getMinY()-20);
+                            GraphNode rightLane_1 = new GraphNode(b.getMinX()+10, b.getMinY()-15);
+                            GraphNode rightLane_2 = new GraphNode(b.getMinX()+10, b.getMinY()-10);
+                            GraphNode rightLaneTurnLeft = new GraphNode(b.getMinX()+10, b.getMinY()-5);
+                            GraphNode rightLane_3 = new GraphNode(b.getMinX()+5, b.getMinY()-5);
+                            GraphNode rightLane_4 = new GraphNode(b.getMinX()+0, b.getMinY()-5);
+
+
+                            leftLaneTurnRight.setId("right_"+getPieceCounterValue());
+                            rightLaneTurnLeft.setId("left_"+getPieceCounterValue());
+
+                            leftLane_0.setId("right_"+(getPieceCounterValue()));
+                            leftLane_1.setId("right_"+(getPieceCounterValue()));
+                            leftLane_2.setId("right_"+(getPieceCounterValue()));
+                            leftLane_3.setId("right_"+(getPieceCounterValue()));
+                            leftLane_4.setId("right_"+(getPieceCounterValue()));
+                            leftLane_5.setId("right_"+(getPieceCounterValue()));
+                            leftLane_6.setId("right_"+(getPieceCounterValue()));
+                            leftLane_7.setId("right_"+(getPieceCounterValue()));
+                            leftLane_8.setId("right_"+(getPieceCounterValue()));
+                            leftLane_9.setId("right_"+(getPieceCounterValue()));
+
+                            rightLane_0.setId("left_"+(getPieceCounterValue()));
+                            rightLane_1.setId("left_"+(getPieceCounterValue()));
+                            rightLane_2.setId("left_"+(getPieceCounterValue()));
+                            rightLane_3.setId("left_"+(getPieceCounterValue()));
+                            rightLane_4.setId("left_"+(getPieceCounterValue()));
 
                             incrementPieceCounter();
 
@@ -849,6 +980,70 @@ public class TrafficSimulator_EditorController {
                             graph.addGraphNodeToList(rightLane_4);
                         }
 
+                        // if the currentPiece that was added is a turn left piece with 180 degrees rotation applied and there's inversion THEN
+                        // map the nodes
+                        if (currentPieceSelected.contains("2_turnLeft_180_inv.png")) {
+                            GraphNode leftLane_0 = new GraphNode(b.getMinX()+35, b.getMinY()+5);
+                            GraphNode leftLane_1 = new GraphNode(b.getMinX()+30, b.getMinY()+5);
+                            GraphNode leftLane_2 = new GraphNode(b.getMinX()+25, b.getMinY()+5);
+                            GraphNode leftLane_3 = new GraphNode(b.getMinX()+20, b.getMinY()+5);
+                            GraphNode leftLane_4 = new GraphNode(b.getMinX()+15, b.getMinY()+5);
+                            GraphNode leftLaneTurnRight = new GraphNode(b.getMinX()+10, b.getMinY()+5);
+                            GraphNode leftLane_5 = new GraphNode(b.getMinX()+10, b.getMinY()+0);
+                            GraphNode leftLane_6 = new GraphNode(b.getMinX()+10, b.getMinY()-5);
+                            GraphNode leftLane_7 = new GraphNode(b.getMinX()+10, b.getMinY()-10);
+                            GraphNode leftLane_8 = new GraphNode(b.getMinX()+10, b.getMinY()-15);
+                            GraphNode leftLane_9 = new GraphNode(b.getMinX()+10, b.getMinY()-20);
+
+                            GraphNode rightLane_0 = new GraphNode(b.getMinX()+25, b.getMinY()-20);
+                            GraphNode rightLane_1 = new GraphNode(b.getMinX()+25, b.getMinY()-15);
+                            GraphNode rightLane_2 = new GraphNode(b.getMinX()+25, b.getMinY()-10);
+                            GraphNode rightLaneTurnLeft = new GraphNode(b.getMinX()+25, b.getMinY()-5);
+                            GraphNode rightLane_3 = new GraphNode(b.getMinX()+30, b.getMinY()-5);
+                            GraphNode rightLane_4 = new GraphNode(b.getMinX()+35, b.getMinY()-5);
+
+                            leftLaneTurnRight.setId("right_"+getPieceCounterValue());
+                            rightLaneTurnLeft.setId("left_"+getPieceCounterValue());
+
+                            leftLane_0.setId("right_"+(getPieceCounterValue()));
+                            leftLane_1.setId("right_"+(getPieceCounterValue()));
+                            leftLane_2.setId("right_"+(getPieceCounterValue()));
+                            leftLane_3.setId("right_"+(getPieceCounterValue()));
+                            leftLane_4.setId("right_"+(getPieceCounterValue()));
+                            leftLane_5.setId("right_"+(getPieceCounterValue()));
+                            leftLane_6.setId("right_"+(getPieceCounterValue()));
+                            leftLane_7.setId("right_"+(getPieceCounterValue()));
+                            leftLane_8.setId("right_"+(getPieceCounterValue()));
+                            leftLane_9.setId("right_"+(getPieceCounterValue()));
+
+                            rightLane_0.setId("left_"+(getPieceCounterValue()));
+                            rightLane_1.setId("left_"+(getPieceCounterValue()));
+                            rightLane_2.setId("left_"+(getPieceCounterValue()));
+                            rightLane_3.setId("left_"+(getPieceCounterValue()));
+                            rightLane_4.setId("left_"+(getPieceCounterValue()));
+
+                            incrementPieceCounter();
+
+                            graph.addGraphNodeToList(leftLane_0);
+                            graph.addGraphNodeToList(leftLane_1);
+                            graph.addGraphNodeToList(leftLane_2);
+                            graph.addGraphNodeToList(leftLane_3);
+                            graph.addGraphNodeToList(leftLane_4);
+                            graph.addGraphNodeToList(leftLaneTurnRight);
+                            graph.addGraphNodeToList(leftLane_5);
+                            graph.addGraphNodeToList(leftLane_6);
+                            graph.addGraphNodeToList(leftLane_7);
+                            graph.addGraphNodeToList(leftLane_8);
+                            graph.addGraphNodeToList(leftLane_9);
+
+                            graph.addGraphNodeToList(rightLane_0);
+                            graph.addGraphNodeToList(rightLane_1);
+                            graph.addGraphNodeToList(rightLane_2);
+                            graph.addGraphNodeToList(rightLaneTurnLeft);
+                            graph.addGraphNodeToList(rightLane_3);
+                            graph.addGraphNodeToList(rightLane_4);
+                        }
+
                         // if the currentPiece that was added is a turn left piece with 270 degrees rotation applied THEN
                         // map the nodes
                         if (currentPieceSelected.contains("2_turnLeft_270.png")) {
@@ -913,6 +1108,70 @@ public class TrafficSimulator_EditorController {
                             graph.addGraphNodeToList(rightLane_4);
                         }
 
+                        // if the currentPiece that was added is a turn left piece with 270 degrees rotation applied THEN
+                        // map the nodes
+                        if (currentPieceSelected.contains("2_turnLeft_270_inv.png")) {
+                            GraphNode leftLane_0 = new GraphNode(b.getMinX()+10, b.getMinY()+20);
+                            GraphNode leftLane_1 = new GraphNode(b.getMinX()+10, b.getMinY()+15);
+                            GraphNode leftLane_2 = new GraphNode(b.getMinX()+10, b.getMinY()+10);
+                            GraphNode leftLane_3 = new GraphNode(b.getMinX()+10, b.getMinY()+5);
+                            GraphNode leftLane_4 = new GraphNode(b.getMinX()+10, b.getMinY()+0);
+                            GraphNode leftLaneTurnRight = new GraphNode(b.getMinX()+10, b.getMinY()-5);
+                            GraphNode leftLane_5 = new GraphNode(b.getMinX()+15, b.getMinY()-5);
+                            GraphNode leftLane_6 = new GraphNode(b.getMinX()+20, b.getMinY()-5);
+                            GraphNode leftLane_7 = new GraphNode(b.getMinX()+25, b.getMinY()-5);
+                            GraphNode leftLane_8 = new GraphNode(b.getMinX()+30, b.getMinY()-5);
+                            GraphNode leftLane_9 = new GraphNode(b.getMinX()+35, b.getMinY()-5);
+
+                            GraphNode rightLane_0 = new GraphNode(b.getMinX()+35, b.getMinY()+5);
+                            GraphNode rightLane_1 = new GraphNode(b.getMinX()+30, b.getMinY()+5);
+                            GraphNode rightLaneTurnLeft = new GraphNode(b.getMinX()+25, b.getMinY()+5);
+                            GraphNode rightLane_2 = new GraphNode(b.getMinX()+25, b.getMinY()+10);
+                            GraphNode rightLane_3 = new GraphNode(b.getMinX()+25, b.getMinY()+15);
+                            GraphNode rightLane_4 = new GraphNode(b.getMinX()+25, b.getMinY()+20);
+
+                            leftLaneTurnRight.setId("right_"+getPieceCounterValue());
+                            rightLaneTurnLeft.setId("left_"+getPieceCounterValue());
+
+                            leftLane_0.setId("right_"+(getPieceCounterValue()));
+                            leftLane_1.setId("right_"+(getPieceCounterValue()));
+                            leftLane_2.setId("right_"+(getPieceCounterValue()));
+                            leftLane_3.setId("right_"+(getPieceCounterValue()));
+                            leftLane_4.setId("right_"+(getPieceCounterValue()));
+                            leftLane_5.setId("right_"+(getPieceCounterValue()));
+                            leftLane_6.setId("right_"+(getPieceCounterValue()));
+                            leftLane_7.setId("right_"+(getPieceCounterValue()));
+                            leftLane_8.setId("right_"+(getPieceCounterValue()));
+                            leftLane_9.setId("right_"+(getPieceCounterValue()));
+
+                            rightLane_0.setId("left_"+(getPieceCounterValue()));
+                            rightLane_1.setId("left_"+(getPieceCounterValue()));
+                            rightLane_2.setId("left_"+(getPieceCounterValue()));
+                            rightLane_3.setId("left_"+(getPieceCounterValue()));
+                            rightLane_4.setId("left_"+(getPieceCounterValue()));
+
+                            incrementPieceCounter();
+
+                            graph.addGraphNodeToList(leftLane_0);
+                            graph.addGraphNodeToList(leftLane_1);
+                            graph.addGraphNodeToList(leftLane_2);
+                            graph.addGraphNodeToList(leftLane_3);
+                            graph.addGraphNodeToList(leftLane_4);
+                            graph.addGraphNodeToList(leftLaneTurnRight);
+                            graph.addGraphNodeToList(leftLane_5);
+                            graph.addGraphNodeToList(leftLane_6);
+                            graph.addGraphNodeToList(leftLane_7);
+                            graph.addGraphNodeToList(leftLane_8);
+                            graph.addGraphNodeToList(leftLane_9);
+
+                            graph.addGraphNodeToList(rightLane_0);
+                            graph.addGraphNodeToList(rightLane_1);
+                            graph.addGraphNodeToList(rightLaneTurnLeft);
+                            graph.addGraphNodeToList(rightLane_2);
+                            graph.addGraphNodeToList(rightLane_3);
+                            graph.addGraphNodeToList(rightLane_4);
+                        }
+
                         // if the currentPiece that was added is an intersection piece THEN
                         // map the nodes
                         if (currentPieceSelected.contains("4_intersection.png")) {
@@ -944,7 +1203,7 @@ public class TrafficSimulator_EditorController {
                             GraphNode int3_6 = new GraphNode(b.getMinX()+10, b.getMinY()-15);
                             GraphNode int3_exit = new GraphNode(b.getMinX()+10, b.getMinY()-20);
 
-                            GraphNode int4_entrance = new GraphNode(b.getMinX()+25, b.getMinY()+20);
+                            GraphNode int4_entrance = new GraphNode(b.getMinX()+25, b.getMinY()-20);
                             GraphNode int4_0 = new GraphNode(b.getMinX()+25, b.getMinY()+15);
                             GraphNode int4_1 = new GraphNode(b.getMinX()+25, b.getMinY()+10);
                             GraphNode int4_2 = new GraphNode(b.getMinX()+25, b.getMinY()+5);
@@ -952,7 +1211,7 @@ public class TrafficSimulator_EditorController {
                             GraphNode int4_4 = new GraphNode(b.getMinX()+25, b.getMinY()-5);
                             GraphNode int4_5 = new GraphNode(b.getMinX()+25, b.getMinY()-10);
                             GraphNode int4_6 = new GraphNode(b.getMinX()+25, b.getMinY()-15);
-                            GraphNode int4_exit = new GraphNode(b.getMinX()+25, b.getMinY()-20);
+                            GraphNode int4_exit = new GraphNode(b.getMinX()+25, b.getMinY()+20);
 
                             int1_entrance.setId("left_"+(getPieceCounterValue()));
                             int1_0.setId("left_"+(getPieceCounterValue()));
@@ -1064,7 +1323,7 @@ public class TrafficSimulator_EditorController {
                             GraphNode int3_6 = new GraphNode(b.getMinX()+10, b.getMinY()-15);
                             GraphNode int3_exit = new GraphNode(b.getMinX()+10, b.getMinY()-20);
 
-                            GraphNode int4_entrance = new GraphNode(b.getMinX()+25, b.getMinY()+20);
+                            GraphNode int4_entrance = new GraphNode(b.getMinX()+25, b.getMinY()-20);
                             GraphNode int4_0 = new GraphNode(b.getMinX()+25, b.getMinY()+15);
                             GraphNode int4_1 = new GraphNode(b.getMinX()+25, b.getMinY()+10);
                             GraphNode int4_2 = new GraphNode(b.getMinX()+25, b.getMinY()+5);
@@ -1072,7 +1331,7 @@ public class TrafficSimulator_EditorController {
                             GraphNode int4_4 = new GraphNode(b.getMinX()+25, b.getMinY()-5);
                             GraphNode int4_5 = new GraphNode(b.getMinX()+25, b.getMinY()-10);
                             GraphNode int4_6 = new GraphNode(b.getMinX()+25, b.getMinY()-15);
-                            GraphNode int4_exit = new GraphNode(b.getMinX()+25, b.getMinY()-20);
+                            GraphNode int4_exit = new GraphNode(b.getMinX()+25, b.getMinY()+20);
 
                             int1_entrance.setId("left_"+(getPieceCounterValue()));
                             int1_0.setId("left_"+(getPieceCounterValue()));
@@ -1184,7 +1443,7 @@ public class TrafficSimulator_EditorController {
                             GraphNode int3_6 = new GraphNode(b.getMinX()+10, b.getMinY()-15);
                             GraphNode int3_exit = new GraphNode(b.getMinX()+10, b.getMinY()-20);
 
-                            GraphNode int4_entrance = new GraphNode(b.getMinX()+25, b.getMinY()+20);
+                            GraphNode int4_entrance = new GraphNode(b.getMinX()+25, b.getMinY()-20);
                             GraphNode int4_0 = new GraphNode(b.getMinX()+25, b.getMinY()+15);
                             GraphNode int4_1 = new GraphNode(b.getMinX()+25, b.getMinY()+10);
                             GraphNode int4_2 = new GraphNode(b.getMinX()+25, b.getMinY()+5);
@@ -1192,7 +1451,7 @@ public class TrafficSimulator_EditorController {
                             GraphNode int4_4 = new GraphNode(b.getMinX()+25, b.getMinY()-5);
                             GraphNode int4_5 = new GraphNode(b.getMinX()+25, b.getMinY()-10);
                             GraphNode int4_6 = new GraphNode(b.getMinX()+25, b.getMinY()-15);
-                            GraphNode int4_exit = new GraphNode(b.getMinX()+25, b.getMinY()-20);
+                            GraphNode int4_exit = new GraphNode(b.getMinX()+25, b.getMinY()+20);
 
                             int1_entrance.setId("right_"+(getPieceCounterValue()));
                             int1_0.setId("right_"+(getPieceCounterValue()));
@@ -1212,25 +1471,25 @@ public class TrafficSimulator_EditorController {
                             int6_5.setId("left_"+(getPieceCounterValue()));
                             int6_exit.setId("left_"+(getPieceCounterValue()));
 
-                            int3_entrance.setId("left_"+(getPieceCounterValue()));
-                            int3_0.setId("left_"+(getPieceCounterValue()));
-                            int3_1.setId("left_"+(getPieceCounterValue()));
-                            int3_2.setId("left_"+(getPieceCounterValue()));
-                            int3_3.setId("left_"+(getPieceCounterValue()));
-                            int3_4.setId("left_"+(getPieceCounterValue()));
-                            int3_5.setId("left_"+(getPieceCounterValue()));
-                            int3_6.setId("left_"+(getPieceCounterValue()));
-                            int3_exit.setId("left_"+(getPieceCounterValue()));
+                            int3_entrance.setId("right_"+(getPieceCounterValue()));
+                            int3_0.setId("right_"+(getPieceCounterValue()));
+                            int3_1.setId("right_"+(getPieceCounterValue()));
+                            int3_2.setId("right_"+(getPieceCounterValue()));
+                            int3_3.setId("right_"+(getPieceCounterValue()));
+                            int3_4.setId("right_"+(getPieceCounterValue()));
+                            int3_5.setId("right_"+(getPieceCounterValue()));
+                            int3_6.setId("right_"+(getPieceCounterValue()));
+                            int3_exit.setId("right_"+(getPieceCounterValue()));
 
-                            int4_entrance.setId("right_"+(getPieceCounterValue()));
-                            int4_0.setId("right_"+(getPieceCounterValue()));
-                            int4_1.setId("right_"+(getPieceCounterValue()));
-                            int4_2.setId("right_"+(getPieceCounterValue()));
-                            int4_3.setId("right_"+(getPieceCounterValue()));
-                            int4_4.setId("right_"+(getPieceCounterValue()));
-                            int4_5.setId("right_"+(getPieceCounterValue()));
-                            int4_6.setId("right_"+(getPieceCounterValue()));
-                            int4_exit.setId("right_"+(getPieceCounterValue()));
+                            int4_entrance.setId("left_"+(getPieceCounterValue()));
+                            int4_0.setId("left_"+(getPieceCounterValue()));
+                            int4_1.setId("left_"+(getPieceCounterValue()));
+                            int4_2.setId("left_"+(getPieceCounterValue()));
+                            int4_3.setId("left_"+(getPieceCounterValue()));
+                            int4_4.setId("left_"+(getPieceCounterValue()));
+                            int4_5.setId("left_"+(getPieceCounterValue()));
+                            int4_6.setId("left_"+(getPieceCounterValue()));
+                            int4_exit.setId("left_"+(getPieceCounterValue()));
 
                             graph.addGraphNodeToList(int1_entrance);
                             graph.addGraphNodeToList(int1_0);
@@ -1314,43 +1573,43 @@ public class TrafficSimulator_EditorController {
                             GraphNode int4_6 = new GraphNode(b.getMinX()+25, b.getMinY()-15);
                             GraphNode int4_exit = new GraphNode(b.getMinX()+25, b.getMinY()-20);
 
-                            int1_entrance.setId("left_"+(getPieceCounterValue()));
-                            int1_0.setId("left_"+(getPieceCounterValue()));
-                            int1_1.setId("left_"+(getPieceCounterValue()));
-                            int1_2.setId("left_"+(getPieceCounterValue()));
-                            int1_3.setId("left_"+(getPieceCounterValue()));
-                            int1_4.setId("left_"+(getPieceCounterValue()));
-                            int1_5.setId("left_"+(getPieceCounterValue()));
-                            int1_exit.setId("left_"+(getPieceCounterValue()));
+                            int1_entrance.setId("right_"+(getPieceCounterValue()));
+                            int1_0.setId("right_"+(getPieceCounterValue()));
+                            int1_1.setId("right_"+(getPieceCounterValue()));
+                            int1_2.setId("right_"+(getPieceCounterValue()));
+                            int1_3.setId("right_"+(getPieceCounterValue()));
+                            int1_4.setId("right_"+(getPieceCounterValue()));
+                            int1_5.setId("right_"+(getPieceCounterValue()));
+                            int1_exit.setId("right_"+(getPieceCounterValue()));
 
-                            int6_entrance.setId("right_"+(getPieceCounterValue()));
-                            int6_0.setId("right_"+(getPieceCounterValue()));
-                            int6_1.setId("right_"+(getPieceCounterValue()));
-                            int6_2.setId("right_"+(getPieceCounterValue()));
-                            int6_3.setId("right_"+(getPieceCounterValue()));
-                            int6_4.setId("right_"+(getPieceCounterValue()));
-                            int6_5.setId("right_"+(getPieceCounterValue()));
-                            int6_exit.setId("right_"+(getPieceCounterValue()));
+                            int6_entrance.setId("left_"+(getPieceCounterValue()));
+                            int6_0.setId("left_"+(getPieceCounterValue()));
+                            int6_1.setId("left_"+(getPieceCounterValue()));
+                            int6_2.setId("left_"+(getPieceCounterValue()));
+                            int6_3.setId("left_"+(getPieceCounterValue()));
+                            int6_4.setId("left_"+(getPieceCounterValue()));
+                            int6_5.setId("left_"+(getPieceCounterValue()));
+                            int6_exit.setId("left_"+(getPieceCounterValue()));
 
-                            int3_entrance.setId("right_"+(getPieceCounterValue()));
-                            int3_0.setId("right_"+(getPieceCounterValue()));
-                            int3_1.setId("right_"+(getPieceCounterValue()));
-                            int3_2.setId("right_"+(getPieceCounterValue()));
-                            int3_3.setId("right_"+(getPieceCounterValue()));
-                            int3_4.setId("right_"+(getPieceCounterValue()));
-                            int3_5.setId("right_"+(getPieceCounterValue()));
-                            int3_6.setId("right_"+(getPieceCounterValue()));
-                            int3_exit.setId("right_"+(getPieceCounterValue()));
+                            int3_entrance.setId("left_"+(getPieceCounterValue()));
+                            int3_0.setId("left_"+(getPieceCounterValue()));
+                            int3_1.setId("left_"+(getPieceCounterValue()));
+                            int3_2.setId("left_"+(getPieceCounterValue()));
+                            int3_3.setId("left_"+(getPieceCounterValue()));
+                            int3_4.setId("left_"+(getPieceCounterValue()));
+                            int3_5.setId("left_"+(getPieceCounterValue()));
+                            int3_6.setId("left_"+(getPieceCounterValue()));
+                            int3_exit.setId("left_"+(getPieceCounterValue()));
 
-                            int4_entrance.setId("left_"+(getPieceCounterValue()));
-                            int4_0.setId("left_"+(getPieceCounterValue()));
-                            int4_1.setId("left_"+(getPieceCounterValue()));
-                            int4_2.setId("left_"+(getPieceCounterValue()));
-                            int4_3.setId("left_"+(getPieceCounterValue()));
-                            int4_4.setId("left_"+(getPieceCounterValue()));
-                            int4_5.setId("left_"+(getPieceCounterValue()));
-                            int4_6.setId("left_"+(getPieceCounterValue()));
-                            int4_exit.setId("left_"+(getPieceCounterValue()));
+                            int4_entrance.setId("right_"+(getPieceCounterValue()));
+                            int4_0.setId("right_"+(getPieceCounterValue()));
+                            int4_1.setId("right_"+(getPieceCounterValue()));
+                            int4_2.setId("right_"+(getPieceCounterValue()));
+                            int4_3.setId("right_"+(getPieceCounterValue()));
+                            int4_4.setId("right_"+(getPieceCounterValue()));
+                            int4_5.setId("right_"+(getPieceCounterValue()));
+                            int4_6.setId("right_"+(getPieceCounterValue()));
+                            int4_exit.setId("right_"+(getPieceCounterValue()));
 
                             graph.addGraphNodeToList(int1_entrance);
                             graph.addGraphNodeToList(int1_0);
@@ -1586,6 +1845,11 @@ public class TrafficSimulator_EditorController {
                         //clip.close();
                     } catch (Exception e) {}
                 }
+
+                if (currentPieceSelected.contains("inv")) { // remove any inversion of lanes
+                    currentPieceSelected = currentPieceSelected.replace("_inv.png", ".png");
+                }
+
                 CurrentRotationDegrees += 90;
                 if (CurrentRotationDegrees != 360) {
                     tse_bottompane.setCurrentRotationValue(CurrentRotationDegrees); // sets the text label of rotation
@@ -1615,12 +1879,58 @@ public class TrafficSimulator_EditorController {
         }
     }
 
+    public void handleKeyPressInvertLanes () throws UnsupportedAudioFileException, IOException {
+        if (!(currentPieceSelected.contains("grass.png"))) {
+            if (currentPieceSelected.contains("turnLeft")) {
+                // play sound effect for notification
+                File file = new File("sfx\\invert.wav");
+                AudioInputStream sfx = AudioSystem.getAudioInputStream(file);
+                if (!getMuteSounds()) {
+                    try {
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(sfx);
+                        clip.start();
+                        //clip.close();
+                    } catch (Exception e) {}
+                }
+
+                // modify piece name
+                if (currentPieceSelected.contains("2_turnLeft.png")) {
+                    currentPieceSelected = currentPieceSelected.replace("2_turnLeft.png", "2_turnLeft_inv.png");
+                    tse_bottompane.setRotationImage(new Image(currentPieceSelected));
+                } else if (currentPieceSelected.contains("2_turnLeft_inv.png")) {
+                    currentPieceSelected = currentPieceSelected.replace("2_turnLeft_inv.png", "2_turnLeft.png");
+                    tse_bottompane.setRotationImage(new Image(currentPieceSelected));
+                } else if (currentPieceSelected.contains("2_turnLeft_90.png")) {
+                    currentPieceSelected = currentPieceSelected.replace("2_turnLeft_90.png", "2_turnLeft_90_inv.png");
+                    tse_bottompane.setRotationImage(new Image(currentPieceSelected));
+                } else if (currentPieceSelected.contains("2_turnLeft_90_inv.png")) {
+                    currentPieceSelected = currentPieceSelected.replace("2_turnLeft_90_inv.png", "2_turnLeft_90.png");
+                    tse_bottompane.setRotationImage(new Image(currentPieceSelected));
+                } else if (currentPieceSelected.contains("2_turnLeft_180.png")) {
+                    currentPieceSelected = currentPieceSelected.replace("2_turnLeft_180.png", "2_turnLeft_180_inv.png");
+                    tse_bottompane.setRotationImage(new Image(currentPieceSelected));
+                } else if (currentPieceSelected.contains("2_turnLeft_180_inv.png")) {
+                    currentPieceSelected = currentPieceSelected.replace("2_turnLeft_180_inv.png", "2_turnLeft_180.png");
+                    tse_bottompane.setRotationImage(new Image(currentPieceSelected));
+                } else if (currentPieceSelected.contains("2_turnLeft_270.png")) {
+                    currentPieceSelected = currentPieceSelected.replace("2_turnLeft_270.png", "2_turnLeft_270_inv.png");
+                    tse_bottompane.setRotationImage(new Image(currentPieceSelected));
+                } else if (currentPieceSelected.contains("2_turnLeft_270_inv.png")) {
+                    currentPieceSelected = currentPieceSelected.replace("2_turnLeft_270_inv.png", "2_turnLeft_270.png");
+                    tse_bottompane.setRotationImage(new Image(currentPieceSelected));
+                }
+            }
+        }
+    }
+
     public void handleKeyPressDeselect () {
         ImageView[] arrayOfSlots = tse_bottompane.getPiecesSelection().getSlots();
         Arrays.stream(arrayOfSlots).forEach(x -> x.setEffect(null));
         currentPieceSelected = null;
         tse_bottompane.setRotationImage(new WritableImage(45, 45));
     }
+
 
     private void writeScenarioDataToFile(File path) throws IOException {
         Node[][] gridPaneArray = new Node[7][24]; // 7 rows, 24 columns - holding ImageViewButton nodes

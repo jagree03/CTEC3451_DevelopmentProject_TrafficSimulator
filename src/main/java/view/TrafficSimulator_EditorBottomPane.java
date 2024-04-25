@@ -68,8 +68,7 @@ public class TrafficSimulator_EditorBottomPane extends HBox {
         return rotationImage.getImage();
     }
     public void setRotationImage(String URL) {
-        String labelledURL = URL.replace(".png", "_labelled.png");
-        Image img = new Image(labelledURL);
+        Image img = new Image(URL);
         rotationImage.setImage(img);
         rotationImage.setFitWidth(45);
         rotationImage.setFitHeight(45);

@@ -131,6 +131,15 @@ public class TrafficSimulatorController {
 					else if (e.getCode() == KeyCode.F) {
 						editorController.handleKeyPressDeselect();
 					}
+					else if (e.getCode() == KeyCode.V) {
+						try {
+							editorController.handleKeyPressInvertLanes();
+						} catch (UnsupportedAudioFileException ex) {
+							throw new RuntimeException(ex);
+						} catch (IOException ex) {
+							throw new RuntimeException(ex);
+						}
+					}
 				});
 				stage.setTitle("Traffic Simulator - Build an environment");
 			}

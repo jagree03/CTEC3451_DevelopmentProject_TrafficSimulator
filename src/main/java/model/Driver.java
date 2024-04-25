@@ -1,5 +1,9 @@
 package model;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
@@ -9,11 +13,11 @@ public class Driver {
 
     // fields
     private Vehicle vehicle;
+
+    private HBox h;
     private ArrayList<GraphNode> routeList;
 
     private String lane;
-    private Double startingPosX;
-    private Double startingPosY;
 
     // A* Pathfinding related variables
     private GraphNode startNode; // every driver starts somewhere
@@ -30,11 +34,55 @@ public class Driver {
     public Driver() { // default constructor has a driver with a red car who drives on left lane
         this.vehicle = new Vehicle();
         this.lane = "left";
+        this.h = new HBox();
+        h.setAlignment(Pos.CENTER);
+        h.setMaxSize(30, 50);
+        h.getChildren().add(vehicle.getSpriteImageView());
+
+        // VEHICLE ROTATION LISTENERS
+        h.translateXProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (!(oldValue.doubleValue() == 0.0)) {
+                    if (newValue.doubleValue() > oldValue.doubleValue()) {
+                        //System.out.println("initiate 90 degree rotate");
+                        h.setRotate(90);
+                    }
+                    if (newValue.doubleValue() < oldValue.doubleValue()) {
+                        h.setRotate(270);
+                    }
+                }
+            }
+        });
+
+        h.translateYProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                //System.out.println("entered    " + "oldVal: " + oldValue.doubleValue() + "   newVal: " + newValue.doubleValue());
+                if (!(oldValue.doubleValue() == 0.0)) {
+                    if (newValue.doubleValue() < oldValue.doubleValue()) {
+                        //System.out.println("initiate rotation removal, so back to 0 degrees");
+                        h.setRotate(0);
+                    }
+                    if (newValue.doubleValue() > oldValue.doubleValue()) {
+                        h.setRotate(180);
+                    }
+                }
+            }
+        });
     }
 
-    // custom constructor where you can provide lane of the driver, and which node should start in the scenario,
-    // goal node and also provide all nodes in the scenario so the driver can calculate the shortest path
-    public Driver(String lane, ArrayList<GraphNode> listOfAllNodes, GraphNode startingNode, GraphNode destinationNode) {
+    /**
+     * Custom constructor where you can provide lane of the driver, and which node should start in the scenario,
+     * goal node and also provide all nodes in the scenario so the driver can calculate the shortest path, as well as a parameter
+     * that can let you enable or disable the view of the bounding boxes around the driver's vehicle.
+     * @param lane Lane of the driver - left or right.
+     * @param listOfAllNodes A list of all nodes in the scenario
+     * @param startingNode The starting node, where the driver starts from.
+     * @param destinationNode The goal node, where the driver needs to drive to.
+     * @param displayBoundaries A debug parameter that lets you see the boundaries of the driver's vehicle, can be enabled or disabled, true or false.
+     */
+    public Driver(String lane, ArrayList<GraphNode> listOfAllNodes, GraphNode startingNode, GraphNode destinationNode, Boolean displayBoundaries) {
         this.vehicle = new Vehicle();
         this.lane = lane;
         this.startNode = startingNode;
@@ -44,10 +92,65 @@ public class Driver {
         this.checkedList = new ArrayList<GraphNode>(); // checkedList holds all CHECKED nodes, nodes checked to find
         // the most promising node from startnode to goalnode.
 
+        this.h = new HBox();
+        h.setAlignment(Pos.CENTER);
+        h.setMaxSize(30, 50);
+        h.getChildren().add(vehicle.getSpriteImageView());
+
+        if (displayBoundaries) {
+            this.setHBoxStyle(true);
+        } else {
+            this.setHBoxStyle(false);
+        }
+
+        // VEHICLE ROTATION LISTENERS
+        h.translateXProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (!(oldValue.doubleValue() == 0.0)) {
+                    if (newValue.doubleValue() > oldValue.doubleValue()) {
+                        //System.out.println("initiate 90 degree rotate");
+                        h.setRotate(90);
+                    }
+                    if (newValue.doubleValue() < oldValue.doubleValue()) {
+                        h.setRotate(270);
+                    }
+                }
+            }
+        });
+
+        h.translateYProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                //System.out.println("entered    " + "oldVal: " + oldValue.doubleValue() + "   newVal: " + newValue.doubleValue());
+                if (!(oldValue.doubleValue() == 0.0)) {
+                    if (newValue.doubleValue() < oldValue.doubleValue()) {
+                        //System.out.println("initiate rotation removal, so back to 0 degrees");
+                        h.setRotate(0);
+                    }
+                    if (newValue.doubleValue() > oldValue.doubleValue()) {
+                        h.setRotate(180);
+                    }
+                }
+            }
+        });
+
         startNode.setAsStart();
         this.setStartNode(startNode);
         destinationNode.setAsGoal();
         this.setGoalNode(destinationNode);
+
+        for (GraphNode n : routeList) {
+            if (this.getLane().equals("left")) {
+                if (n.getId().contains("right")) {
+                    n.setAsSolid();
+                }
+            } else {
+                if (n.getId().contains("left")) {
+                    n.setAsSolid();
+                }
+            }
+        }
     }
 
 
@@ -61,28 +164,20 @@ public class Driver {
         this.vehicle = vehicle;
     }
 
+    public HBox getHBox() {
+        return h;
+    }
+
+    public void setHBox (HBox h) {
+        this.h = h;
+    }
+
     public ArrayList<GraphNode> getRouteList() {
         return this.routeList;
     }
 
     public void setRouteList(ArrayList<GraphNode> routeList) {
         this.routeList = routeList;
-    }
-
-    public void setStartingPosX(Double x) {
-        this.startingPosX = x;
-    }
-
-    public void setStartingPosY(Double y) {
-        this.startingPosY = y;
-    }
-
-    public Double getStartingPosX() {
-        return startingPosX;
-    }
-
-    public Double getStartingPosY() {
-        return startingPosY;
     }
 
     public Double getCurrentTranslateX() {
@@ -107,6 +202,34 @@ public class Driver {
 
     public String getLane() {
         return lane;
+    }
+
+    /**
+     * Displays a surrounding box around the vehicle.
+     * @param value A true or false value to enable or disable the borders.
+     */
+    public void setHBoxStyle(Boolean value) {
+        if (value) {
+            h.setStyle("-fx-padding: 0;" +
+                    "-fx-border-style: solid inside;" +
+                    "-fx-border-width: 1;" +
+                    "-fx-border-radius: 1;" +
+                    "-fx-border-color: blue;");
+        } else {
+            h.setStyle("-fx-padding: 0;" +
+                    "-fx-border-style: solid inside;" +
+                    "-fx-border-width: 0;" +
+                    "-fx-border-radius: 0;" +
+                    "-fx-border-color: black;");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Driver:[Vehicle=" + vehicle + ", HBox=" + h + ", routeList=" + routeList + ", lane=" + lane +
+                ", startNode=" + startNode + ", goalNode=" + goalNode + ", currentNode=" + currentNode +
+                ", goalReached=" + goalReached + ", step=" + step + ", openList=" + openList +
+                ", checkedList=" + checkedList + "]";
     }
 
 
@@ -196,7 +319,7 @@ public class Driver {
             // but there may be the case that a node may not exist there, so that is handled here.
 
             // open the node at the top (up)
-            GraphNode nodeTop = fetchNodeWithXAndY(x, y-5);
+            GraphNode nodeTop = fetchNodeWithXAndY(x, y-5, this.getLane());
             if (nodeTop.getXCoordinate() != 0.0 && nodeTop.getYCoordinate() != 0.0) { // if node's x is 0.0 and node y is 0.0, this means the node doesn't exist, in the routelist...
                 // aka which is the list of all nodes in the scenario
                 this.openNode(nodeTop); // if nodes coords are NOT equal to (0.0, 0.0) this means a node does exist and can be OPENED for evaluation
@@ -204,25 +327,24 @@ public class Driver {
 
 
             // open the node at the left
-            GraphNode nodeLeft = fetchNodeWithXAndY(x-5, y);
+            GraphNode nodeLeft = fetchNodeWithXAndY(x-5, y, this.getLane());
             if (nodeLeft.getXCoordinate() != 0.0 && nodeLeft.getYCoordinate() != 0.0) {
                 this.openNode(nodeLeft);
             }
 
 
             // open the node at the bottom (down)
-            GraphNode nodeBottom = fetchNodeWithXAndY(x, y+5);
+            GraphNode nodeBottom = fetchNodeWithXAndY(x, y+5, this.getLane());
             if (nodeBottom.getXCoordinate() != 0.0 && nodeBottom.getYCoordinate() != 0.0) {
                 this.openNode(nodeBottom);
             }
 
 
             // open the node at the right
-            GraphNode nodeRight = fetchNodeWithXAndY(x+5, y);
+            GraphNode nodeRight = fetchNodeWithXAndY(x+5, y, this.getLane());
             if (nodeRight.getXCoordinate() != 0.0 && nodeRight.getYCoordinate() != 0.0) {
                 this.openNode(nodeRight);
             }
-
 
             // if nodes are available in the directions, then they will be OPENED and added to the openList.
             // so the nodes in the open list can be compared to find out which node has the best f cost or g cost.
@@ -261,6 +383,9 @@ public class Driver {
         setCostOnAllNodes();
         ArrayList<GraphNode> p = new ArrayList<>(); // p holds the final path for the driver from start node to goal node
         while (goalReached == false) {
+            // debug
+            System.out.println("Driver's current lane: " + this.getLane());
+
             // then get the current node's x and y positions (coordinates)
             double x = currentNode.getXCoordinate();
             double y = currentNode.getYCoordinate();
@@ -277,43 +402,62 @@ public class Driver {
             // but there may be the case that a node may not exist there, so that is handled here.
 
             // open the node at the top (up)
-            GraphNode nodeTop = fetchNodeWithXAndY(x, y - 5);
+            GraphNode nodeTop = fetchNodeWithXAndY(x, y - 5, this.getLane());
             if (nodeTop.getXCoordinate() != 0.0 && nodeTop.getYCoordinate() != 0.0) { // if node's x is 0.0 and node y is 0.0, this means the node doesn't exist, in the routelist...
                 // aka which is the list of all nodes in the scenario
                 this.openNode(nodeTop); // if nodes coords are NOT equal to (0.0, 0.0) this means a node does exist and can be OPENED for evaluation
+            } else {
+                nodeTop = fetchNodeWithXAndY(x, y-20, this.getLane()); // checks if there's a destination node at the top
+                if (nodeTop.getXCoordinate() != 0.0 && nodeTop.getYCoordinate() != 0.0) {
+                    this.openNode(nodeTop);
+                }
             }
 
 
             // open the node at the left
-            GraphNode nodeLeft = fetchNodeWithXAndY(x - 5, y);
+            GraphNode nodeLeft = fetchNodeWithXAndY(x - 5, y, this.getLane());
             if (nodeLeft.getXCoordinate() != 0.0 && nodeLeft.getYCoordinate() != 0.0) {
                 this.openNode(nodeLeft);
             } else { // if x = 0.0 and y = 0.0 - then it could possibly be a transition to a 90 degree straight, so subtract 7 to the x value as we're going left, but keep y the same
-                nodeLeft = fetchNodeWithXAndY(x - 7, y);
+                nodeLeft = fetchNodeWithXAndY(x - 7, y, this.getLane());
                 if (nodeLeft.getXCoordinate() != 0.0 && nodeLeft.getYCoordinate() != 0.0) {
                     this.openNode(nodeLeft);
+                } else {
+                    nodeLeft = fetchNodeWithXAndY(x - 12, y, this.getLane()); // if there's a destination node on the left hand side
+                    if (nodeLeft.getXCoordinate() != 0.0 && nodeLeft.getYCoordinate() != 0.0) {
+                        this.openNode(nodeLeft);
+                    }
                 }
             }
 
 
             // open the node at the bottom (down)
-            GraphNode nodeBottom = fetchNodeWithXAndY(x, y + 5);
+            GraphNode nodeBottom = fetchNodeWithXAndY(x, y + 5, this.getLane());
             if (nodeBottom.getXCoordinate() != 0.0 && nodeBottom.getYCoordinate() != 0.0) {
                 this.openNode(nodeBottom);
+            } else {
+                nodeBottom = fetchNodeWithXAndY(x, y + 20, this.getLane()); // check if there's a destination node at the bottom
+                if (nodeBottom.getXCoordinate() != 0.0 && nodeBottom.getYCoordinate() != 0.0) {
+                    this.openNode(nodeBottom);
+                }
             }
 
 
             // open the node at the right
-            GraphNode nodeRight = fetchNodeWithXAndY(x + 5, y);
+            GraphNode nodeRight = fetchNodeWithXAndY(x + 5, y, this.getLane());
             if (nodeRight.getXCoordinate() != 0.0 && nodeRight.getYCoordinate() != 0.0) {
                 this.openNode(nodeRight);
             } else { // if x = 0.0 and y = 0.0 - then it could possibly be a transition to a 90 degree straight, so add 7 to the x value as we're going right, but keep y the same
-                nodeRight = fetchNodeWithXAndY(x + 7, y);
+                nodeRight = fetchNodeWithXAndY(x + 7, y, this.getLane());
                 if (nodeRight.getXCoordinate() != 0.0 && nodeRight.getYCoordinate() != 0.0) {
                     this.openNode(nodeRight);
+                } else {
+                    nodeRight = fetchNodeWithXAndY(x + 12, y, this.getLane()); // check if there's a destination node on the right
+                    if (nodeRight.getXCoordinate() != 0.0 && nodeRight.getYCoordinate() != 0.0) {
+                        this.openNode(nodeRight);
+                    }
                 }
             }
-
 
             // if nodes are available in the directions, then they will be OPENED and added to the openList.
             // so the nodes in the open list can be compared to find out which node has the best f cost or g cost.
@@ -358,7 +502,7 @@ public class Driver {
     // this node is currently OPEN for evaluation and checking.
     // so we use this method.
     public void openNode(GraphNode n) {
-         if (n.getOpenValue() == false && n.getCheckedValue() == false) { // if node hasn't opened yet, and it hasn't been checked
+         if (n.getOpenValue() == false && n.getCheckedValue() == false && n.getSolidValue() == false) { // if node hasn't opened yet, and it hasn't been checked
             // if the node is not opened yet, add it to the open list
              n.setAsOpen(); // we set the node to open state
              n.setParentNode(currentNode); // also we set this node's parent as the current node
@@ -368,12 +512,15 @@ public class Driver {
          }
     }
 
-    public GraphNode fetchNodeWithXAndY(double x, double y) {
+    public GraphNode fetchNodeWithXAndY(double x, double y, String lane) {
         GraphNode foundNode = new GraphNode(0.0, 0.0); // initialize a temporary graphnode
         for (GraphNode n : this.getRouteList()) {
-            if (n.getXCoordinate() == x && n.getYCoordinate() == y) {
+            if (n.getXCoordinate() == x && n.getYCoordinate() == y && n.getId().contains(lane)) {
                 foundNode = n; // if the node was found, update the temporary graphnode to the found node
                 break; // break out of the loop
+            } else if (n.getXCoordinate() == x && n.getYCoordinate() == y && n.getId().contains("d")) {  // if a node is found and contains the id "d" meaning destination
+                foundNode = n;  // accept this as a found node.
+                break; // and break out of the for loop
             }
         }
         return foundNode; // return the graphnode that was found from the list of all nodes in the scenario

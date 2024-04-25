@@ -2,6 +2,7 @@ package model;
 
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
@@ -12,17 +13,10 @@ public class GraphNode implements Serializable {
     private Double xCoordinate;
     private Double yCoordinate;
 
-    private StackPane stack;
-
-    private Circle circle;
-
-    private Text text;
-
     // A* Pathfinding variables
 
     // To evaluate the shortest path, A* pathfinding uses 3 values; G cost; H cost, F cost.
     // It uses evaluates these costs for each node, to find the most promising node towards the goal node
-
     private GraphNode parent;
     private double gCost;  // G cost: the distance between the current node and the start node
     private double hCost;  // H cost: the distance from the current node to the goal node
@@ -37,7 +31,6 @@ public class GraphNode implements Serializable {
         this.id = "1";
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
-        //this.circle = new Circle(xCoordinate, yCoordinate, 50.0f);
     }
 
     public GraphNode(String id, Double xCoordinate, Double yCoordinate) {
@@ -67,6 +60,14 @@ public class GraphNode implements Serializable {
 
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "GraphNode:[id=" + id + ", xCoordinate=" + xCoordinate + ", yCoordinate=" + yCoordinate +
+                ", parent=" + parent + ", gCost=" + gCost + ", hCost=" + hCost + ", fCost=" + fCost +
+                ", start=" + start + ", goal=" + goal + ", solid=" + solid + ", open=" + open +
+                ", checked=" + checked + "]";
     }
 
     ///////////////////////////////////////////
@@ -143,7 +144,10 @@ public class GraphNode implements Serializable {
         checked = true;
     }
 
-    public void setAsPath() {}
+    public void setCheckedFalse() {
+        checked = false;
+    }
 
+    public void setAsPath() {}
 
 } // end of class

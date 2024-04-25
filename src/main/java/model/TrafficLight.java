@@ -115,4 +115,11 @@ public class TrafficLight {
         activateGreenStopSignal();
         Thread.sleep((greenSignalHoldTime + timeForTransition) * 1000L);
     }
+
+    @Override
+    public String toString() {
+        return "TrafficLight:[redSignalHoldTime=" + redSignalHoldTime + ", amberSignalHoldTime=" + amberSignalHoldTime +
+                ", greenSignalHoldTime=" + amberSignalHoldTime + ", timeForTransition=" + timeForTransition +
+                ", currentSignal=" + currentSignal + ", viewSprite=" + viewSprite.getImage().getUrl();
+    }
 }
