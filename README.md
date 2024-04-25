@@ -7,6 +7,6 @@ Project Title: Visualised Traffic Simulator With Complex Systems
 Programming Language: Java
 Libraries: JavaFX, JFXtras (https://jfxtras.org/)
 
-Current Version of the system: V6 (18 Apr 2024)
+Current Version of the system: V7 (25 Apr 2024)
 
 check releases for further prototype iterations
