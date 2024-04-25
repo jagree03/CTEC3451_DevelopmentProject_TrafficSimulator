@@ -68,14 +68,45 @@ public class Vehicle {
         this.indicator_R = false;
     }
 
+    /**
+     * This method sets the type of the vehicle, based on an integer value.
+     * There are 3 types: car, van and bus.
+     * @param val 0 for car, 1 for van, 2 for bus
+     */
+    public void setType(int val) {
+        if (val == 0) {
+            this.type = "car";
+        } else if (val == 1) {
+            this.type = "van";
+            this.setColor("grey");
+        } else if (val == 2) {
+            this.type = "bus";
+        }
+    }
+
+    /**
+     * This method sets the vehicle instance to a random vehicle type based on the chances.
+     * @param carSpawnChance A value of chance to spawn a car / for the type to be 'car'
+     * @param vanSpawnChance A value of chance to spawn a van / for the type to be 'van'
+     */
+    public void setARandomType(int carSpawnChance, int vanSpawnChance) {
+        this.setType(0);
+    }
+
     public String getType() {
         return type;
     }
 
+
+    /**
+     * Set the car's colour, it will automatically update the sprite of the car to match the given colour.
+     * NB will only work if the type is 'car', due to time constraints a van type vehicle only has a single colour 'Grey'.
+     * @param color A string that represents a colour e.g. "Red", "Black", "Green".
+     */
     public void setColor(String color) {
         this.color = color;
         File file;
-        if (this.getType() == "car") {
+        if (this.getType().equals("car")) {
             file = new File("img\\vehicles\\car\\car_" + this.getColor().toLowerCase() + ".png");
             this.setSprite(new Image(String.valueOf(file.getAbsoluteFile().toURI())));
         } else { // it's a van, with only one colour, grey.
@@ -169,6 +200,6 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle:[Color=" + color + ", Sprite=" + sprite.getImage().getUrl() + ", fuelLevel=" + fuelLevel + ", indicator_L=" + indicator_L + ", indicator_R=" + indicator_R +"]";
+        return "Vehicle:[type=" + type + ", color=" + color + ", sprite=" + sprite.getImage().getUrl() + ", fuelLevel=" + fuelLevel + ", indicator_L=" + indicator_L + ", indicator_R=" + indicator_R +"]";
     }
 }

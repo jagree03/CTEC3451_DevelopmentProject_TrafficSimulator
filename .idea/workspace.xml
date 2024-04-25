@@ -21,7 +21,12 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.jdks/liberica-21.0.1/lib/src.zip!/java.base/java/lang/IndexOutOfBoundsException.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$USER_HOME$/.jdks/liberica-21.0.1/lib/src.zip!/java.base/java/lang/reflect/InvocationTargetException.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.jdks/liberica-21.0.1/lib/src.zip!/java.base/java/util/ArrayList.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.jdks/liberica-21.0.1/lib/src.zip!/java.base/java/util/Objects.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.jdks/liberica-21.0.1/lib/src.zip!/javafx.graphics/com/sun/glass/ui/win/WinApplication.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.jdks/liberica-21.0.1/lib/src.zip!/javafx.graphics/javafx/scene/PropertyHelper.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
@@ -173,7 +178,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>100</line>
+          <line>102</line>
           <properties method="handle">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -182,7 +187,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/model/Vehicle.java</url>
-          <line>118</line>
+          <line>149</line>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -192,22 +197,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>1678</line>
+          <line>1988</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>1708</line>
+          <line>2018</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/model/Driver.java</url>
-          <line>261</line>
+          <line>383</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/model/Driver.java</url>
-          <line>360</line>
+          <line>504</line>
           <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>

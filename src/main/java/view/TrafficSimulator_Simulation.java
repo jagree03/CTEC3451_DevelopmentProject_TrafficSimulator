@@ -5,14 +5,14 @@ import javafx.scene.layout.VBox;
 
 public class TrafficSimulator_Simulation extends VBox {
 
-    private TrafficSimulatorRootMenuBar menuBar;
+    private TrafficSimulator_SimulationMenuBar menuBar;
 
     private TrafficSimulator_EditorEditorPane editorPane;
 
     private TrafficSimulator_SimulationBottomPane bottomPane;
 
     public TrafficSimulator_Simulation() {
-        menuBar = new TrafficSimulatorRootMenuBar();
+        menuBar = new TrafficSimulator_SimulationMenuBar();
         editorPane = new TrafficSimulator_EditorEditorPane();
         bottomPane = new TrafficSimulator_SimulationBottomPane();
         this.setSpacing(15);
@@ -20,7 +20,7 @@ public class TrafficSimulator_Simulation extends VBox {
         this.getChildren().addAll(menuBar, editorPane, bottomPane);
     }
 
-    public TrafficSimulatorRootMenuBar getTSS_MenuBar() {
+    public TrafficSimulator_SimulationMenuBar getTSS_MenuBar() {
         return menuBar;
     }
 
