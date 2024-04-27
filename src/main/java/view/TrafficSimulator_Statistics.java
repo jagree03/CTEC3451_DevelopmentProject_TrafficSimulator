@@ -27,11 +27,17 @@ public class TrafficSimulator_Statistics extends VBox {
 
     private Label lblNumberOfBuses;
 
-    private ComboBox cb;
-
+    private TrafficSimulator_StatisticsDropDownMenu tsddm;
+    private TrafficSimulator_StatisticsBottomPane tssbp;
 
     public TrafficSimulator_Statistics() throws IOException {
         readSimulationSettingsFromFile(); // first read the parameter settings
+
+        tsddm = new TrafficSimulator_StatisticsDropDownMenu();
+        tsddm.setPadding(new Insets(10,0,0,0));
+
+        tssbp = new TrafficSimulator_StatisticsBottomPane();
+        tssbp.setPadding(new Insets(2,0,0,0));
 
         lblNumberOfDrivers = new Label("Total Number of Drivers: " + numOfDrivers);
         lblNumberOfBuses = new Label("Total Number Of Buses: " + numOfBuses);
@@ -41,7 +47,15 @@ public class TrafficSimulator_Statistics extends VBox {
         this.setSpacing(5);
         this.setAlignment(Pos.TOP_LEFT);
         this.setPadding(new Insets(0,0,0,5));
-        this.getChildren().addAll(lblNumberOfDrivers, lblNumberOfBuses, lblCarSpawnChance, lblVanSpawnChance);
+        this.getChildren().addAll(lblNumberOfDrivers, lblNumberOfBuses, lblCarSpawnChance, lblVanSpawnChance, tsddm, tssbp);
+    }
+
+    public TrafficSimulator_StatisticsDropDownMenu getTSSDDM() {
+        return tsddm;
+    }
+
+    public TrafficSimulator_StatisticsBottomPane getTSSBP() {
+        return tssbp;
     }
 
     private void readSimulationSettingsFromFile() throws IOException {
@@ -54,7 +68,6 @@ public class TrafficSimulator_Statistics extends VBox {
                 numOfDrivers = Integer.parseInt((array[0]));
                 carSpawnChance = Integer.parseInt((array[1]));
                 vanSpawnChance = Integer.parseInt((array[2]));
-                numOfBuses = Integer.parseInt((array[3]));
             }
         } catch (Exception e) {
             System.out.println(e);

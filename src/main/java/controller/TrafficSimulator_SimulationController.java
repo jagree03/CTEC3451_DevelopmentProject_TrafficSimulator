@@ -26,9 +26,12 @@ import view.*;
 
 import javax.swing.*;
 import java.io.*;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -91,7 +94,14 @@ public class TrafficSimulator_SimulationController {
         loadScenarioFromFile();
         readGraphNodesFromFile();
         readSimulationSettingsFromFile();
-        spawnDriversAndGeneratePath();
+        try {
+            spawnDriversAndGeneratePath();
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Scenario error");
+            alert.setContentText("No destinations found");
+            alert.show();
+        }
         activateTrafficLights();
     }
 
@@ -196,9 +206,15 @@ public class TrafficSimulator_SimulationController {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                Scene scene = new Scene(stats, 250, 400);
+                try {
+                    TrafficSimulator_StatisticsController statsController = new TrafficSimulator_StatisticsController(stats);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Scene scene = new Scene(stats, 300, 450);
                 Stage stage = new Stage();
                 stage.setScene(scene);
+                stage.setTitle("Statistics");
                 stage.show();
             }
         });
@@ -231,10 +247,6 @@ public class TrafficSimulator_SimulationController {
                         n.setFitHeight(20);
                         TrafficLight t = new TrafficLight(n);
                         trafficLights.add(t);
-                    } else if (n.getImage().getUrl().contains("dest_1_petrolStation.png")) {
-                        PetrolStation ps = new PetrolStation();
-                        ps.setImage(n.getImage());
-                        petrolStations.add(ps);
                     } else if (n.getImage().getUrl().contains("cone") || n.getImage().getUrl().contains("barrier")) {
                         n.setFitWidth(15);
                         n.setFitHeight(15);
@@ -253,6 +265,10 @@ public class TrafficSimulator_SimulationController {
                 cellButton.setFitHeight(45);
                 cellButton.setFitWidth(40);
                 cellButton.setPreserveRatio(true);
+                if (cellButton.getImage().getUrl().contains("dest_1_petrolStation.png")) {
+                    PetrolStation ps = new PetrolStation(cellButton);
+                    petrolStations.add(ps);
+                }
                 tss_editorpane.add(cellButton, col, row);
             }
         } catch (Exception ex) {
@@ -379,7 +395,8 @@ public class TrafficSimulator_SimulationController {
         // Place all drivers onto the scenario and generate the paths, and play!
         /////////////////////////////////////////////////////////////
         for (int b = 0; b < drivers.size(); b++) {
-            Driver d = new Driver(drivers.get(b).getLane(), graph.getRouteList(), drivers.get(b).getStartNode(), drivers.get(b).getGoalNode(), false); // re-instantiate the driver in the form of the constructor so other Driver fields
+            UUID id = UUID.randomUUID();
+            Driver d = new Driver(id, drivers.get(b).getLane(), graph.getRouteList(), drivers.get(b).getStartNode(), drivers.get(b).getGoalNode(), false); // re-instantiate the driver in the form of the constructor so other Driver fields
             drivers.set(b, d);
 
             Vehicle v = new Vehicle();
@@ -396,9 +413,9 @@ public class TrafficSimulator_SimulationController {
             Path path = new Path();
             ArrayList<GraphNode> p = new ArrayList<>();
             p = d.autoSearch();
-            path.getElements().add(new MoveTo(p.get(0).getXCoordinate(), p.get(1).getYCoordinate()+20));
+            path.getElements().add(new MoveTo(p.get(0).getXCoordinate(), p.get(1).getYCoordinate()+18));
             for (int i = 1; i < p.size(); i++) {
-                LineTo l = new LineTo(p.get(i).getXCoordinate(), p.get(i).getYCoordinate()+20);
+                LineTo l = new LineTo(p.get(i).getXCoordinate(), p.get(i).getYCoordinate()+18);
                 path.getElements().add(l);
             }
             d.getPathTransition().setPath(path);
@@ -419,12 +436,15 @@ public class TrafficSimulator_SimulationController {
         }
          */
 
+        /* LABEL DETECTION TEST
         Label tst = new Label("A");
         tss_editorpane.getChildren().add(tst);
         tst.setTranslateX(40);
         tst.setTranslateY(100);
+         */
 
         //System.out.println(path.getElements());
+
 
         at = new AnimationTimer() {
             @Override
@@ -440,6 +460,7 @@ public class TrafficSimulator_SimulationController {
 
                         d.getPathTransition().stop();
 
+                        UUID id = d.getUniqueID();
                         String lane = d.getLane();
                         GraphNode currentNode = d.getGoalNode();
                         Vehicle veh = d.getVehicle();
@@ -459,7 +480,7 @@ public class TrafficSimulator_SimulationController {
                             randomDestination = allDestinationNodes.get(randomIndex);
                         }
 
-                        d = new Driver(lane, graph.getRouteList(), currentNode, randomDestination, false);
+                        d = new Driver(id, lane, graph.getRouteList(), currentNode, randomDestination, false);
                         //d.setNodesToDefaultState();
                         d.setVehicle(veh);
                         d.setHBox(h);
@@ -472,9 +493,9 @@ public class TrafficSimulator_SimulationController {
                         Path path = new Path();
                         ArrayList<GraphNode> p = new ArrayList<>();
                         p = d.autoSearch();
-                        path.getElements().add(new MoveTo(p.get(0).getXCoordinate(), p.get(1).getYCoordinate()+20));
+                        path.getElements().add(new MoveTo(p.get(0).getXCoordinate(), p.get(1).getYCoordinate()+18));
                         for (int i = 1; i < p.size(); i++) {
-                            LineTo l = new LineTo(p.get(i).getXCoordinate(), p.get(i).getYCoordinate()+20);
+                            LineTo l = new LineTo(p.get(i).getXCoordinate(), p.get(i).getYCoordinate()+18);
                             path.getElements().add(l);
                         }
 
@@ -543,25 +564,23 @@ public class TrafficSimulator_SimulationController {
                 for (Driver d : drivers) { // fuel will decrease for all cars when scenario has started
                     double fuel = d.getVehicle().getFuelLevel();
                     //System.out.println("fuel = " + fuel);
-                    if (fuel == 0.0) { // when fuel is 0.0
+                    if (fuel == 0.00) { // when fuel is 0.0
                         d.getPathTransition().pause(); // stop the vehicle.
                     }
-                    d.getVehicle().setFuelLevel(fuel - 0.0001); // decrease the fuel level by 0.01 each frame
+                    d.getVehicle().setFuelLevel(fuel - 0.0010); // decrease the fuel level by 0.01 each frame
                 }
 
                 // if near petrol station, refuel
                 for (Driver d : drivers) {
                     for (int p = 0; p < petrolStations.size(); p++) {
-                        if (d.getHBox().intersects(petrolStations.get(p).getImageView().getBoundsInParent())) {
-                            double fuel = d.getVehicle().getFuelLevel();
+                        if (d.getHBox().getBoundsInParent().intersects(petrolStations.get(p).getImageViewButton().getBoundsInParent())) {
+                            //System.out.println("detected");
+                            double fuel = d.getVehicle().getFuelLevel(); // e.g. 4.80 L
                             if (petrolStations.get(p).getOutOfFuelValue() != true) {
-                                d.getVehicle().setFuelLevel(5.0);
-                                double calc = 5.0 - fuel;
+                                d.getVehicle().setFuelLevel(5.00); // refuel to 5.00 L (0.20L increment)
+                                double calc = 5.00 - fuel; // 5.00 - 4.80 = 0.20 L
                                 petrolStations.get(p).addSales(petrolStations.get(p).getPricePerLitre() * calc);
-                                petrolStations.get(p).reduceTotalFuel(petrolStations.get(p).getTotalFuel() - calc);
-
-                                // update statistics menu
-                                // .....
+                                petrolStations.get(p).reduceTotalFuel(calc);
                             }
                         }
                     }
@@ -575,6 +594,14 @@ public class TrafficSimulator_SimulationController {
                 }
 
                  */
+
+                // WRITING OUT STATISTICS TO TEXT FILES
+                try {
+                    writeDriverAndVehicleStats();
+                    writePetrolStationStats();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
             }
         };
@@ -590,6 +617,64 @@ public class TrafficSimulator_SimulationController {
                 t.activateTrafficLight(true);
             }
         }
+    }
+
+    /**
+     * Writes out driver and vehicle statistics and data values to a text file in the statistics folder, which is
+     * read by the Statistics Controller so it can be displayed in the GUI interface for the statistics window
+     * @throws IOException
+     */
+    public void writeDriverAndVehicleStats() throws IOException {
+        DecimalFormat f = new DecimalFormat("##.00");
+        File file = new File("statistics\\drivers.txt");
+        FileWriter fileWriter = new FileWriter(file);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+
+        for (Driver d: drivers) {
+            printWriter.println(d.getUniqueID());
+            printWriter.println(d.getVehicle().getType());
+            printWriter.println(d.getVehicle().getSpriteImageView().getImage().getUrl());
+            printWriter.println(d.getVehicle().getColor());
+            printWriter.println(f.format(d.getVehicle().getFuelLevel()));
+            printWriter.println(d.getHBox().getRotate());
+            printWriter.println(d.getHazLightsOn());
+            printWriter.println(d.getLane());
+            printWriter.println(d.getStartNode().getId());
+            printWriter.println(d.getGoalNode().getId());
+            printWriter.println(d.getCurrentNode().getId());
+            //printWriter.print('\n');
+        }
+
+        fileWriter.close();
+        printWriter.close();
+    }
+
+    /**
+     * Writes out petrol station statistics and data values to a text file in the statistics folder, which is
+     * read by the Statistics Controller so it can be displayed in the GUI interface for the statistics window
+     * @throws IOException
+     */
+    public void writePetrolStationStats() throws IOException {
+        DecimalFormat df = new DecimalFormat("0.00"); // easy rounding of double numbers to 2 decimal places
+        df.setRoundingMode(RoundingMode.UP); // round up values
+
+        File file = new File("statistics\\petrolstations.txt");
+        FileWriter fileWriter = new FileWriter(file);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+
+        for (PetrolStation ps : petrolStations) {
+            printWriter.println(ps.getUniqueID());
+            printWriter.println(ps.getName());
+            printWriter.println(ps.getImageViewButton().getImage().getUrl());
+            printWriter.println(df.format(ps.getTotalFuel()));
+            printWriter.println(ps.getPricePerLitre());
+            printWriter.println(df.format(ps.getSales()));
+            printWriter.println(ps.getOutOfFuelValue());
+            //printWriter.print('\n');
+        }
+
+        fileWriter.close();
+        printWriter.close();
     }
 
 
