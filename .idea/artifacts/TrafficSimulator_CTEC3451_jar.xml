@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TrafficSimulator_CTEC3451:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TrafficSimulator_CTEC3451_jar</output-path>
+    <root id="archive" name="TrafficSimulator_CTEC3451.jar">
+      <element id="module-output" name="TrafficSimulator_CTEC3451" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jfxtras/jfxtras-common/17-r1/jfxtras-common-17-r1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jfxtras/jfxtras-controls/17-r1/jfxtras-controls-17-r1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jfxtras/jfxtras-fxml/17-r1/jfxtras-fxml-17-r1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

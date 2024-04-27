@@ -23,10 +23,6 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
     private TextField vanSpawnChanceInput;
     private Slider vanSpawnChanceSlider;
 
-    private CheckBox busTransport;
-    private Label numOfBuseslabel;
-    private TextField numOfBusesInput;
-
     private Button Start;
     private Button Back;
 
@@ -36,7 +32,7 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
         // vboxes has the fields, which are themselves stored in Hbox's.
 
         VBox fields_1 = new VBox(5);
-        VBox fields_2 = new VBox(5);
+        //VBox fields_2 = new VBox(5);
 
         HBox numOfDrivers = new HBox(20);
         numOfDriversLabel = new Label("Number of drivers: ");
@@ -63,24 +59,24 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
         fields_1.getChildren().addAll(numOfDrivers, carSpawnChance, vanSpawnChance);
 
 
-        busTransport = new CheckBox("Bus transportation");
+        //busTransport = new CheckBox("Bus transportation");
         // bus transportation is unchecked by default
-        busTransport.setSelected(false);
+        //busTransport.setSelected(false);
 
-        HBox numOfBuses = new HBox(20);
-        numOfBuseslabel = new Label("Number of buses: ");
-        numOfBusesInput = new TextField("1");
-        numOfBusesInput.setPrefWidth(50);
+//        HBox numOfBuses = new HBox(20);
+//        numOfBuseslabel = new Label("Number of buses: ");
+//        numOfBusesInput = new TextField("1");
+//        numOfBusesInput.setPrefWidth(50);
 
-        // bus transportation is unchecked by default, so hide the input and label for it
-        numOfBuseslabel.setDisable(true);
-        numOfBuseslabel.setVisible(false);
-        numOfBusesInput.setDisable(true);
-        numOfBusesInput.setVisible(false);
+//        // bus transportation is unchecked by default, so hide the input and label for it
+//        numOfBuseslabel.setDisable(true);
+//        numOfBuseslabel.setVisible(false);
+//        numOfBusesInput.setDisable(true);
+//        numOfBusesInput.setVisible(false);
 
-        numOfBuses.getChildren().addAll(numOfBuseslabel, numOfBusesInput);
+//        numOfBuses.getChildren().addAll(numOfBuseslabel, numOfBusesInput);
 
-        fields_2.getChildren().addAll(busTransport, numOfBuses);
+//        fields_2.getChildren().addAll(busTransport, numOfBuses);
 
         Start = new Button("Start Simulation");
         Back = new Button("Back");
@@ -89,7 +85,7 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
         VBox fields_3 = new VBox(5);
         fields_3.getChildren().addAll(Start, Back);
 
-        overall.getChildren().addAll(fields_1, fields_2, fields_3);
+        overall.getChildren().addAll(fields_1, fields_3);
         this.setPadding(new Insets(320,0,0,0));
         this.getChildren().add(overall);
 
@@ -128,37 +124,7 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
         return (int) vanSpawnChanceSlider.getValue();
     }
 
-    public void addBusTransportCheckBoxHandler(EventHandler<ActionEvent> handler) {
-        busTransport.setOnAction(handler);
-    }
-
-    public void enableNumberOfBusesInput(boolean value) {
-        if (value) {
-            numOfBuseslabel.setDisable(false);
-            numOfBuseslabel.setVisible(true);
-            numOfBusesInput.setDisable(false);
-            numOfBusesInput.setVisible(true);
-        } else {
-            numOfBuseslabel.setDisable(true);
-            numOfBuseslabel.setVisible(false);
-            numOfBusesInput.setDisable(true);
-            numOfBusesInput.setVisible(false);
-        }
-    }
     public int getNumberOfDrivers() {
         return Integer.parseInt(numOfDriversInput.getText());
     }
-
-    public boolean getBusTransportEnabled() {
-        return busTransport.isSelected();
-    }
-
-    public int getNumberOfBuses() {
-        if (!this.getBusTransportEnabled()) { //if bus transport checkbox is NOT checked
-            return 0;
-        } else { // if it is checked
-            return Integer.parseInt(numOfBusesInput.getText());
-        }
-    }
-
 }

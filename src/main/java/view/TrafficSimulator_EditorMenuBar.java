@@ -11,7 +11,7 @@ import javafx.scene.input.KeyCombination;
 
 public class TrafficSimulator_EditorMenuBar extends MenuBar {
 
-	private MenuItem aboutItem, exitItem, loadItem, saveItem, muteItem, clearScenarioItem;
+	private MenuItem aboutItem, exitItem, loadItem, saveItem, muteItem, clearScenarioItem, displayNodesItem;
 
 	public TrafficSimulator_EditorMenuBar() {
 
@@ -53,6 +53,10 @@ public class TrafficSimulator_EditorMenuBar extends MenuBar {
 		clearScenarioItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+C"));
 		menu.getItems().add(clearScenarioItem);
 
+		displayNodesItem = new MenuItem("_Display All Nodes");
+		displayNodesItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+D"));
+		menu.getItems().add(displayNodesItem);
+
 		this.getMenus().add(menu); 
 	}
 
@@ -78,6 +82,10 @@ public class TrafficSimulator_EditorMenuBar extends MenuBar {
 		clearScenarioItem.setOnAction(handler);
 	}
 
+	public void addDisplayAllNodesHandler(EventHandler<ActionEvent> handler) {
+		displayNodesItem.setOnAction(handler);
+	}
+
 	public void addExitHandler(EventHandler<ActionEvent> handler) {
 		exitItem.setOnAction(handler);
 	}
@@ -87,5 +95,13 @@ public class TrafficSimulator_EditorMenuBar extends MenuBar {
 
 	public void setMuteItemName(String text) {
 		muteItem.setText(text);
+	}
+
+	public void setDisplayNodesItemName(String text) {
+		displayNodesItem.setText(text);
+	}
+
+	public String getDisplayNodesItemName() {
+		return displayNodesItem.getText();
 	}
 }

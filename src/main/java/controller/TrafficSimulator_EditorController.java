@@ -46,6 +46,8 @@ public class TrafficSimulator_EditorController {
     private int pieceCounter = 0; // does NOT include miscPieces such as decorative or hazard pieces.
     private boolean muteSounds = false;
 
+    private int nodesDisplayed = 0;
+
     private boolean isScenarioEmpty;
 
     private Scene currentScene;
@@ -189,6 +191,36 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * A menu bar item that displays all nodes in the scenario
+         */
+        tse_menubar.addDisplayAllNodesHandler(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (tse_menubar.getDisplayNodesItemName().equals("_Display All Nodes")){
+                    tse_menubar.setDisplayNodesItemName("_Hide All Nodes");
+                    nodesDisplayed = 1;
+                    for (GraphNode n : graph.getRouteList()) {
+                        Circle circle = new Circle(n.getXCoordinate(), n.getYCoordinate(), 2.0f);
+                        circle.setFill(Color.ORANGE);
+                        circle.setTranslateX(n.getXCoordinate());
+                        circle.setTranslateY(n.getYCoordinate());
+                        tseep.getChildren().add(circle);
+                    }
+                } else {
+                    Iterator<Node> iter = tseep.getChildren().iterator();
+                    while(iter.hasNext()) {
+                        Node n = iter.next();
+                        if (n instanceof Circle) {
+                            iter.remove();
+                        }
+                    }
+                    nodesDisplayed = 0;
+                    tse_menubar.setDisplayNodesItemName("_Display All Nodes");
+                }
+            }
+        });
+
         tse_bottompane.getPiecesButtonsPane().addRoadSurfaceButtonOnClickHandler(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -211,7 +243,7 @@ public class TrafficSimulator_EditorController {
                 tse_bottompane.getPiecesSelection().setToDestinationPieces();
 
                 ImageView[] arrayOfSlots = tse_bottompane.getPiecesSelection().getSlots();
-                for (int i = 0; i < arrayOfSlots.length; i++) {
+                for (int i = 0; i < arrayOfSlots.length-1; i++) {
                     arrayOfSlots[i].setDisable(false);
                     arrayOfSlots[i].setVisible(true);
                 }
@@ -279,8 +311,8 @@ public class TrafficSimulator_EditorController {
                     checkIfScenarioIsEmpty();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
-                }
-                if (!isScenarioEmpty) {
+                } catch (ClassCastException e) {}
+                if (!isScenarioEmpty && nodesDisplayed != 1) {
                     Stage stage = (Stage) tse_bottompane.getScene().getWindow(); // get the current window and cast to Stage
                     scene = tse_bottompane.getScene(); // get the current scene
                     scene.setCursor(null);
@@ -295,7 +327,7 @@ public class TrafficSimulator_EditorController {
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Scenario error");
-                    alert.setContentText("Scenario is unmodified, no roads or destinations found");
+                    alert.setContentText("Scenario is unmodified, no roads or destinations found, or display nodes is enabled.");
                     alert.show();
                 }
             }
@@ -1677,9 +1709,7 @@ public class TrafficSimulator_EditorController {
                             GraphNode dest3_entrance = new GraphNode(b.getMinX()+10, b.getMinY()+20);
                             GraphNode dest3_0 = new GraphNode(b.getMinX()+10, b.getMinY()+15);
                             GraphNode dest3_1 = new GraphNode(b.getMinX()+10, b.getMinY()+10);
-                            GraphNode dest3_2 = new GraphNode(b.getMinX()+10, b.getMinY()+5);
                             GraphNode dest3_3 = new GraphNode(b.getMinX()+10, b.getMinY()+0);
-                            GraphNode dest3_4 = new GraphNode(b.getMinX()+10, b.getMinY()-5);
                             GraphNode dest3_5 = new GraphNode(b.getMinX()+10, b.getMinY()-10);
                             GraphNode dest3_6 = new GraphNode(b.getMinX()+10, b.getMinY()-15);
                             GraphNode dest3_exit = new GraphNode(b.getMinX()+10, b.getMinY()-20);
@@ -1687,50 +1717,44 @@ public class TrafficSimulator_EditorController {
                             GraphNode dest4_entrance = new GraphNode(b.getMinX()+25, b.getMinY()+20);
                             GraphNode dest4_0 = new GraphNode(b.getMinX()+25, b.getMinY()+15);
                             GraphNode dest4_1 = new GraphNode(b.getMinX()+25, b.getMinY()+10);
-                            GraphNode dest4_2 = new GraphNode(b.getMinX()+25, b.getMinY()+5);
                             GraphNode dest4_3 = new GraphNode(b.getMinX()+25, b.getMinY()+0);
-                            GraphNode dest4_4 = new GraphNode(b.getMinX()+25, b.getMinY()-5);
                             GraphNode dest4_5 = new GraphNode(b.getMinX()+25, b.getMinY()-10);
                             GraphNode dest4_6 = new GraphNode(b.getMinX()+25, b.getMinY()-15);
                             GraphNode dest4_exit = new GraphNode(b.getMinX()+25, b.getMinY()-20);
 
                             dest1_entrance.setId("d0_"+(getPieceCounterValue()));
                             dest1_0.setId("d1_"+(getPieceCounterValue()));
-                            dest1_1.setId("d2_"+(getPieceCounterValue()));
-                            dest1_2.setId("destinationGoal_"+(getPieceCounterValue()));
-                            dest1_3.setId("destinationGoal_"+(getPieceCounterValue()));
-                            dest1_4.setId("d5_"+(getPieceCounterValue()));
+                            dest1_1.setId("d2"+(getPieceCounterValue()));
+                            dest1_2.setId("d3_"+(getPieceCounterValue()));
+                            dest1_3.setId("d4_"+(getPieceCounterValue()));
+                            dest1_4.setId("d5"+(getPieceCounterValue()));
                             dest1_5.setId("d6_"+(getPieceCounterValue()));
                             dest1_exit.setId("d7_"+(getPieceCounterValue()));
 
                             dest6_entrance.setId("d8_"+(getPieceCounterValue()));
                             dest6_0.setId("d9_"+(getPieceCounterValue()));
-                            dest6_1.setId("d10_"+(getPieceCounterValue()));
-                            dest6_2.setId("destinationGoal_"+(getPieceCounterValue()));
-                            dest6_3.setId("destinationGoal_"+(getPieceCounterValue()));
-                            dest6_4.setId("d13_"+(getPieceCounterValue()));
-                            dest6_5.setId("d14_"+(getPieceCounterValue()));
-                            dest6_exit.setId("d15_"+(getPieceCounterValue()));
+                            dest6_1.setId("destinationGoal_"+(getPieceCounterValue()));
+                            dest6_2.setId("d10_"+(getPieceCounterValue()));
+                            dest6_3.setId("d11_"+(getPieceCounterValue()));
+                            dest6_4.setId("d12_"+(getPieceCounterValue()));
+                            dest6_5.setId("d13_"+(getPieceCounterValue()));
+                            dest6_exit.setId("d14_"+(getPieceCounterValue()));
 
-                            dest3_entrance.setId("d16_"+(getPieceCounterValue()));
-                            dest3_0.setId("d17_"+(getPieceCounterValue()));
-                            dest3_1.setId("d18_"+(getPieceCounterValue()));
-                            dest3_2.setId("d19_"+(getPieceCounterValue()));
-                            dest3_3.setId("d20_"+(getPieceCounterValue()));
-                            dest3_4.setId("d21_"+(getPieceCounterValue()));
-                            dest3_5.setId("d22_"+(getPieceCounterValue()));
-                            dest3_6.setId("d23_"+(getPieceCounterValue()));
-                            dest3_exit.setId("d24_"+(getPieceCounterValue()));
+                            dest3_entrance.setId("d15_"+(getPieceCounterValue()));
+                            dest3_0.setId("d16_"+(getPieceCounterValue()));
+                            dest3_1.setId("d17_"+(getPieceCounterValue()));
+                            dest3_3.setId("d18_"+(getPieceCounterValue()));
+                            dest3_5.setId("d19_"+(getPieceCounterValue()));
+                            dest3_6.setId("d20_"+(getPieceCounterValue()));
+                            dest3_exit.setId("d21_"+(getPieceCounterValue()));
 
-                            dest4_entrance.setId("d25_"+(getPieceCounterValue()));
-                            dest4_0.setId("d26_"+(getPieceCounterValue()));
-                            dest4_1.setId("d27_"+(getPieceCounterValue()));
-                            dest4_2.setId("d28_"+(getPieceCounterValue()));
-                            dest4_3.setId("d29_"+(getPieceCounterValue()));
-                            dest4_4.setId("d30_"+(getPieceCounterValue()));
-                            dest4_5.setId("d31_"+(getPieceCounterValue()));
-                            dest4_6.setId("d32_"+(getPieceCounterValue()));
-                            dest4_exit.setId("d33_"+(getPieceCounterValue()));
+                            dest4_entrance.setId("d22_"+(getPieceCounterValue()));
+                            dest4_0.setId("d23_"+(getPieceCounterValue()));
+                            dest4_1.setId("d24_"+(getPieceCounterValue()));
+                            dest4_3.setId("d25_"+(getPieceCounterValue()));
+                            dest4_5.setId("d26_"+(getPieceCounterValue()));
+                            dest4_6.setId("d27_"+(getPieceCounterValue()));
+                            dest4_exit.setId("d28_"+(getPieceCounterValue()));
 
                             graph.addGraphNodeToList(dest1_entrance);
                             graph.addGraphNodeToList(dest1_0);
@@ -1753,9 +1777,7 @@ public class TrafficSimulator_EditorController {
                             graph.addGraphNodeToList(dest3_entrance);
                             graph.addGraphNodeToList(dest3_0);
                             graph.addGraphNodeToList(dest3_1);
-                            graph.addGraphNodeToList(dest3_2);
                             graph.addGraphNodeToList(dest3_3);
-                            graph.addGraphNodeToList(dest3_4);
                             graph.addGraphNodeToList(dest3_5);
                             graph.addGraphNodeToList(dest3_6);
                             graph.addGraphNodeToList(dest3_exit);
@@ -1763,9 +1785,7 @@ public class TrafficSimulator_EditorController {
                             graph.addGraphNodeToList(dest4_entrance);
                             graph.addGraphNodeToList(dest4_0);
                             graph.addGraphNodeToList(dest4_1);
-                            graph.addGraphNodeToList(dest4_2);
                             graph.addGraphNodeToList(dest4_3);
-                            graph.addGraphNodeToList(dest4_4);
                             graph.addGraphNodeToList(dest4_5);
                             graph.addGraphNodeToList(dest4_6);
                             graph.addGraphNodeToList(dest4_exit);
@@ -1773,7 +1793,7 @@ public class TrafficSimulator_EditorController {
                             incrementPieceCounter();
                         }
 
-
+                        /*
                         // if the currentPiece that was added is a destination piece specifically BUS STATION THEN
                         // map the node
                         if (currentPieceSelected.contains("bus_station.png")) {
@@ -1795,6 +1815,7 @@ public class TrafficSimulator_EditorController {
 
                             graph.addGraphNodeToList(dest);
                         }
+                         */
                     }
                 } catch (Exception e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -1818,6 +1839,16 @@ public class TrafficSimulator_EditorController {
                         piece.setFitHeight(35);
                         piece.setFitWidth(35);
                         piece.setPreserveRatio(true);
+                        if (currentPieceSelected.contains("cone") || currentPieceSelected.contains("barrier")) { // special case for hazard images
+                            piece.setFitHeight(15);
+                            piece.setFitWidth(15);
+                            piece.setPreserveRatio(true);
+                        }
+                        if (currentPieceSelected.contains("trafficLight")) {
+                            piece.setFitHeight(20);
+                            piece.setFitWidth(20);
+                            piece.setPreserveRatio(true);
+                        }
                         piece.setTranslateX(xCoordinate-10);
                         piece.setTranslateY(yCoordinate-21);
                         tseep.getChildren().add(piece);

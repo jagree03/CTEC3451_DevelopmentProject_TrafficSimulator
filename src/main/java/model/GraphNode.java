@@ -148,6 +148,21 @@ public class GraphNode implements Serializable {
         checked = false;
     }
 
+    /**
+     * This method forces the GraphNode to return to a default state, where all G, H, F costs are 0.0
+     * and all flags such as StartNode, GoalNode, SolidNode are set to false. etc.
+     */
+    public void setNodeToDefaultState() {
+        this.setgCost(0.0);
+        this.sethCost(0.0);
+        this.setfCost(0.0);
+        this.start = false;
+        this.goal = false;
+        this.solid = false;
+        this.open = false;
+        this.checked = false;
+        this.parent = null;
+    }
     public void setAsPath() {}
 
 } // end of class

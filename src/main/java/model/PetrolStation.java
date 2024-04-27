@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class PetrolStation {
@@ -8,6 +9,8 @@ public class PetrolStation {
     private double totalFuel;
     private double pricePerLitre;
     private double sales;
+
+    private boolean outOfFuel;
     private ImageView img;
 
 
@@ -17,13 +20,7 @@ public class PetrolStation {
         this.totalFuel = 20.0;
         this.pricePerLitre = 1.75;
         this.sales = 0.0;
-    }
-
-    // custom constructor
-    public PetrolStation(String name, double totalFuel, double pricePerLitre) {
-        this.name = name;
-        this.totalFuel = totalFuel;
-        this.pricePerLitre = pricePerLitre;
+        this.outOfFuel = false;
     }
 
     public String getName() {
@@ -40,6 +37,16 @@ public class PetrolStation {
 
     public void setTotalFuel(double totalFuel) {
         this.totalFuel = totalFuel;
+    }
+
+    public void reduceTotalFuel(double val) {
+        double newTotalFuel = this.getTotalFuel() - val;
+        if (newTotalFuel <= 0.0) {
+            this.totalFuel = 0.0;
+            this.setOutOfFuelValue(true);
+        } else {
+            this.totalFuel = newTotalFuel;
+        }
     }
 
     public double getPricePerLitre() {
@@ -62,12 +69,29 @@ public class PetrolStation {
         this.sales = sales;
     }
 
+    public void addSales(double val) {
+        double newSales = this.getSales() + val;
+        this.sales = newSales;
+    }
+
     public ImageView getImageView() {
         return img;
     }
 
     public void setImageView(ImageView img) {
         this.img = img;
+    }
+
+    public void setImage(Image image) {
+        this.getImageView().setImage(image);
+    }
+
+    public boolean getOutOfFuelValue() {
+        return outOfFuel;
+    }
+
+    public void setOutOfFuelValue(boolean val) {
+        this.outOfFuel = val;
     }
 
     @Override

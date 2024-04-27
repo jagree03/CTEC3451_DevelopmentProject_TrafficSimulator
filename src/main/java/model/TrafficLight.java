@@ -2,19 +2,22 @@ package model;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TrafficLight {
-
-    private int redSignalHoldTime;
-    private int amberSignalHoldTime;
-    private int greenSignalHoldTime;
-    private int timeForTransition;
     private String currentSignal;
 
+    private boolean activated;
+
+    private HBox h;
     private Image sprite;
     private ImageView viewSprite;
 
@@ -23,53 +26,23 @@ public class TrafficLight {
     public TrafficLight() {
         this.sprite = new Image("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
         this.viewSprite = new ImageView(this.sprite);
-        // arbitrary values
-        this.redSignalHoldTime = 15;
-        this.amberSignalHoldTime = 4;
-        this.greenSignalHoldTime = 15;
-        this.timeForTransition = 3;
         this.currentSignal = "none";
+        this.activated = false;
+    }
+
+    // Default constructor 2
+    public TrafficLight(ImageView imgv) {
+        this.viewSprite = imgv;
+        this.sprite = this.getImageView().getImage();
+        this.currentSignal = "none";
+        this.activated = false;
     }
 
     public TrafficLight(int redSignalHoldTime, int amberSignalHoldTime, int greenSignalHoldTime, int timeForTransition) {
-        this.sprite = new Image("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
+        File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
+        this.sprite = new Image(file.toURI().toString());
         this.viewSprite = new ImageView(this.sprite);
-        this.redSignalHoldTime = redSignalHoldTime;
-        this.amberSignalHoldTime = amberSignalHoldTime;
-        this.greenSignalHoldTime = greenSignalHoldTime;
-        this.timeForTransition = timeForTransition;
-    }
-
-    public int getRedSignalHoldTime() {
-        return redSignalHoldTime;
-    }
-
-    public void setRedSignalHoldTime(int value) {
-        this.redSignalHoldTime = value;
-    }
-
-    public int getAmberSignalHoldTime() {
-        return amberSignalHoldTime;
-    }
-
-    public void setAmberSignalHoldTime(int value) {
-        this.amberSignalHoldTime = value;
-    }
-
-    public int getGreenSignalHoldTime() {
-        return greenSignalHoldTime;
-    }
-
-    public void setGreenSignalHoldTime(int value) {
-        this.greenSignalHoldTime = value;
-    }
-
-    public int getTimeForTransition() {
-        return timeForTransition;
-    }
-
-    public void setTimeForTransition(int value) {
-        this.timeForTransition = value;
+        this.activated = false;
     }
 
     public ImageView getImageView() {
@@ -84,42 +57,79 @@ public class TrafficLight {
         this.currentSignal = value;
     }
 
-    public void activateRedStopSignal() throws InterruptedException {
-        Thread.sleep(timeForTransition * 1000L);
-        this.getImageView().setImage(new Image("img\\2_EditorScreen\\trafficLight\\trafficLight_RedStop.png"));
+    public Boolean getActivatedState() {
+        return activated;
+    }
+
+    public void setActivatedState(boolean value) {
+        this.activated = value;
+    }
+
+    public void activateRedStopSignal() {
+        File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight_RedStop.png");
+        this.getImageView().setImage(new Image(file.toURI().toString()));
         this.setCurrentSignal("red");
     }
 
-    public void activateAmberStopSignal() throws InterruptedException {
-        Thread.sleep(timeForTransition * 1000L);
-        this.getImageView().setImage(new Image("img\\2_EditorScreen\\trafficLight\\trafficLight_YellowWait.png"));
+    public void activateAmberStopSignal() {
+        File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight_YellowWait.png");
+        this.getImageView().setImage(new Image(file.toURI().toString()));
         this.setCurrentSignal("amber");
     }
 
-    public void activateGreenStopSignal() throws InterruptedException {
-        Thread.sleep(timeForTransition * 1000L);
-        this.getImageView().setImage(new Image("img\\2_EditorScreen\\trafficLight\\trafficLight_GreenGo.png"));
+    public void activateGreenStopSignal() {
+        File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight_GreenGo.png");
+        this.getImageView().setImage(new Image(file.toURI().toString()));
         this.setCurrentSignal("green");
     }
 
     public void disableTrafficLight() {
-        this.getImageView().setImage(new Image("img\\2_EditorScreen\\trafficLight\\trafficLight.png"));
+        File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
+        this.getImageView().setImage(new Image(file.toURI().toString()));
         this.setCurrentSignal("none");
     }
 
-    public void activateTrafficLight() throws InterruptedException {
-        activateRedStopSignal();
-        Thread.sleep((redSignalHoldTime + timeForTransition) * 1000L);
-        activateAmberStopSignal();
-        Thread.sleep((amberSignalHoldTime + timeForTransition) * 1000L);
-        activateGreenStopSignal();
-        Thread.sleep((greenSignalHoldTime + timeForTransition) * 1000L);
+    /**
+     * using ScheduledExecutorService class, you can run "Runnables" that contain code at fixed period of times
+     * or you can run tasks after a delay. This is helpful to activate a traffic light and control its transitions between
+     * signals.
+     * @param value Boolean value: True or false, true to activate the traffic light, false to disable
+     * @throws InterruptedException
+     */
+    public void activateTrafficLight(boolean value) throws InterruptedException {
+        ScheduledExecutorService ses1 = Executors.newScheduledThreadPool(1);
+        if (value) {
+            Runnable activation = () -> {
+                ScheduledExecutorService ses2 = Executors.newScheduledThreadPool(1);
+
+                Runnable task1 = () -> {
+                    this.activateRedStopSignal();
+                };
+
+                Runnable task2 = () -> {
+                    this.activateAmberStopSignal();
+                };
+
+                Runnable task3 = () -> {
+                    this.activateGreenStopSignal();
+                };
+
+                ses2.schedule(task1, 0, TimeUnit.SECONDS); // red
+                ses2.schedule(task2, 10, TimeUnit.SECONDS); // amber
+                ses2.schedule(task3, 15, TimeUnit.SECONDS); // green
+                ses2.schedule(task2, 25, TimeUnit.SECONDS); // amber
+                ses2.schedule(task1, 28, TimeUnit.SECONDS); // red
+
+                ses2.shutdown();
+            };
+            ses1.scheduleAtFixedRate(activation, 0, 32, TimeUnit.SECONDS);
+        } else {
+            this.setActivatedState(false);
+        }
     }
 
     @Override
     public String toString() {
-        return "TrafficLight:[redSignalHoldTime=" + redSignalHoldTime + ", amberSignalHoldTime=" + amberSignalHoldTime +
-                ", greenSignalHoldTime=" + amberSignalHoldTime + ", timeForTransition=" + timeForTransition +
-                ", currentSignal=" + currentSignal + ", viewSprite=" + viewSprite.getImage().getUrl();
+        return "TrafficLight:[currentSignal=" + currentSignal + ", viewSprite=" + viewSprite.getImage().getUrl() + "]";
     }
 }

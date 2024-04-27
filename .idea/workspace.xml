@@ -49,11 +49,12 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;liberica-21&quot;,
     &quot;last_directory_selection&quot;: &quot;C:/Users/jagre/Documents/IntelliJ/Projects/TrafficSimulator_CTEC3451/tests&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jagre/Documents/IntelliJ/Projects/TrafficSimulator_CTEC3451&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/jagre/Documents/IntelliJ/Projects/TrafficSimulator_CTEC3451/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
@@ -178,17 +179,12 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>102</line>
+          <line>104</line>
           <properties method="handle">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/model/Vehicle.java</url>
-          <line>149</line>
-          <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/model/Model_VehicleTest.java</url>
@@ -197,48 +193,40 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>1988</line>
+          <line>2019</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>2018</line>
-          <option name="timeStamp" value="45" />
+          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
+          <line>120</line>
+          <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/model/Driver.java</url>
-          <line>383</line>
-          <option name="timeStamp" value="46" />
+          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
+          <line>535</line>
+          <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/model/Driver.java</url>
-          <line>504</line>
-          <option name="timeStamp" value="47" />
+          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
+          <line>494</line>
+          <option name="timeStamp" value="69" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
+        <PinnedItemInfo parentTag="model.Driver" memberName="checkedList" />
+        <PinnedItemInfo parentTag="model.Driver" memberName="openList" />
         <PinnedItemInfo parentTag="model.AStarGraph" memberName="startNode" />
+        <PinnedItemInfo parentTag="model.Driver" memberName="pt" />
         <PinnedItemInfo parentTag="javafx.scene.image.ImageView" memberName="x" />
+        <PinnedItemInfo parentTag="model.AStarGraph" memberName="routeList" />
         <PinnedItemInfo parentTag="view.TrafficSimulator_EditorEditorPane" memberName="scene" />
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
       <configuration name="JUnit">
         <watch expression="packageNameRef" />
-      </configuration>
-      <configuration name="Application">
-        <watch expression="currentPieceSelected" language="JAVA" />
-        <watch expression="this.this$0" custom="javafx.scene.image.ImageView,javafx.beans.property.ObjectPropertyBase" />
-        <watch expression="fileChooser" />
-        <watch expression="iter" />
-        <watch expression="currentPieceSelected" language="JAVA" />
-        <watch expression="currentPieceSelected" language="JAVA" />
-        <watch expression="graph.routeList.get(1)" />
-        <watch expression="graph.routeList.get(1)" />
-        <watch expression="graph.routeList.get(1)" />
-        <watch expression="checkedList.get(56)" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
