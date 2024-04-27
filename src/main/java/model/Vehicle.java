@@ -26,7 +26,7 @@ public class Vehicle {
         this.sprite.setFitHeight(25);
         this.sprite.setPreserveRatio(true);
         this.setColor("Red");
-        this.fuelLevel = 5.0;
+        this.fuelLevel = 5.00;
 
     }
 
@@ -58,6 +58,17 @@ public class Vehicle {
         this.sprite.setFitWidth(25);
         this.sprite.setFitHeight(25);
         this.sprite.setPreserveRatio(true);
+        this.fuelLevel = fuelLevel;
+    }
+
+    /**
+     * For statistics controller
+     */
+    public Vehicle(String type, String ImageURI, String colour, Double fuelLevel) {
+        this.type = type;
+        this.sprite = new ImageView();
+        this.setSprite(new Image(ImageURI));
+        this.color = colour;
         this.fuelLevel = fuelLevel;
     }
 
@@ -139,8 +150,8 @@ public class Vehicle {
     }
 
     public void setFuelLevel(Double fuelLevel){
-        if (fuelLevel <= 0.0) {
-            fuelLevel = 0.0;
+        if (fuelLevel <= 0.00) {
+            fuelLevel = 0.00;
         }
         this.fuelLevel = fuelLevel;
     }

@@ -186,6 +186,15 @@
           </properties>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
+          <line>201</line>
+          <properties method="handle">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/model/Model_VehicleTest.java</url>
           <line>24</line>
@@ -198,18 +207,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
-          <line>120</line>
+          <line>130</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
-          <line>535</line>
-          <option name="timeStamp" value="55" />
+          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_StatisticsController.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="74" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_SimulationController.java</url>
-          <line>494</line>
-          <option name="timeStamp" value="69" />
+          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_StatisticsController.java</url>
+          <line>172</line>
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_StatisticsController.java</url>
+          <line>79</line>
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_StatisticsController.java</url>
+          <line>135</line>
+          <option name="timeStamp" value="82" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -227,6 +246,9 @@
     <watches-manager>
       <configuration name="JUnit">
         <watch expression="packageNameRef" />
+      </configuration>
+      <configuration name="Application">
+        <watch expression="drivers.get(0).vehicle" />
       </configuration>
     </watches-manager>
   </component>

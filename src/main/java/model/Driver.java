@@ -1,57 +1,49 @@
 package model;
 
-import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
-import org.w3c.dom.Node;
-
 import java.io.File;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.UUID;
 
 public class Driver {
 
     // fields
+
+    private UUID uniqueID; // Universal Unique Identifier (UUID) generates a unique 128 bit value guaranteed to be unique.
     private Vehicle vehicle;
+    private HBox h;
+    private String lane;
     private boolean hazLightsOn;
 
-    private HBox h;
-    private ArrayList<GraphNode> routeList;
 
-    private String lane;
 
     // A* Pathfinding related variables
+    private ArrayList<GraphNode> routeList; // contains all graph nodes of the scenario
     private GraphNode startNode; // every driver starts somewhere
     private GraphNode goalNode; // every driver needs a destination to go to
     private GraphNode currentNode; // every driver stores what node they are currently on
-
     private boolean goalReached = false;
     private int step = 0;
     private ArrayList<GraphNode> openList; // is a copy of the routeList that contains all graphnodes in the scenario
     private ArrayList<GraphNode> checkedList;
-
     private PathTransition pt; // to play/pause movement of the driver upon the path.
 
 
     // constructors
     public Driver() { // default constructor has a driver with a red car who drives on left lane
+        this.uniqueID = UUID.randomUUID();
         this.vehicle = new Vehicle();
         this.lane = "left";
         this.hazLightsOn = false;
@@ -110,7 +102,8 @@ public class Driver {
      * @param destinationNode The goal node, where the driver needs to drive to.
      * @param displayBoundaries A debug parameter that lets you see the boundaries of the driver's vehicle, can be enabled or disabled, true or false.
      */
-    public Driver(String lane, ArrayList<GraphNode> listOfAllNodes, GraphNode startingNode, GraphNode destinationNode, Boolean displayBoundaries) {
+    public Driver(UUID id, String lane, ArrayList<GraphNode> listOfAllNodes, GraphNode startingNode, GraphNode destinationNode, Boolean displayBoundaries) {
+        this.uniqueID = id;
         this.vehicle = new Vehicle();
         this.hazLightsOn = false;
         this.lane = lane;
@@ -184,9 +177,14 @@ public class Driver {
         }
     }
 
-
-
-    // methods
+    // METHODS
+    /**
+     * Retrieves the unique identifier of the Driver instance.
+     * @return The UUID value
+     */
+    public UUID getUniqueID() {
+        return uniqueID;
+    }
     public Vehicle getVehicle() {
         return this.vehicle;
     }
@@ -602,6 +600,8 @@ public class Driver {
             // now when this for loop is finished, we now get the (best) node via best node index which is our next step towards the goal
             // essentially we get a new current node.
             currentNode = openList.get(bestNodeIndex);
+
+
 
             // debug method to print out the size of the checked lists
             System.out.println("checked: " + checkedList.size());

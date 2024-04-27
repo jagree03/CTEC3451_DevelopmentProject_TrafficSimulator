@@ -40,10 +40,6 @@ public class TrafficSimulatorController {
 		tsrmb = view.getTSMenuButtons();
 		tsrmbbp = view.getTSMenuButtonsBottomButtonPanel();
 
-
-		//add courses to combobox in create student profile pane using the buildModulesAndCourses helper method below
-		//cspp.addCourseDataToComboBox(buildModulesAndCourses());
-
 		//attach event handlers to view using private helper method
 		this.attachEventHandlers();
 	}
@@ -163,6 +159,5 @@ public class TrafficSimulatorController {
 				System.exit(0);
 			}
 		});
-
 	}
 }
