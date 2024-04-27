@@ -1,18 +1,36 @@
 package model;
 
+import javafx.animation.Animation;
+import javafx.animation.PathTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 import org.w3c.dom.Node;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Driver {
 
     // fields
     private Vehicle vehicle;
+    private boolean hazLightsOn;
 
     private HBox h;
     private ArrayList<GraphNode> routeList;
@@ -29,15 +47,18 @@ public class Driver {
     private ArrayList<GraphNode> openList; // is a copy of the routeList that contains all graphnodes in the scenario
     private ArrayList<GraphNode> checkedList;
 
+    private PathTransition pt; // to play/pause movement of the driver upon the path.
+
 
     // constructors
     public Driver() { // default constructor has a driver with a red car who drives on left lane
         this.vehicle = new Vehicle();
         this.lane = "left";
+        this.hazLightsOn = false;
         this.h = new HBox();
         h.setAlignment(Pos.CENTER);
-        h.setMaxSize(30, 50);
         h.getChildren().add(vehicle.getSpriteImageView());
+        h.setMaxSize(20, 40);
 
         // VEHICLE ROTATION LISTENERS
         h.translateXProperty().addListener(new ChangeListener<Number>() {
@@ -70,6 +91,13 @@ public class Driver {
                 }
             }
         });
+
+        this.pt = new PathTransition();
+        pt.setNode(this.getHBox());
+        pt.setOrientation(PathTransition.OrientationType.NONE);
+        pt.setDuration(Duration.seconds(20));
+        pt.setRate(0.9);
+        pt.setCycleCount(PathTransition.INDEFINITE);
     }
 
     /**
@@ -84,18 +112,19 @@ public class Driver {
      */
     public Driver(String lane, ArrayList<GraphNode> listOfAllNodes, GraphNode startingNode, GraphNode destinationNode, Boolean displayBoundaries) {
         this.vehicle = new Vehicle();
+        this.hazLightsOn = false;
         this.lane = lane;
-        this.startNode = startingNode;
-        this.goalNode = destinationNode;
+        this.setStartNode(startingNode);
+        this.setGoalNode(destinationNode);
         this.routeList = listOfAllNodes; // takes the list of all graphnodes in the scenario
         this.openList = new ArrayList<GraphNode>(); // openList holds all UN-CHECKED nodes ready for evaluation
         this.checkedList = new ArrayList<GraphNode>(); // checkedList holds all CHECKED nodes, nodes checked to find
         // the most promising node from startnode to goalnode.
 
         this.h = new HBox();
-        h.setAlignment(Pos.CENTER);
-        h.setMaxSize(30, 50);
+        h.setAlignment(Pos.BOTTOM_CENTER);
         h.getChildren().add(vehicle.getSpriteImageView());
+        h.setMaxSize(20, 40);
 
         if (displayBoundaries) {
             this.setHBoxStyle(true);
@@ -135,10 +164,12 @@ public class Driver {
             }
         });
 
-        startNode.setAsStart();
-        this.setStartNode(startNode);
-        destinationNode.setAsGoal();
-        this.setGoalNode(destinationNode);
+        this.pt = new PathTransition();
+        pt.setNode(this.getHBox());
+        pt.setOrientation(PathTransition.OrientationType.NONE);
+        pt.setDuration(Duration.seconds(30));
+        pt.setRate(1.1);
+        pt.setCycleCount(PathTransition.INDEFINITE);
 
         for (GraphNode n : routeList) {
             if (this.getLane().equals("left")) {
@@ -162,6 +193,9 @@ public class Driver {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+        ImageView img = (ImageView) this.getHBox().getChildren().get(0);
+        img.setImage(vehicle.getSprite());
+        h.setMaxSize(20, 40);
     }
 
     public HBox getHBox() {
@@ -176,16 +210,26 @@ public class Driver {
         return this.routeList;
     }
 
+    /**
+     * Resets all nodes of the graph to a default state
+     */
+    public void setNodesToDefaultState() {
+        for (GraphNode n : this.getRouteList()) {
+            n.setNodeToDefaultState();
+        }
+    }
+
+
     public void setRouteList(ArrayList<GraphNode> routeList) {
         this.routeList = routeList;
     }
 
     public Double getCurrentTranslateX() {
-        return this.getVehicle().getSpriteImageView().getTranslateX();
+        return h.getTranslateX();
     }
 
     public Double getCurrentTranslateY() {
-        return this.getVehicle().getSpriteImageView().getTranslateY();
+        return h.getTranslateY();
     }
 
     public Double getCurrentPositionX() {
@@ -224,12 +268,91 @@ public class Driver {
         }
     }
 
+
+    /**
+     * A method to return the PathTransition of a Driver
+     * @return PathTransition Instance of the driver
+     */
+    public PathTransition getPathTransition() {
+        return pt;
+    }
+
+    /**
+     * Set's the path transition of this Driver instance with the passed in PathTransition
+     * @param pt PathTransition object
+     */
+    public void setPathTransition(PathTransition pt) {
+        this.pt = pt;
+    }
+
+    /**
+     * Bounds listener
+     * @param listener ChangeListener for boundaries of the HBox
+     */
+    public void addNodeBoundsListener(ChangeListener<Bounds> listener) {
+        this.getHBox().boundsInParentProperty().addListener(listener);
+    }
+
+    public void setHazLightsOn(boolean value) {
+        this.hazLightsOn = value;
+    }
+
+    public boolean getHazLightsOn() {
+        return hazLightsOn;
+    }
+
+    public void activateHazardMode() {
+        HBox h = this.getHBox();
+        ImageView veh = (ImageView) h.getChildren().getFirst();
+        String type = this.getVehicle().getType();
+        String vehColor = this.getVehicle().getColor();
+
+        File file_lightsOn = new File("img\\vehicles\\car\\car_" + vehColor.toLowerCase() + "_hazon.png");
+        File file_lightsOff = new File("img\\vehicles\\car\\car_" + vehColor.toLowerCase() + ".png");
+
+        File file_VanlightsOn = new File("img\\vehicles\\car\\van_grey_hazon.png");
+        File file_VanlightsOff = new File("img\\vehicles\\car\\van_grey.png");
+
+
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
+
+        Runnable task1 = () -> {
+
+            if (!type.equals("van")) {
+                if (this.getHazLightsOn() == false) {
+                    veh.setImage(new Image(file_lightsOn.toURI().toString()));
+                    this.setHazLightsOn(true);
+                } else {
+                    veh.setImage(new Image(file_lightsOff.toURI().toString()));
+                    this.setHazLightsOn(false);
+                }
+            } else {
+                if (this.getHazLightsOn() == false) {
+                    veh.setImage(new Image(file_VanlightsOn.toURI().toString()));
+                    this.setHazLightsOn(true);
+                } else {
+                    veh.setImage(new Image(file_VanlightsOff.toURI().toString()));
+                    this.setHazLightsOn(false);
+                }
+            }
+        };
+
+        //run this task after 1 second
+        ses.schedule(task1, 1, TimeUnit.SECONDS);
+
+        ses.shutdown();
+    }
+
+    /**
+     * ToString method, indicates the state of each of the data members of the Driver class
+     * @return String representing states of the key variables of a Driver.
+     */
     @Override
     public String toString() {
         return "Driver:[Vehicle=" + vehicle + ", HBox=" + h + ", routeList=" + routeList + ", lane=" + lane +
                 ", startNode=" + startNode + ", goalNode=" + goalNode + ", currentNode=" + currentNode +
                 ", goalReached=" + goalReached + ", step=" + step + ", openList=" + openList +
-                ", checkedList=" + checkedList + "]";
+                ", checkedList=" + checkedList + ", PathTransition=" + pt + "]";
     }
 
 
@@ -252,15 +375,15 @@ public class Driver {
         this.currentNode = n;
     }
 
-    public GraphNode getStartNode(GraphNode n) {
+    public GraphNode getStartNode() {
         return startNode;
     }
 
-    public GraphNode getGoalNode(GraphNode n) {
+    public GraphNode getGoalNode() {
         return goalNode;
     }
 
-    public GraphNode getCurrentNode(GraphNode n) {
+    public GraphNode getCurrentNode() {
         return currentNode;
     }
 
@@ -284,18 +407,22 @@ public class Driver {
         n.setfCost(n.getgCost() + n.gethCost());
 
         // Debug method, can be commented out
-        if (n != startNode && n != goalNode) {
-            System.out.println("F: " + n.getfCost() + "   " + "G: " + n.getgCost());
-        }
+//        if (n != startNode && n != goalNode) {
+//            System.out.println("F: " + n.getfCost() + "   " + "G: " + n.getgCost());
+//        }
     }
 
     public void setCostOnAllNodes() {
+        boolean destgoal = false;
         for (GraphNode n : this.getRouteList()) {
             getCost(n); // for all nodes in the routelist (a.k.a, the list that contains all graphnodes in the scenario),
             // calculate the 3 costs for the A* pathfinding algorithm
             // each driver has a different startnode and goalnode, so there will be different costs calculated for each driver instance
-
+            if (n.getId().contains("destinationGoal")) {
+                destgoal = true;
+            }
         }
+        System.out.println("Destination goal nodes found: " + destgoal);
     }
 
 
@@ -380,9 +507,10 @@ public class Driver {
     }
 
     public ArrayList<GraphNode> autoSearch() { // a copy of the method above: search() but uses a while loop to find best node candidates until the goal is reached
+        this.setNodesToDefaultState();
         setCostOnAllNodes();
         ArrayList<GraphNode> p = new ArrayList<>(); // p holds the final path for the driver from start node to goal node
-        while (goalReached == false) {
+        while (goalReached == false && step < 500) {
             // debug
             System.out.println("Driver's current lane: " + this.getLane());
 
@@ -406,24 +534,19 @@ public class Driver {
             if (nodeTop.getXCoordinate() != 0.0 && nodeTop.getYCoordinate() != 0.0) { // if node's x is 0.0 and node y is 0.0, this means the node doesn't exist, in the routelist...
                 // aka which is the list of all nodes in the scenario
                 this.openNode(nodeTop); // if nodes coords are NOT equal to (0.0, 0.0) this means a node does exist and can be OPENED for evaluation
-            } else {
-                nodeTop = fetchNodeWithXAndY(x, y-20, this.getLane()); // checks if there's a destination node at the top
-                if (nodeTop.getXCoordinate() != 0.0 && nodeTop.getYCoordinate() != 0.0) {
-                    this.openNode(nodeTop);
-                }
             }
 
 
             // open the node at the left
-            GraphNode nodeLeft = fetchNodeWithXAndY(x - 5, y, this.getLane());
+            GraphNode nodeLeft = fetchNodeWithXAndY(x - 2, y, this.getLane());
             if (nodeLeft.getXCoordinate() != 0.0 && nodeLeft.getYCoordinate() != 0.0) {
                 this.openNode(nodeLeft);
             } else { // if x = 0.0 and y = 0.0 - then it could possibly be a transition to a 90 degree straight, so subtract 7 to the x value as we're going left, but keep y the same
-                nodeLeft = fetchNodeWithXAndY(x - 7, y, this.getLane());
+                nodeLeft = fetchNodeWithXAndY(x - 5, y, this.getLane());
                 if (nodeLeft.getXCoordinate() != 0.0 && nodeLeft.getYCoordinate() != 0.0) {
                     this.openNode(nodeLeft);
                 } else {
-                    nodeLeft = fetchNodeWithXAndY(x - 12, y, this.getLane()); // if there's a destination node on the left hand side
+                    nodeLeft = fetchNodeWithXAndY(x - 7, y, this.getLane());
                     if (nodeLeft.getXCoordinate() != 0.0 && nodeLeft.getYCoordinate() != 0.0) {
                         this.openNode(nodeLeft);
                     }
@@ -435,24 +558,19 @@ public class Driver {
             GraphNode nodeBottom = fetchNodeWithXAndY(x, y + 5, this.getLane());
             if (nodeBottom.getXCoordinate() != 0.0 && nodeBottom.getYCoordinate() != 0.0) {
                 this.openNode(nodeBottom);
-            } else {
-                nodeBottom = fetchNodeWithXAndY(x, y + 20, this.getLane()); // check if there's a destination node at the bottom
-                if (nodeBottom.getXCoordinate() != 0.0 && nodeBottom.getYCoordinate() != 0.0) {
-                    this.openNode(nodeBottom);
-                }
             }
 
 
             // open the node at the right
-            GraphNode nodeRight = fetchNodeWithXAndY(x + 5, y, this.getLane());
+            GraphNode nodeRight = fetchNodeWithXAndY(x + 2, y, this.getLane());
             if (nodeRight.getXCoordinate() != 0.0 && nodeRight.getYCoordinate() != 0.0) {
                 this.openNode(nodeRight);
             } else { // if x = 0.0 and y = 0.0 - then it could possibly be a transition to a 90 degree straight, so add 7 to the x value as we're going right, but keep y the same
-                nodeRight = fetchNodeWithXAndY(x + 7, y, this.getLane());
+                nodeRight = fetchNodeWithXAndY(x + 5, y, this.getLane());
                 if (nodeRight.getXCoordinate() != 0.0 && nodeRight.getYCoordinate() != 0.0) {
                     this.openNode(nodeRight);
                 } else {
-                    nodeRight = fetchNodeWithXAndY(x + 12, y, this.getLane()); // check if there's a destination node on the right
+                    nodeRight = fetchNodeWithXAndY(x + 7, y, this.getLane());
                     if (nodeRight.getXCoordinate() != 0.0 && nodeRight.getYCoordinate() != 0.0) {
                         this.openNode(nodeRight);
                     }
@@ -464,7 +582,7 @@ public class Driver {
 
             // FIND THE BEST NODE
             int bestNodeIndex = 0;
-            double bestNodeFCost = 999.0; // initial best f cost
+            double bestNodeFCost = 99999.0; // initial best f cost
 
             for (int i = 0; i < openList.size(); i++) {
                 // check if this node's F cost is better
@@ -490,9 +608,11 @@ public class Driver {
 
             // now we got to check if this currentnode is the goal node or not
             if (currentNode == goalNode) { // if the current node is the goal node
+                System.out.println("goal found");
                 goalReached = true; // we've reached the goal.
                 p = trackThePath();
             }
+            step++;
         }
         return p; // return the final path from start node to goal node for the driver to drive on
     }

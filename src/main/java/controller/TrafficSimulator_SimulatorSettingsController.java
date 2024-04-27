@@ -59,7 +59,7 @@ public class TrafficSimulator_SimulatorSettingsController {
                 int lineCounter = 0;
                 while ((CurrentLine = bufferedReader.readLine()) != null) {
                    lineCounter++;
-                   if (lineCounter > 168) {
+                   if (lineCounter > 168) { // load the free-form placed nodes
                        String[] array = CurrentLine.split(", ");
                        Double x = Double.parseDouble((array[0]));
                        Double y = Double.parseDouble((array[1]));
@@ -68,6 +68,16 @@ public class TrafficSimulator_SimulatorSettingsController {
                        n.setFitHeight(35);
                        n.setFitWidth(35);
                        n.setPreserveRatio(true);
+                       if (imageURI.contains("cone") || imageURI.contains("barrier")) {
+                           n.setFitHeight(15);
+                           n.setFitWidth(15);
+                           n.setPreserveRatio(true);
+                       }
+                       if (imageURI.contains("trafficLight")) {
+                           n.setFitHeight(20);
+                           n.setFitWidth(20);
+                           n.setPreserveRatio(true);
+                       }
                        n.setLayoutX(x);
                        n.setLayoutY(y);
                        n.setTranslateX(x);
@@ -163,41 +173,19 @@ public class TrafficSimulator_SimulatorSettingsController {
                     throw new RuntimeException(e);
                 }
                 if (tss_bottompane.getNumberOfDrivers() >= 1) { // if number of drivers is greater than or equal to 1 then...
-                    if (tss_bottompane.getBusTransportEnabled()) { // check if bus transportation is enabled, then if it's true.. THEN..
-                        if (tss_bottompane.getNumberOfBuses() >= 1) { // check if number of buses is greater than or equal to 1
-                            Stage stage = (Stage) tss_bottompane.getScene().getWindow(); // get the current window and cast to Stage
-                            scene = tss_bottompane.getScene(); // get the current scene
-                            scene.setCursor(null);
-                            TrafficSimulator_Simulation view = new TrafficSimulator_Simulation();
-                            try {
-                                new TrafficSimulator_SimulationController(view);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            scene.setRoot(view); // change the root node of the current scene to the new screen
-                            stage.setTitle("Traffic Simulator - Simulation");
-                            stage.setScene(scene);
-                        } else { // if number of buses is not greater than or equal to 1, show error
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Parameter error");
-                            alert.setContentText("Bus transportation is enabled, Number of buses must be 1 or more");
-                            alert.show();
-                        }
-                    } else { // if bus transport is disabled and number of drivers is definitely greater than or equal to 1, proceed to go
-                        // to the simulation screen
-                        Stage stage = (Stage) tss_bottompane.getScene().getWindow(); // get the current window and cast to Stage
-                        scene = tss_bottompane.getScene(); // get the current scene
-                        scene.setCursor(null);
-                        TrafficSimulator_Simulation view = new TrafficSimulator_Simulation();
-                        try {
-                            new TrafficSimulator_SimulationController(view);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        scene.setRoot(view); // change the root node of the current scene to the new screen
-                        stage.setTitle("Traffic Simulator - Simulation");
-                        stage.setScene(scene);
-                    }
+                    // go to the simulation screen
+                    Stage stage = (Stage) tss_bottompane.getScene().getWindow(); // get the current window and cast to Stage
+                    scene = tss_bottompane.getScene(); // get the current scene
+                    scene.setCursor(null);
+                    TrafficSimulator_Simulation view = new TrafficSimulator_Simulation();
+                    try {
+                        new TrafficSimulator_SimulationController(view);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {};
+                    scene.setRoot(view); // change the root node of the current scene to the new screen
+                    stage.setTitle("Traffic Simulator - Simulation");
+                    stage.setScene(scene);
                 } else { // if number of drivers is not greater than or equal to 1, then show error
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Parameter error");
@@ -222,14 +210,6 @@ public class TrafficSimulator_SimulatorSettingsController {
                 tss_bottompane.setCarSpawnChanceInput(100 - tss_bottompane.getVanSpawnChanceSliderValue());
             }
         });
-
-        tss_bottompane.addBusTransportCheckBoxHandler(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Boolean value = tss_bottompane.getBusTransportEnabled();
-                tss_bottompane.enableNumberOfBusesInput(value);
-            }
-        });
     }
 
     private void writeSimulatorSettingsDataToFile() throws IOException {
@@ -238,8 +218,7 @@ public class TrafficSimulator_SimulatorSettingsController {
 
             printWriter.println(tss_bottompane.getNumberOfDrivers() + ", " +
                     tss_bottompane.getCarSpawnChanceSliderValue() + ", " +
-                    tss_bottompane.getVanSpawnChanceSliderValue() + ", " +
-                    tss_bottompane.getNumberOfBuses());
+                    tss_bottompane.getVanSpawnChanceSliderValue() + ", ");
 
             printWriter.close();
             fileWriter.close();
