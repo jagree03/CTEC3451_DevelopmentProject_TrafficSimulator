@@ -61,7 +61,7 @@ public class TrafficSimulatorController {
 				about.setTitle("About the program");
 				about.setHeaderText("Final Year Development Project - Traffic Simulator");
 				about.setContentText("This tool simulates traffic flow with drivers in an environment using complex behaviours and graphics for visualisation."
-						+ "\n\n" + "Version 1.0" + "\n\n" + "Project By Jagjeet Reehal P2652829");
+						+ "\n\n" + "Project By Jagjeet Reehal P2652829");
 				about.show();
 			}
 		});
@@ -144,12 +144,19 @@ public class TrafficSimulatorController {
 		tsrmb.addProceduralOnClickHandler(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				/*
 				Stage stage = (Stage) tsrmb.getScene().getWindow(); // get the window from one of the Layout managers,
 				scene = tsrmb.getScene(); // get the current scene
 				proceduralView = new TrafficSimulator_Procedural();
 				new TrafficSimulator_ProceduralController(proceduralView);
 				scene.setRoot(proceduralView); // change the root node of the current scene to the new screen
 				stage.setTitle("Traffic Simulator - Generate a random scenario");
+				 */
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("NOT IMPLEMENTED");
+				alert.setHeaderText("Procedural generation");
+				alert.setContentText("Procedural generation not implemented.");
+				alert.showAndWait();
 			}
 		});
 

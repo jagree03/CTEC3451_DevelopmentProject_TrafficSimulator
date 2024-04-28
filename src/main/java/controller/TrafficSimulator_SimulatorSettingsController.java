@@ -111,15 +111,13 @@ public class TrafficSimulator_SimulatorSettingsController {
                 Alert about = new Alert(Alert.AlertType.INFORMATION);
                 about.setTitle("Parameters");
                 about.setHeaderText("Traffic Simulator");
-                about.setContentText("Here you can tweak some parameters of the scenario"
+                about.setContentText("Here, you can tweak some parameters of the scenario."
                         + "\n"
-                        + "Number of drivers - number of drivers or vehicles to spawn in the scenario"
+                        + "Number of Drivers - Number of drivers or vehicles to spawn in the scenario."
                         + "\n"
-                        + "Car spawn chance - the chance that drivers have standard coupe cars"
+                        + "Car Spawn Chance - The chance that drivers have cars."
                         + "\n"
-                        + "Van spawn chance - the chance that drivers have vans"
-                        + "\n"
-                        + "Number of buses - if bus transport/route system is enabled, you can adjust the number of buses to spawn.");
+                        + "Van Spawn Chance - The chance that drivers have vans.");
                 about.show();
             }
         });

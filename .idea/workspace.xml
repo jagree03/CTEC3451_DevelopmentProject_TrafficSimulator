@@ -179,7 +179,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>104</line>
+          <line>105</line>
           <properties method="handle">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -202,7 +202,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_EditorController.java</url>
-          <line>2019</line>
+          <line>2021</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -217,7 +217,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_StatisticsController.java</url>
-          <line>172</line>
+          <line>170</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -227,7 +227,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/controller/TrafficSimulator_StatisticsController.java</url>
-          <line>135</line>
+          <line>133</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
       </breakpoints>

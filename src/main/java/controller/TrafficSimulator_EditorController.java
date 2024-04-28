@@ -80,8 +80,9 @@ public class TrafficSimulator_EditorController {
                 Alert about = new Alert(Alert.AlertType.INFORMATION);
                 about.setTitle("Controls");
                 about.setHeaderText("Controls for Traffic Simulator");
-                about.setContentText("Left click on pieces to select them from the bottom panel, what you select is reflected on your mouse cursor. " +
-                        "To place your piece, left click anywhere within the light blue panel."
+                about.setContentText("Left click on pieces to select them from the bottom panel."
+                                + '\n' +
+                        "To place your piece, left click anywhere within the scenario panel."
                         + "\n\n"
                         + "F Key - Deselect Piece"
                         + "\n\n"
@@ -128,6 +129,7 @@ public class TrafficSimulator_EditorController {
         tse_menubar.addLoadScenarioHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                tse_menubar.getClearScenarioItem().fire(); // clear the scenario before loading in another one
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Load");
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt*"));
@@ -2068,6 +2070,16 @@ public class TrafficSimulator_EditorController {
                     n.setLayoutY(y);
                     n.setTranslateX(x);
                     n.setTranslateY(y);
+                    if (imageURI.contains("cone") || imageURI.contains("barrier")) {
+                        n.setFitHeight(15);
+                        n.setFitWidth(15);
+                        n.setPreserveRatio(true);
+                    }
+                    if (imageURI.contains("trafficLight")) {
+                        n.setFitHeight(20);
+                        n.setFitWidth(20);
+                        n.setPreserveRatio(true);
+                    }
                     tseep.getChildren().add(n);
                     continue;
                 }
