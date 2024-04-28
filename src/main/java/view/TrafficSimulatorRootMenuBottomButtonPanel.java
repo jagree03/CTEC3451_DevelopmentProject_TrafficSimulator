@@ -7,16 +7,14 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 public class TrafficSimulatorRootMenuBottomButtonPanel extends HBox {
-
-    private Button Options;
     private Button Exit;
 
     public TrafficSimulatorRootMenuBottomButtonPanel() {
-        Options = new Button("Options");
         Exit = new Button("Exit");
+        Exit.setPrefSize(80, 20);
         this.setSpacing(15);
         this.setAlignment(Pos.BOTTOM_CENTER);
-        this.getChildren().addAll(Options, Exit);
+        this.getChildren().addAll(Exit);
     }
 
     public void addExitHandler(EventHandler<ActionEvent> handler) {

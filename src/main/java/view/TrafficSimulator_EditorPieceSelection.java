@@ -169,7 +169,7 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
     public void setToHazardPieces() {
         File slot1_tempImg = new File("img\\2_EditorScreen\\hazards\\1_cone.png");
         File slot2_tempImg = new File("img\\2_EditorScreen\\hazards\\2_barrier.png");
-        File slot3_tempImg = new File("img\\2_EditorScreen\\hazards\\2_barrier_90.png");
+        File slot3_tempImg = new File("img\\2_EditorScreen\\hazards\\2_barrier_rock.png");
         File slot4_tempImg = new File("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
 
         /*

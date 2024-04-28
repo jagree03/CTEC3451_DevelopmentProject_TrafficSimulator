@@ -29,6 +29,8 @@ public class TrafficSimulator_StatisticsBottomPane extends VBox {
     private Label vehicleColour;
     private Label vehicleFuelLevel;
 
+    private Label vehicleOutOfFuel;
+
     private Label driverHazardLightsOn;
 
     private Label driverLane;
@@ -60,7 +62,6 @@ public class TrafficSimulator_StatisticsBottomPane extends VBox {
 
         refresh = new Button("Refresh");
         refresh.setAlignment(Pos.BASELINE_CENTER);
-
     }
 
     public void setDriverVehicle(Vehicle vehicle) {
@@ -83,13 +84,21 @@ public class TrafficSimulator_StatisticsBottomPane extends VBox {
         vehicleSpriteURL = new Label("Vehicle Sprite URI: " + d.getVehicle().getSprite().getUrl());
         vehicleColour = new Label("Vehicle Colour: " + d.getVehicle().getColor());
         vehicleFuelLevel = new Label("Vehicle Fuel Level: " + d.getVehicle().getFuelLevel());
+
+        boolean outOfFuel = false;
+        if (d.getVehicle().getFuelLevel() == 0.00)
+            outOfFuel = true;
+        else
+            outOfFuel = false;
+
+        vehicleOutOfFuel = new Label("Vehicle Out Of Fuel: " + outOfFuel);
         driverHazardLightsOn = new Label("Hazards activated: " + d.isHazLightsOn());
         driverLane = new Label("Driver Lane: " + d.getLane());
         driverStartNodeID = new Label("Driver Start Node: " + d.getStartNodeID());
         driverGoalNodeID = new Label("Driver Goal Node: " + d.getGoalNodeID());
         driverCurrentNodeID = new Label("Driver Current Node: " + d.getCurrentNodeID());
         this.getChildren().addAll(vehicleType, vehicleSpriteURL, vehicleColour,
-                                  vehicleFuelLevel, driverHazardLightsOn, driverLane,
+                                  vehicleFuelLevel, vehicleOutOfFuel, driverHazardLightsOn, driverLane,
                                   driverStartNodeID, driverGoalNodeID, driverCurrentNodeID);
 
         this.getChildren().add(refresh);
@@ -103,7 +112,7 @@ public class TrafficSimulator_StatisticsBottomPane extends VBox {
         petrolStationImageURI = new Label("Petrol Station Sprite URI: " + p.getImageViewButton().getImage().getUrl());
         petrolStationTotalFuel = new Label("Petrol Station Total Fuel: " + p.getTotalFuel());
         petrolStationPricePerLitre = new Label("Petrol Station Price Per Litre: " + p.getPricePerLitre());
-        petrolStationSales = new Label("Petrol Station Sales: " + p.getSales());
+        petrolStationSales = new Label("Petrol Station Sales: £ " + p.getSales());
         petrolStationOutOfFuelStatus = new Label("Petrol Station Out Of Fuel: " + p.getOutOfFuelValue());
 
         this.getChildren().addAll(petrolStationUUID, petrolStationName, petrolStationImageURI,

@@ -98,8 +98,6 @@ public class TrafficSimulator_StatisticsController {
                 }
             }
         });
-
-
     }
 
     public void modifyComboBoxList() {

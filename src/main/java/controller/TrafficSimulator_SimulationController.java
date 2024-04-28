@@ -114,11 +114,11 @@ public class TrafficSimulator_SimulationController {
                 about.setHeaderText("Traffic Simulator");
                 about.setContentText("3 buttons below:"
                         + "\n\n"
-                        + "Back button - to go back to the simulation settings screen to adjust parameters."
+                        + "Back Button - To go back to the simulation settings screen to adjust parameters."
                         + "\n\n"
-                        + "Play/pause simulation - to play or stop the simulation"
+                        + "Play/Pause Simulation - To play or stop the simulation."
                         + "\n\n"
-                        + "Statistics - open a window to display statistics");
+                        + "Statistics - Open a window to display statistics.");
                 about.show();
             }
         });

@@ -93,6 +93,10 @@ public class TrafficSimulator_EditorMenuBar extends MenuBar {
 		return exitItem;
 	}
 
+	public MenuItem getClearScenarioItem(){
+		return clearScenarioItem;
+	}
+
 	public void setMuteItemName(String text) {
 		muteItem.setText(text);
 	}
