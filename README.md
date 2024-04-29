@@ -8,6 +8,6 @@ Programming Language: Java
 
 Libraries: JavaFX, JFXtras (https://jfxtras.org/)
 
-Current Version of the system: V9.1 (28 Apr 2024)
+Current Version of the system: V9.2 (29 Apr 2024)
 
 check releases for further prototype iterations
