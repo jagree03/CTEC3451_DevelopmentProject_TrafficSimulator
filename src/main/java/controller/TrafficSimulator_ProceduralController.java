@@ -1,11 +1,8 @@
 package controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-import view.*;
+import view.TrafficSimulatorRootMenuBar;
+import view.TrafficSimulator_Procedural;
 
 public class TrafficSimulator_ProceduralController {
 
@@ -15,7 +12,10 @@ public class TrafficSimulator_ProceduralController {
 
     private Scene scene;
 
-
+    /**
+     * Controller for the Procedural menu
+     * @param view A TrafficSimulator_Procedural Instance
+     */
     public TrafficSimulator_ProceduralController(TrafficSimulator_Procedural view) {
         //initialise view and model fields
         this.view = view;
@@ -27,6 +27,9 @@ public class TrafficSimulator_ProceduralController {
         this.attachEventHandlers();
     }
 
+    /**
+     * This method attaches the event handlers
+     */
     private void attachEventHandlers() {
         /*
         tse_bottompane.getPiecesButtonsPane().addRoadSurfaceButtonOnClickHandler(new EventHandler<MouseEvent>() {

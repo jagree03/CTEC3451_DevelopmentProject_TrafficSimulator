@@ -13,22 +13,15 @@ public class TrafficSimulatorRootMenuBar extends MenuBar {
 
 	private MenuItem aboutItem, exitItem;
 
+	/**
+	 * Default constructor
+	 */
 	public TrafficSimulatorRootMenuBar() {
 
 		//temp var for menus and menu items within this MenuBar
 		Menu menu;
 
 		menu = new Menu("_File");
-
-		/*
-		loadItem = new MenuItem("_Load Student Data");
-		loadItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+L"));
-		menu.getItems().add(loadItem);
-
-		saveItem = new MenuItem("_Save Student Data");
-		saveItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+S"));
-		menu.getItems().add(saveItem);
-		 */
 
 		menu.getItems().add( new SeparatorMenuItem());
 
@@ -48,24 +41,26 @@ public class TrafficSimulatorRootMenuBar extends MenuBar {
 		this.getMenus().add(menu); 
 	}
 
-	//these methods allow handlers to be externally attached to this menubar and used by the controller
-	/*
-	public void addSaveHandler(EventHandler<ActionEvent> handler) {
-		saveItem.setOnAction(handler);
-	}
-	
-	public void addLoadHandler(EventHandler<ActionEvent> handler) {
-		loadItem.setOnAction(handler);
-	}
-	*/
-
+	/**
+	 * Add an event handler to the about menu bar item, so when it's clicked it will show info about the app.
+	 * @param handler EventHandler<ActionEvent>
+	 */
 	public void addAboutHandler(EventHandler<ActionEvent> handler) {
 		aboutItem.setOnAction(handler);
 	}
 
+	/**
+	 * Add an event handler to the exit menu bar item, so when it's clicked, it will exit the app.
+	 * @param handler EventHandler<ActionEvent>
+	 */
 	public void addExitHandler(EventHandler<ActionEvent> handler) {
 		exitItem.setOnAction(handler);
 	}
+
+	/**
+	 * Return the exit menu item
+	 * @return MenuItem
+	 */
 	public MenuItem getExitItem(){
 		return exitItem;
 	}

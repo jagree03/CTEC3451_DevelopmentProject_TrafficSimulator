@@ -2,7 +2,6 @@ package view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -30,6 +29,10 @@ public class TrafficSimulator_Statistics extends VBox {
     private TrafficSimulator_StatisticsDropDownMenu tsddm;
     private TrafficSimulator_StatisticsBottomPane tssbp;
 
+    /**
+     * Default constructor
+     * @throws IOException If the file path to the .txt file that holds the parameter settings is not found then throw this exception
+     */
     public TrafficSimulator_Statistics() throws IOException {
         readSimulationSettingsFromFile(); // first read the parameter settings
 
@@ -58,6 +61,11 @@ public class TrafficSimulator_Statistics extends VBox {
         return tssbp;
     }
 
+    /**
+     * Reads the simulation settings from the .txt file 'parameters'
+     * and assigns the data members to the values in the text file
+     * @throws IOException If the file 'parameters.txt' doesn't exist or the path cannot be accessed, throw this exception.
+     */
     private void readSimulationSettingsFromFile() throws IOException {
         BufferedReader bufferedReader = null;
         try {

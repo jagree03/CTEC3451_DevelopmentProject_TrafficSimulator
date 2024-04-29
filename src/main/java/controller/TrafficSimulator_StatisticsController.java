@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -8,28 +7,35 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import model.Driver;
 import model.Driver_Statistics;
 import model.PetrolStation;
 import model.Vehicle;
-import view.*;
+import view.TrafficSimulator_Statistics;
+import view.TrafficSimulator_StatisticsBottomPane;
+import view.TrafficSimulator_StatisticsDropDownMenu;
 
-import java.awt.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class TrafficSimulator_StatisticsController {
 
     //fields to be used throughout class
-    private Scene scene;
     private TrafficSimulator_Statistics view;
     private TrafficSimulator_StatisticsDropDownMenu tsddm;
     private TrafficSimulator_StatisticsBottomPane tssbp;
 
-    private ArrayList<Driver_Statistics> allDrivers = new ArrayList<Driver_Statistics>();
-    private ArrayList<PetrolStation> allPetrolStations = new ArrayList<PetrolStation>();
+    private ArrayList<Driver_Statistics> allDrivers = new ArrayList<Driver_Statistics>(); // an arraylist to hold all driver's statistics from the scenario, based on the number of drivers in the scenario
+    private ArrayList<PetrolStation> allPetrolStations = new ArrayList<PetrolStation>(); // an arraylist to hold all petrolstations in the scenario, based on the number of petrol stations in the scenario
 
+    /**
+     * This is a constructor for the Statistics Controller
+     * @param view A TrafficSimulator_Statistics instance
+     * @throws IOException if the text files that hold the statistics cannot be found, throw this exception
+     */
     public TrafficSimulator_StatisticsController(TrafficSimulator_Statistics view) throws IOException {
         //initialise view and model fields
         this.view = view;
@@ -42,15 +48,17 @@ public class TrafficSimulator_StatisticsController {
         //attach event handlers to view using private helper method
         this.attachEventHandlers();
 
-        // execute any other methods
+        // execute any other methods - reading the stats and modifying the combobox list.
         readDriverAndVehicleStats();
         readPetrolStationStats();
         modifyComboBoxList();
     }
 
-    //helper method - used to attach event handlers
+    /**
+     * This method attaches the event handlers to the respective controls in each of the statistics related view classes that form the whole
+     * Statistics screen
+     */
     private void attachEventHandlers() {
-        //attach event handlers here
 
         /**
          * ChangeListener that checks if the combobox item has been modified,
@@ -73,6 +81,11 @@ public class TrafficSimulator_StatisticsController {
             }
         });
 
+        /**
+         * Refresh button event handler, clears the arraylists that hold the driver statistics and petrol stations, re-reads the stats from the files and
+         * this re-adds the objects back into their respective arraylists, then update the stats depending on the chosen combobox list item
+         * either driver or petrol station.
+         */
         tssbp.addRefreshButtonHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -100,6 +113,10 @@ public class TrafficSimulator_StatisticsController {
         });
     }
 
+    /**
+     * This method updates the combobox list in TrafficSimulator_StatisticsDropDownMenu (tsddm)
+     * so that they point to the objects from the arraylists (allDrivers and allPetrolStations).
+     */
     public void modifyComboBoxList() {
         ObservableList<String> options =
                 FXCollections.observableArrayList();
@@ -121,7 +138,7 @@ public class TrafficSimulator_StatisticsController {
     }
 
     /**
-     * overloaded variation of the update stats method, basically updates the label values so they
+     * overloaded variation of the update stats method, updates the label values so they
      * match the values of the passed in object.
      * @param p PetrolStation object instance
      */
@@ -130,6 +147,12 @@ public class TrafficSimulator_StatisticsController {
     }
 
     // other methods here
+
+    /**
+     * This method reads the driver and vehicle stats, by accepting the drivers.txt file from the statistics folder
+     * and instantiating objects based on those values in the file, then adding the objects to the allDrivers arraylist.
+     * @throws IOException if the text file is not found or path cannot be accessed, throw this exception.
+     */
     public void readDriverAndVehicleStats() throws IOException {
         File file = new File("statistics\\drivers.txt");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -177,6 +200,11 @@ public class TrafficSimulator_StatisticsController {
         bufferedReader.close();
     }
 
+    /**
+     * This method reads the petrol station stats, by accepting the petrolstations.txt file from the statistics folder
+     * and instantiating objects based on those values in the file, then adding the objects to the allPetrolStations arraylist.
+     * @throws IOException if the text file is not found or path cannot be accessed, throw this exception.
+     */
     public void readPetrolStationStats() throws IOException {
         File file = new File("statistics\\petrolstations.txt");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -212,6 +240,11 @@ public class TrafficSimulator_StatisticsController {
     }
 
 
+    /**
+     * Finds a Driver_Statistics object in the arraylist allDrivers, based on a UUID uniqueID value.
+     * @param uniqueId UUID Unique ID value
+     * @return a Driver_Statistics object that matches the passed in UUID uniqueID.
+     */
     public Driver_Statistics findDriverBasedOnUUID(UUID uniqueId) {
         String uniqueID = uniqueId.toString();
         Driver_Statistics found = null;
@@ -223,6 +256,11 @@ public class TrafficSimulator_StatisticsController {
         return found;
     }
 
+    /**
+     * Finds a PetrolStation object in the arraylist allPetrolStations, based on a UUID uniqueID value.
+     * @param uniqueId UUID Unique ID value
+     * @return a PetrolStation object that matches the passed in UUID uniqueID.
+     */
     public PetrolStation findPetrolStationBasedOnUUID(UUID uniqueId) {
         String uniqueID = uniqueId.toString();
         PetrolStation found = null;
@@ -233,6 +271,4 @@ public class TrafficSimulator_StatisticsController {
         }
         return found;
     }
-
-
 }

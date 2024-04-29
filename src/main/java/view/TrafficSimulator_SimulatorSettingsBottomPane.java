@@ -5,10 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
 
@@ -26,7 +28,9 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
     private Button Start;
     private Button Back;
 
-
+    /**
+     * Default constructor
+     */
     public TrafficSimulator_SimulatorSettingsBottomPane() {
         HBox overall = new HBox(30); // overall layout container, contains 2 Vbox's, each of these
         // vboxes has the fields, which are themselves stored in Hbox's.
@@ -91,39 +95,76 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
 
     }
 
+    /**
+     * Add event handler to the back button so the program can switch back to the environment editor scene/screen
+     * @param handler EventHandler<ActionEvent>
+     */
     public void addGoBackHandler(EventHandler<ActionEvent> handler) {
         Back.setOnAction(handler);
     }
+
+    /**
+     * Add event handler to the start button so the program can switch to the Simulation screen/scene
+     * @param handler EventHandler<ActionEvent>
+     */
     public void addStartHandler(EventHandler<ActionEvent> handler) {
         Start.setOnAction(handler);
     }
 
+    /**
+     * Add ChangeListener to the slider's value property, so the listener can update the displayed value in the Input
+     * @param listener EventHandler<ActionEvent>
+     */
     public void addCarSpawnChanceSliderHandler(ChangeListener<Number> listener) {
         carSpawnChanceSlider.valueProperty().addListener(listener);
     }
 
+    /**
+     * Set the input of the car spawn chance text box
+     * @param value Integer Value
+     */
     public void setCarSpawnChanceInput(int value) {
         carSpawnChanceInput.setText("" + value + "%");
         carSpawnChanceSlider.setValue(value);
     }
 
+    /**
+     * Get the value of the slider for car spawn chance
+     * @return Integer value
+     */
     public int getCarSpawnChanceSliderValue() {
         return (int) carSpawnChanceSlider.getValue();
     }
 
+    /**
+     * Add ChangeListener to the slider's value property, so the listener can update the displayed value in the Input
+     * @param listener ChangeListener<Number>
+     */
     public void addVanSpawnChanceSliderHandler(ChangeListener<Number> listener) {
         vanSpawnChanceSlider.valueProperty().addListener(listener);
     }
 
+    /**
+     * Set the input of the van spawn chance text box
+     * @param value Integer Value
+     */
     public void setVanSpawnChanceInput(int value) {
         vanSpawnChanceInput.setText("" + value + "%");
         vanSpawnChanceSlider.setValue(value);
     }
 
+    /**
+     * Get the value of the slider for van spawn chance
+     * @return Integer value
+     */
     public int getVanSpawnChanceSliderValue() {
         return (int) vanSpawnChanceSlider.getValue();
     }
 
+    /**
+     * Get the total number of drivers that the user has assigned
+     * @return Integer value
+     */
     public int getNumberOfDrivers() {
         return Integer.parseInt(numOfDriversInput.getText());
     }

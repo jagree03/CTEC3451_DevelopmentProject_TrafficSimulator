@@ -4,23 +4,17 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.ImageCursor;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.ImageViewButton;
 import view.*;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
-import java.net.URI;
-import java.util.ArrayList;
 
 public class TrafficSimulator_SimulatorSettingsController {
 
@@ -33,6 +27,11 @@ public class TrafficSimulator_SimulatorSettingsController {
 
     private Scene scene;
 
+    /**
+     * This is a constructor for the SimulatorSettings Controller
+     * @param view A TrafficSimulator_SimulatorSettings instance
+     * @throws IOException if the scenario from the previous Scenario Editor screen cannot be found, throw this exception
+     */
     public TrafficSimulator_SimulatorSettingsController(TrafficSimulator_SimulatorSettings view) throws IOException {
 
         //initialise view and model fields
@@ -50,6 +49,11 @@ public class TrafficSimulator_SimulatorSettingsController {
         this.attachEventHandlers();
     }
 
+    /**
+     * This method loads scenario from a text file, by clearing all nodes in the EditorPane (The GridPane) and reading each line to
+     * re-instantiate the ImageViewButtons based on the saved scenario to re-populate the GridPane.
+     * @throws IOException If the .txt file doesn't exist or cannot be accessed, throw this exception.
+     */
     private void loadScenarioFromFile() throws IOException {
             tss_editorpane.getChildren().removeAll();
             BufferedReader bufferedReader = null;
@@ -104,8 +108,15 @@ public class TrafficSimulator_SimulatorSettingsController {
             }
     }
 
+    /**
+     * This method attaches the event handlers to the respective controls in each of the simulation settings related view classes that form the whole
+     * simulation settings screen
+     */
     private void attachEventHandlers() {
-        //attach an event handler to the menu item of the menu bar that shows about author info about the program
+
+        /**
+         * This method attaches an event handler to the menu item of the menu bar that shows info about each of the parameters.
+         */
         tss_menubar.addAboutHandler(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 Alert about = new Alert(Alert.AlertType.INFORMATION);
@@ -122,8 +133,16 @@ public class TrafficSimulator_SimulatorSettingsController {
             }
         });
 
+        /**
+         * This method attaches an event handler to the exit item of the menu bar, when clicked - exit program.
+         */
         tss_menubar.addExitHandler(e -> System.exit(0));
 
+        /**
+         * This method attaches an event handler to the back button of the bottom pane, when clicked - go back to the previous scene
+         * The previous scene is the editor screen. It also sets an event for the scene for the key presses
+         * R for rotate, F for deselection, V for inverting lanes (for turn left pieces)
+         */
         tss_bottompane.addGoBackHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -161,6 +180,10 @@ public class TrafficSimulator_SimulatorSettingsController {
             }
         });
 
+        /**
+         * This method attaches an event handler to the start button of the bottompane, it writes the parameter settings
+         * to a text file so that when it switches to the next scene which the simulation screen, the simulation controller is able to read in the values from the text file.
+         */
         tss_bottompane.addStartHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -193,6 +216,9 @@ public class TrafficSimulator_SimulatorSettingsController {
             }
         });
 
+        /**
+         * Adds a ChangeListener to the Car Spawn Chance Slider, so if the user moves the slider, then the value displayed is modified.
+         */
         tss_bottompane.addCarSpawnChanceSliderHandler(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -201,6 +227,9 @@ public class TrafficSimulator_SimulatorSettingsController {
             }
         });
 
+        /**
+         * Adds a ChangeListener to the Van Spawn Chance Slider, so if the user moves the slider, then the value displayed is modified.
+         */
         tss_bottompane.addVanSpawnChanceSliderHandler(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -210,6 +239,10 @@ public class TrafficSimulator_SimulatorSettingsController {
         });
     }
 
+    /**
+     * This method writes the parameter values that have been modified (or unmodified) by the user to a text file.
+     * @throws IOException if the file path cannot be accessed to write the text file, throw this exception.
+     */
     private void writeSimulatorSettingsDataToFile() throws IOException {
             FileWriter fileWriter = new FileWriter("parameters.txt");
             PrintWriter printWriter = new PrintWriter(fileWriter);

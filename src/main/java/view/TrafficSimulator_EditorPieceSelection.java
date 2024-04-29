@@ -1,6 +1,5 @@
 package view;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,7 +7,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-
 
 import java.io.File;
 
@@ -31,6 +29,9 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
     private Image slot6_img;
     private ImageView slot6;
 
+    /**
+     * Default constructor
+     */
     public TrafficSimulator_EditorPieceSelection() {
         File slot1_tempImg = new File("img\\2_EditorScreen\\roads\\1_straightRoad.png");
         File slot2_tempImg = new File("img\\2_EditorScreen\\roads\\2_turnLeft.png");
@@ -88,6 +89,9 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         return this;
     }
 
+    /**
+     * Sets the slots to Road Surface pieces
+     */
     public void setToRoadSurfacePieces() {
         File slot1_tempImg = new File("img\\2_EditorScreen\\roads\\1_straightRoad.png");
         File slot2_tempImg = new File("img\\2_EditorScreen\\roads\\2_turnLeft.png");
@@ -112,6 +116,9 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         slot6.setDisable(true);
     }
 
+    /**
+     * Sets the slots to Destination pieces
+     */
     public void setToDestinationPieces() {
         File slot1_tempImg = new File("img\\2_EditorScreen\\destinations\\dest_1_petrolStation.png");
         File slot2_tempImg = new File("img\\2_EditorScreen\\destinations\\dest_2_shop.png");
@@ -143,6 +150,9 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
 //        slot7.setDisable(false);
     }
 
+    /**
+     * Sets the slots to Decorative pieces
+     */
     public void setToDecorativePieces() {
         File slot1_tempImg = new File("img\\2_EditorScreen\\decorative\\1_tree.png");
         File slot2_tempImg = new File("img\\2_EditorScreen\\decorative\\2_bush.png");
@@ -166,6 +176,9 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         slot6.setImage(slot6_img);
     }
 
+    /**
+     * Sets the slots to Hazard pieces
+     */
     public void setToHazardPieces() {
         File slot1_tempImg = new File("img\\2_EditorScreen\\hazards\\1_cone.png");
         File slot2_tempImg = new File("img\\2_EditorScreen\\hazards\\2_barrier.png");
@@ -197,6 +210,10 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         slot6.setDisable(true);
     }
 
+    /**
+     * Create an array of slots, populate the array with slots, then return the array
+     * @return An array of slots
+     */
     public ImageView[] getSlots() {
         ImageView[] array = new ImageView[6];
         array[0] = slot1;
@@ -208,6 +225,10 @@ public class TrafficSimulator_EditorPieceSelection extends HBox {
         return array;
     }
 
+    /**
+     * Sets the onClick handler for all the slots so they can be handled
+     * @param handler EventHandler<MouseEvent>
+     */
     public void CursorOnClickHandler(EventHandler<MouseEvent> handler) {
         slot1.setOnMouseClicked(handler);
         slot2.setOnMouseClicked(handler);

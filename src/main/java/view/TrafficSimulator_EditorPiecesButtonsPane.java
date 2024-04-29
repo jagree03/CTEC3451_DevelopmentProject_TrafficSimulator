@@ -8,8 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import javax.swing.*;
-
 public class TrafficSimulator_EditorPiecesButtonsPane extends VBox {
 
     private Label title;
@@ -18,6 +16,9 @@ public class TrafficSimulator_EditorPiecesButtonsPane extends VBox {
     private Button decorative;
     private Button hazards;
 
+    /**
+     * Default Constructor
+     */
     public TrafficSimulator_EditorPiecesButtonsPane() {
         title = new Label("Pieces");
         title.setAlignment(Pos.CENTER);
@@ -37,6 +38,9 @@ public class TrafficSimulator_EditorPiecesButtonsPane extends VBox {
         return this;
     }
 
+
+    // these event handlers are on click handlers for each of the 4 buttons, when each of them are clicked
+    // the slots of pieces are going to be updated as the mouse click events are handled
     public void addRoadSurfaceButtonOnClickHandler(EventHandler<MouseEvent> handler) {
         road_surface.setOnMouseClicked(handler);
     }

@@ -1,30 +1,26 @@
 package controller;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import jfxtras.scene.control.ImageViewButton;
 import model.*;
 import view.*;
 
-import javax.swing.*;
 import java.io.*;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -46,31 +42,35 @@ public class TrafficSimulator_SimulationController {
 
     private TrafficSimulator_SimulationBottomPane tss_bottompane;
 
-    private ArrayList<PathTransition> PathTransitionArray;
+    private AStarGraph graph; // AStarGraph instance, holds all nodes of the scenario
 
-    private AStarGraph graph;
+    private int numOfDrivers; // holds the number of drivers as integer
 
-    private int numOfDrivers;
+    private int carSpawnChance; // holds the chance that cars will spawn as integer
 
-    private int carSpawnChance;
+    private int vanSpawnChance; // holds the chance that vans will spawn as integer
 
-    private int vanSpawnChance;
+    //private int numOfBuses;
 
-    private int numOfBuses;
-
-    private ArrayList<Driver> drivers;
-    private ArrayList<TrafficLight> trafficLights;
-    private ArrayList<ImageView> hazards;
-    private ArrayList<PetrolStation> petrolStations;
+    private ArrayList<Driver> drivers; // holds all drivers in arraylist
+    private ArrayList<TrafficLight> trafficLights; // holds all trafficlights in arraylist
+    private ArrayList<ImageView> hazards; // holds all hazards in arraylist
+    private ArrayList<PetrolStation> petrolStations; // holds all petrolstations in arraylist
 
     private ArrayList<GraphNode> allDestinationNodes; // A list of destination nodes in the scenario, contains nodes with id's that contain "destinationGoal".
 
 
-    private AnimationTimer at;
+    private AnimationTimer at; // animation timer runs when the PathTransitions are running
 
     private Scene scene;
 
 
+    /**
+     * Constructor for the SimulationController
+     * @param view A TrafficSimulator_Simulation view instance
+     * @throws IOException As the method loads the scenario, parameter settings and graphnodes from files, if these files don't exist - throw this exception
+     * @throws InterruptedException Throw this exception if interuption occurs as the AnimationTimer and PathTransitions are running
+     */
     public TrafficSimulator_SimulationController(TrafficSimulator_Simulation view) throws IOException, InterruptedException {
 
         //initialise view and model fields
@@ -82,7 +82,7 @@ public class TrafficSimulator_SimulationController {
         tss_bottompane = view.getTSS_BottomPane();
 
 
-        //attach event handlers to view using private helper method
+        //attach event handlers to view using private helper method and initialise the private data members
         this.attachEventHandlers();
         graph = new AStarGraph();
         allDestinationNodes = new ArrayList<>();
@@ -90,12 +90,12 @@ public class TrafficSimulator_SimulationController {
         hazards = new ArrayList<>();
         trafficLights = new ArrayList<>();
         petrolStations = new ArrayList<>();
-        // load scenario
+        // load scenario with its pieces, graph nodes and the parameter settings that the user supplied.
         loadScenarioFromFile();
         readGraphNodesFromFile();
         readSimulationSettingsFromFile();
         try {
-            spawnDriversAndGeneratePath();
+            spawnDriversAndGeneratePath(); // spawn the drivers and activate their path finding behaviour
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Scenario error");
@@ -105,8 +105,14 @@ public class TrafficSimulator_SimulationController {
         activateTrafficLights();
     }
 
+    /**
+     * This method attaches the event handlers of the controls from the simulation related view components.
+     */
     private void attachEventHandlers() {
-        //attach an event handler to the menu item of the menu bar that shows about author info about the program
+
+        /**
+         * Attach an event handler to the About menu item, shows info about the buttons and what they do.
+         */
         tss_menubar.addAboutHandler(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 Alert about = new Alert(Alert.AlertType.INFORMATION);
@@ -123,8 +129,15 @@ public class TrafficSimulator_SimulationController {
             }
         });
 
+        /**
+         * This method attaches event handler to the exit item of the menu bar, when clicked exit the app.
+         */
         tss_menubar.addExitHandler(e -> System.exit(0));
 
+        /**
+         * This method attaches event handler to the display boundaries item of the menu bar, when clicked, add styling to each HBox (driver) in the scenario
+         * in order to display the borders around them, A.K.A the boundaries.
+         */
         tss_menubar.addDisplayBoundingHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -142,6 +155,11 @@ public class TrafficSimulator_SimulationController {
             }
         });
 
+        /**
+         * This method attaches event handler to the back button of the BottomPane of the Simulation Screen,
+         * It stops the activity of all drivers and traffic lights in the scenario and switches the scene to the previous scene
+         * Which was the Simulation Settings screen where you can tweak parameters.
+         */
         tss_bottompane.addGoBackHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -197,6 +215,10 @@ public class TrafficSimulator_SimulationController {
             }
         });
 
+        /**
+         * This method attaches an event handler to the Statistics Button in the BottomPane, it creates a new Stage (Window)
+         * that displays the statistics of the scenario, each driver, each petrolstation etc.
+         */
         tss_bottompane.addStatisticsHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -220,6 +242,11 @@ public class TrafficSimulator_SimulationController {
         });
     } // end of attachEventHandlers
 
+    /**
+     * This method loads scenario from a text file, by clearing all nodes in the EditorPane (The GridPane) and reading each line to
+     * re-instantiate the ImageViewButtons based on the saved scenario to re-populate the GridPane.
+     * @throws IOException If the .txt file doesn't exist or cannot be accessed, throw this exception.
+     */
     private void loadScenarioFromFile() throws IOException {
         tss_editorpane.getChildren().removeAll();
         BufferedReader bufferedReader = null;
@@ -278,6 +305,10 @@ public class TrafficSimulator_SimulationController {
         }
     }
 
+    /**
+     * This method reads in the graph nodes from the text file and adds each graph node to the routeList variable of the AStarGraph instance.
+     * @throws FileNotFoundException If the .txt file is not found in the root directory, throw this exception.
+     */
     private void readGraphNodesFromFile() throws FileNotFoundException {
         BufferedReader bufferedReader = null;
         try {
@@ -302,6 +333,11 @@ public class TrafficSimulator_SimulationController {
         }
     }
 
+    /**
+     * This method reads the simulation settings that the user provided in the previous screen/scene.
+     * It reads each line and initializes the private data members related to the settings to the values from the text file.
+     * @throws IOException If the text file cannot be accessed, throw this exception.
+     */
     private void readSimulationSettingsFromFile() throws IOException {
         BufferedReader bufferedReader = null;
         try {
@@ -320,6 +356,14 @@ public class TrafficSimulator_SimulationController {
         }
     }
 
+    /**
+     * This method is responsible for spawning the drivers in the scenario based on the numOfDrivers value and the CarSpawnChance / VanSpawnChance values
+     * It gives each driver the routelist from the graph instance, so each driver is able to access every node in the scenario
+     * It then assigns each driver a random starting position through a duplicated routeList, and each assignment of a GraphNode is deleted
+     * to prevent another driver from also spawning at the same starting position.
+     * Then each driver is given a random destination node. They are re-instantiated based on the constructor and then their
+     * path-finding behaviour is activated.
+     */
     private void spawnDriversAndGeneratePath() {
 
         System.out.println("drivers: " + numOfDrivers);
@@ -443,8 +487,6 @@ public class TrafficSimulator_SimulationController {
         tst.setTranslateY(100);
          */
 
-        //System.out.println(path.getElements());
-
 
         at = new AnimationTimer() {
             @Override
@@ -512,12 +554,14 @@ public class TrafficSimulator_SimulationController {
                     }
                 }
 
-                // traffic light detection
+                // traffic light detection, checks if every driver's HBOX intersects with every traffic light
                 for (int c = 0; c < drivers.size(); c++) {
                     for (int d = 0; d < trafficLights.size(); d++) {
                         if (drivers.get(c).getHBox().getBoundsInParent().intersects(trafficLights.get(d).getImageView().getBoundsInParent())) {
-                            System.out.println("traffic light detected");
+                            //System.out.println("traffic light detected");
                             if (trafficLights.get(d).getCurrentSignal().equals("red")) {
+                                drivers.get(c).getPathTransition().pause();
+                            } else if (trafficLights.get(d).getCurrentSignal().equals("amber")) {
                                 drivers.get(c).getPathTransition().pause();
                             } else if (trafficLights.get(d).getCurrentSignal().equals("green")) {
                                 drivers.get(c).getPathTransition().play();
@@ -526,11 +570,11 @@ public class TrafficSimulator_SimulationController {
                     }
                 }
 
-                // hazard detection
+                // hazard detection, checks if every driver's HBOX intersects with every hazard
                 for (int c = 0; c < drivers.size(); c++) {
                     for (int d = 0; d < hazards.size(); d++) {
                         if (drivers.get(c).getHBox().getBoundsInParent().intersects(hazards.get(d).getBoundsInParent())) {
-                            System.out.println("hazard detected");
+                            //System.out.println("hazard detected");
 
                             drivers.get(c).getPathTransition().pause();
 
@@ -560,7 +604,7 @@ public class TrafficSimulator_SimulationController {
 //                    }
 //                }
 
-                // FUEL LEVEL DECREASING
+                // FUEL LEVEL DECREASING - every driver's fuel decreases by 0.0010 when the simulation is running / animationtimer is activated
                 for (Driver d : drivers) { // fuel will decrease for all cars when scenario has started
                     double fuel = d.getVehicle().getFuelLevel();
                     //System.out.println("fuel = " + fuel);
@@ -570,11 +614,11 @@ public class TrafficSimulator_SimulationController {
                     d.getVehicle().setFuelLevel(fuel - 0.0010); // decrease the fuel level by 0.01 each frame
                 }
 
-                // if near petrol station, refuel
+                // if near petrol station, refuel, check if every driver's HBOX intersects with every petrol station. then refuel if there's an intersection.
                 for (Driver d : drivers) {
                     for (int p = 0; p < petrolStations.size(); p++) {
                         if (d.getHBox().getBoundsInParent().intersects(petrolStations.get(p).getImageViewButton().getBoundsInParent())) {
-                            //System.out.println("detected");
+                            //System.out.println("petrol station detected");
                             double fuel = d.getVehicle().getFuelLevel(); // e.g. 4.80 L
                             if (petrolStations.get(p).getOutOfFuelValue() != true) {
                                 d.getVehicle().setFuelLevel(5.00); // refuel to 5.00 L (0.20L increment)
@@ -585,15 +629,6 @@ public class TrafficSimulator_SimulationController {
                         }
                     }
                 }
-
-                /*
-                for (ImageView i : trafficLights) { // traffic light detection
-                    if (one.getHBox().getBoundsInParent().intersects(i.getBoundsInParent())) {
-                        System.out.println("traffic light detected");
-                    }
-                }
-
-                 */
 
                 // WRITING OUT STATISTICS TO TEXT FILES
                 try {
@@ -606,11 +641,14 @@ public class TrafficSimulator_SimulationController {
             }
         };
         at.start(); // start the animation timer
-
     } // end of spawn drivers and generate path method
 
 
-    // traffic light activation
+    /**
+     * This method is responsible for activating the traffic lights, it first checks if the trafficLights arraylist is empty, if not
+     * then activate every traffic light.
+     * @throws InterruptedException Traffic Lights use ScheduledExecutorService class, any interruptions will cause this exception to be thrown.
+     */
     public void activateTrafficLights() throws InterruptedException {
         if (!trafficLights.isEmpty()) {
             for (TrafficLight t : trafficLights) {
@@ -622,7 +660,7 @@ public class TrafficSimulator_SimulationController {
     /**
      * Writes out driver and vehicle statistics and data values to a text file in the statistics folder, which is
      * read by the Statistics Controller so it can be displayed in the GUI interface for the statistics window
-     * @throws IOException
+     * @throws IOException if the file path cannot be accessed, throw this exception.
      */
     public void writeDriverAndVehicleStats() throws IOException {
         DecimalFormat f = new DecimalFormat("##.00");
@@ -652,7 +690,7 @@ public class TrafficSimulator_SimulationController {
     /**
      * Writes out petrol station statistics and data values to a text file in the statistics folder, which is
      * read by the Statistics Controller so it can be displayed in the GUI interface for the statistics window
-     * @throws IOException
+     * @throws IOException if the filepath cannot be accessed, throw this exception.
      */
     public void writePetrolStationStats() throws IOException {
         DecimalFormat df = new DecimalFormat("0.00"); // easy rounding of double numbers to 2 decimal places
@@ -678,10 +716,11 @@ public class TrafficSimulator_SimulationController {
     }
 
 
-
-
-
-    //debug method
+    /**
+     * This is a debug method that displays a location of a GraphNode by adding a circle (or marker) to its position
+     * @param n GraphNode
+     * @param num Integer 1 or 2, 1 for Light Sky Blur coloured circle, or 2 for Indian Red Colour
+     */
     public void debugDisplayNodeLocation(GraphNode n, int num) {
         Circle circle = new Circle(n.getXCoordinate(), n.getYCoordinate(), 2.0f);
         if (num == 1) {

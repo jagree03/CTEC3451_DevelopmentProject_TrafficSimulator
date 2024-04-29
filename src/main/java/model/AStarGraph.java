@@ -10,15 +10,28 @@ public class AStarGraph implements Serializable {
 
 
     // CONSTRUCTORS
+
+    /**
+     * Default constructor
+     * Creates instance of routeList (ArrayList)
+     */
     public AStarGraph() {
         this.routeList = new ArrayList<GraphNode>();
     }
 
     // METHODS
+
+    /**
+     * This method returns the routeList
+     * @return routeList of type ArrayList<GraphNode>
+     */
     public ArrayList<GraphNode> getRouteList() {
         return routeList;
     }
 
+    /**
+     * A debug method, prints out the routeList nodes in a readable format to the console.
+     */
     public void getRouteListFormatted() {
         System.out.println("===================================");
         for (GraphNode n : this.getRouteList()) {
@@ -27,14 +40,25 @@ public class AStarGraph implements Serializable {
         System.out.println("===================================");
     }
 
+    /**
+     * This method adds a passed in GraphNode to the routeList.
+     * @param n GraphNode
+     */
     public void addGraphNodeToList(GraphNode n) {
         routeList.add(n);
     }
 
+    /**
+     * This method clears the routeList so that it becomes empty.
+     */
     public void clearGraphNodeList() {
         routeList.clear();
     }
 
+    /**
+     * This method returns a toString representation of the object
+     * @return String representation of the AStarGraph
+     */
     @Override
     public String toString() {
         return "AStarGraph:[routeList=" + routeList + "]";

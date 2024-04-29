@@ -11,6 +11,9 @@ public class TrafficSimulator_SimulatorSettings extends VBox {
     private TrafficSimulator_EditorEditorPane editorPane;
     private TrafficSimulator_SimulatorSettingsBottomPane tssbp;
 
+    /**
+     * Default Constructor
+     */
     public TrafficSimulator_SimulatorSettings() {
         menuBar = new TrafficSimulatorRootMenuBar();
         editorPane = new TrafficSimulator_EditorEditorPane();

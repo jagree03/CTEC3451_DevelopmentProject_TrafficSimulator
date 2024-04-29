@@ -24,6 +24,9 @@ public class TrafficSimulator_EditorBottomPane extends HBox {
 
     private Button Finish;
 
+    /**
+     * Default constructor
+     */
     public TrafficSimulator_EditorBottomPane() {
         tsepbp = new TrafficSimulator_EditorPiecesButtonsPane();
         tseps = new TrafficSimulator_EditorPieceSelection();
@@ -52,6 +55,10 @@ public class TrafficSimulator_EditorBottomPane extends HBox {
         return tseps.getTS_EditorPiecesSelection();
     }
 
+    /**
+     * Set the current rotation value and update the UI
+     * @param degrees Integer representing rotation of degrees.
+     */
     public void setCurrentRotationValue(int degrees) {
         if (degrees == 0) {
             CurrentRotationValue.setText("Current Rotation Degrees: 0");
@@ -67,6 +74,11 @@ public class TrafficSimulator_EditorBottomPane extends HBox {
     public Image getRotationImage() {
         return rotationImage.getImage();
     }
+
+    /**
+     * Set the icon in the bottom pane to reflect the rotated image via URI
+     * @param URL Image URL
+     */
     public void setRotationImage(String URL) {
         Image img = new Image(URL);
         rotationImage.setImage(img);
@@ -75,6 +87,10 @@ public class TrafficSimulator_EditorBottomPane extends HBox {
         rotationImage.setPreserveRatio(true);
     }
 
+    /**
+     * Set the icon in the bottom pane to reflect the rotated image via Image Instance
+     * @param img Image Instance
+     */
     public void setRotationImage(Image img) {
         rotationImage.setImage(img);
         rotationImage.setFitWidth(45);
@@ -86,10 +102,19 @@ public class TrafficSimulator_EditorBottomPane extends HBox {
     public void setCurrentRotationText(String value) {
         CurrentRotationValue.setText(value);
     }
+
+    /**
+     * Add a handler to the back button
+     * @param handler EventHandler<ActionEvent>
+     */
     public void addGoBackHandler(EventHandler<ActionEvent> handler) {
         Back.setOnAction(handler);
     }
 
+    /**
+     * Add a handler to the finish button
+     * @param handler EventHandler<ActionEvent>
+     */
     public void addFinishHandler(EventHandler<ActionEvent> handler) {
         Finish.setOnAction(handler);
     }
