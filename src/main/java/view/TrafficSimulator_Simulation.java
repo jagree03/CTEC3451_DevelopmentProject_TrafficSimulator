@@ -11,6 +11,9 @@ public class TrafficSimulator_Simulation extends VBox {
 
     private TrafficSimulator_SimulationBottomPane bottomPane;
 
+    /**
+     * Default Constructor
+     */
     public TrafficSimulator_Simulation() {
         menuBar = new TrafficSimulator_SimulationMenuBar();
         editorPane = new TrafficSimulator_EditorEditorPane();

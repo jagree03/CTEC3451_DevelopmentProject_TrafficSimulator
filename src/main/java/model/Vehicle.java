@@ -4,19 +4,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
 public class Vehicle {
-    private String type;
-    private String color;
-    private ImageView sprite;
-    private Double fuelLevel;
+    private String type; // type of the vehicle 'car' or 'van'
+    private String color; // colour of the vehicle
+    private ImageView sprite; // the sprite of the vehicle (image)
+    private Double fuelLevel; // vehicle's fuel level.
 
     /**
-     * default constructor, creates a vehicle object that is red car with fuel level 5.0 litres and all indicators off
+     * Default constructor, creates a vehicle object that is a red car with fuel level 5.0 litres.
      */
     public Vehicle() {
         File red_car = new File("img\\vehicles\\car\\car_red.png");
@@ -27,12 +24,11 @@ public class Vehicle {
         this.sprite.setPreserveRatio(true);
         this.setColor("Red");
         this.fuelLevel = 5.00;
-
     }
 
     /**
      * Custom Constructor #1 which accepts vehicle type, color and fuel level
-     * @param type type of vehicle; car, van or bus
+     * @param type type of vehicle; car, van
      * @param color color of vehicle
      * @param fuelLevel fuel level of vehicle
      */
@@ -48,7 +44,7 @@ public class Vehicle {
 
     /**
      * Custom Constructor #2 for generating random coloured vehicles
-     * @param type type of vehicle; car, van or bus
+     * @param type type of vehicle; car, van
      * @param fuelLevel fuel level of vehicle
      */
     public Vehicle(String type, Double fuelLevel) {
@@ -62,7 +58,7 @@ public class Vehicle {
     }
 
     /**
-     * For statistics controller
+     * For statistics controller, create a Vehicle Instance by passing all data members as parameters.
      */
     public Vehicle(String type, String ImageURI, String colour, Double fuelLevel) {
         this.type = type;
@@ -74,8 +70,8 @@ public class Vehicle {
 
     /**
      * This method sets the type of the vehicle, based on an integer value.
-     * There are 3 types: car, van and bus.
-     * @param val 0 for car, 1 for van, 2 for bus
+     * There are 2 types: car, van.
+     * @param val 0 for car, 1 for van.
      */
     public void setType(int val) {
         if (val == 0) {
@@ -83,8 +79,6 @@ public class Vehicle {
         } else if (val == 1) {
             this.type = "van";
             this.setColor("grey");
-        } else if (val == 2) {
-            this.type = "bus";
         }
     }
 
@@ -104,6 +98,10 @@ public class Vehicle {
         }
     }
 
+    /**
+     * Gets the type of the vehicle
+     * @return String value representing the type of the vehicle: 'car' or 'van'
+     */
     public String getType() {
         return type;
     }
@@ -126,6 +124,10 @@ public class Vehicle {
         }
     }
 
+    /**
+     * Fetches a random colour from the list of available colours.
+     * @return A string value representing the random colour.
+     */
     public String getRandomColour() {
         String[] colors = {"Red", "Black", "Purple", "Green", "Orange", "Blue", "Yellow", "Grey"};
         Random rand = new Random();
@@ -133,22 +135,43 @@ public class Vehicle {
         return colors[randomVal];
     }
 
+    /**
+     * Get the vehicle colour
+     * @return String value representing the colour
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     * Set the vehicle's sprite/image
+     * @param sprite Image
+     */
     public void setSprite(Image sprite) {
         this.sprite.setImage(sprite);
     }
 
+    /**
+     * Get the vehicle's sprite/image
+     * @return Image
+     */
     public Image getSprite() {
         return this.getSpriteImageView().getImage();
     }
 
+    /**
+     * Get the ImageView of the vehicle
+     * @return ImageView
+     */
     public ImageView getSpriteImageView() {
         return sprite;
     }
 
+    /**
+     * Set the fuel level of the vehicle to the passed in value
+     * If fuel level is less than or equal to 0 then fuel level is 0.
+     * @param fuelLevel Double value
+     */
     public void setFuelLevel(Double fuelLevel){
         if (fuelLevel <= 0.00) {
             fuelLevel = 0.00;
@@ -156,12 +179,20 @@ public class Vehicle {
         this.fuelLevel = fuelLevel;
     }
 
+    /**
+     * Get the fuel level of the vehicle
+     * @return Double value
+     */
     public Double getFuelLevel() {
         return fuelLevel;
     }
 
+    /**
+     * ToString method, indicates the state of each of the data members of the Vehicle class
+     * @return String representing states of the key variables of a Vehicle.
+     */
     @Override
     public String toString() {
-        return "Vehicle:[type=" + type + ", color=" + color + ", sprite=" + sprite.getImage().getUrl() + ", fuelLevel=" + fuelLevel + "]";
+        return "Vehicle:[type=" + type + ", color=" + color + ", ImageView(sprite)_URI=" + sprite.getImage().getUrl() + ", fuelLevel=" + fuelLevel + "]";
     }
 }

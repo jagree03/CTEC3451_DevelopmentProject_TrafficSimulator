@@ -5,24 +5,19 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-
 public class TrafficSimulatorRootPane extends VBox {
-	/*
-	private CreateStudentProfilePane cspp;
-
-	private TabPane tp;
-	 */
 	private TrafficSimulatorRootMenuBar tsmb;
 	private TrafficSimulatorRootMenuButtons tsrmb;
 
 	private TrafficSimulatorRootMenuBottomButtonPanel tsrmbbp;
 	private Label lblAuthorAndVersion;
-
-	///
 	private TrafficSimulator_Editor editorView = new TrafficSimulator_Editor();
-	
+
+	/**
+	 * Default Constructor
+	 */
 	public TrafficSimulatorRootPane() {
-		Label lblAuthorAndVersion = new Label("Jagjeet Reehal P2652829, Final Year Project 2024");
+		lblAuthorAndVersion = new Label("Jagjeet Reehal P2652829, Final Year Project 2024");
 		lblAuthorAndVersion.setPadding(new Insets(10,10,10,10));
 		//lblAuthorAndVersion.setAlignment();
 
@@ -32,17 +27,10 @@ public class TrafficSimulatorRootPane extends VBox {
 		tsrmbbp = new TrafficSimulatorRootMenuBottomButtonPanel();
 		tsrmbbp.setPadding(new Insets(30,0,0,0));
 
-
 		this.setAlignment(Pos.TOP_CENTER);
 		this.getChildren().addAll(tsmb, lblAuthorAndVersion, tsrmb, tsrmbbp);
 	}
 
-	//methods allowing sub-containers to be accessed by the controller.
-	/*
-	public CreateStudentProfilePane getCreateStudentProfilePane() {
-		return cspp;
-	}
-	 */
 
 	public TrafficSimulatorRootMenuBar getTSMenuBar() {
 		return tsmb;

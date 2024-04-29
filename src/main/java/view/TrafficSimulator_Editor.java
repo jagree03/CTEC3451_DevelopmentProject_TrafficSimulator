@@ -1,16 +1,10 @@
 package view;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-
-import javax.swing.*;
 
 public class TrafficSimulator_Editor extends VBox {
 
@@ -18,6 +12,9 @@ public class TrafficSimulator_Editor extends VBox {
     private TrafficSimulator_EditorEditorPane editorPane;
     private TrafficSimulator_EditorBottomPane tsebp;
 
+    /**
+     * Constructor for TrafficSimulator_Editor
+     */
     public TrafficSimulator_Editor() {
         menuBar = new TrafficSimulator_EditorMenuBar();
         editorPane = new TrafficSimulator_EditorEditorPane();
@@ -38,6 +35,10 @@ public class TrafficSimulator_Editor extends VBox {
 
     public TrafficSimulator_EditorEditorPane getTSE_EditorPane() { return editorPane; }
 
+    /**
+     * Add exit handler so when exit item is pressed, exit the app
+     * @param handler EventHandler<ActionEvent>
+     */
     public void addExitHandler(EventHandler<ActionEvent> handler) {
         menuBar.getExitItem().setOnAction(handler);
     }

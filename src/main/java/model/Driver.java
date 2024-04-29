@@ -22,10 +22,10 @@ public class Driver {
     // fields
 
     private UUID uniqueID; // Universal Unique Identifier (UUID) generates a unique 128 bit value guaranteed to be unique.
-    private Vehicle vehicle;
-    private HBox h;
-    private String lane;
-    private boolean hazLightsOn;
+    private Vehicle vehicle; // holds the vehicle
+    private HBox h; // HBox that stores the vehicle
+    private String lane; // lane of the driver
+    private boolean hazLightsOn; // represents if hazard lights are on/off.
 
 
 
@@ -34,15 +34,24 @@ public class Driver {
     private GraphNode startNode; // every driver starts somewhere
     private GraphNode goalNode; // every driver needs a destination to go to
     private GraphNode currentNode; // every driver stores what node they are currently on
-    private boolean goalReached = false;
-    private int step = 0;
-    private ArrayList<GraphNode> openList; // is a copy of the routeList that contains all graphnodes in the scenario
-    private ArrayList<GraphNode> checkedList;
+    private boolean goalReached = false; // has the goal reached?
+    private int step = 0; // step value
+    private ArrayList<GraphNode> openList; // contains nodes to be checked by the pathfinding algorithm to check if its a good candidate to reach closer to the goalNode.
+    private ArrayList<GraphNode> checkedList; // contains nodes that have been checked by the pathfinding algorithm
     private PathTransition pt; // to play/pause movement of the driver upon the path.
 
 
     // constructors
-    public Driver() { // default constructor has a driver with a red car who drives on left lane
+
+    /**
+     * default constructor has a driver with a red car who drives on left lane
+     * Random UUID uniqueID and their vehicle is encapsulated inside a HBox by default.
+     *
+     * Also supplies the default driver with ChangeListeners that listen to the TranslateX and TranslateY properties and rotates
+     * the vehicle sprite based on the direction of movement of the driver.
+     * Additionally, a PathTransition is supplied to the default driver as well.
+     */
+    public Driver() {
         this.uniqueID = UUID.randomUUID();
         this.vehicle = new Vehicle();
         this.lane = "left";
@@ -96,6 +105,13 @@ public class Driver {
      * Custom constructor where you can provide lane of the driver, and which node should start in the scenario,
      * goal node and also provide all nodes in the scenario so the driver can calculate the shortest path, as well as a parameter
      * that can let you enable or disable the view of the bounding boxes around the driver's vehicle.
+     *
+     * ChangeListeners also added that listen to the TranslateX and TranslateY properties and rotates
+     * the vehicle sprite based on the direction of movement of the driver.
+     *
+     * Depending on the passed in lane, the opposite of that lane will have all its nodes turned to solid nodes so the driver
+     * remains in the lane that they've been assigned.
+     *
      * @param lane Lane of the driver - left or right.
      * @param listOfAllNodes A list of all nodes in the scenario
      * @param startingNode The starting node, where the driver starts from.
@@ -185,10 +201,19 @@ public class Driver {
     public UUID getUniqueID() {
         return uniqueID;
     }
+
+    /**
+     * Retrieve the vehicle of the driver
+     * @return The vehicle of the driver
+     */
     public Vehicle getVehicle() {
         return this.vehicle;
     }
 
+    /**
+     * Set the driver's vehicle
+     * @param vehicle New vehicle for the driver
+     */
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
         ImageView img = (ImageView) this.getHBox().getChildren().get(0);
@@ -196,20 +221,34 @@ public class Driver {
         h.setMaxSize(20, 40);
     }
 
+    /**
+     * Retrieve the HBox of the driver
+     * @return HBox of the Driver
+     */
     public HBox getHBox() {
         return h;
     }
 
+    /**
+     * Set the HBox of the driver to the passed in HBox
+     * @param h Driver's new HBox
+     */
     public void setHBox (HBox h) {
         this.h = h;
     }
 
+    /**
+     * Retrieve the routeList (List of all nodes in the scenario) that was passed to the Driver
+     * @return routeList of type ArrayList<GraphNode>
+     */
     public ArrayList<GraphNode> getRouteList() {
         return this.routeList;
     }
 
     /**
      * Resets all nodes of the graph to a default state
+     * Default state means no flags applied such as Start, Goal, Current and each node has a default cost of 0
+     * in terms of G, H and F costs.
      */
     public void setNodesToDefaultState() {
         for (GraphNode n : this.getRouteList()) {
@@ -217,7 +256,10 @@ public class Driver {
         }
     }
 
-
+    /**
+     * Sets the driver's routelist to the passed in routeList
+     * @param routeList Driver's new routelist
+     */
     public void setRouteList(ArrayList<GraphNode> routeList) {
         this.routeList = routeList;
     }
@@ -238,6 +280,10 @@ public class Driver {
         return this.getVehicle().getSpriteImageView().getY();
     }
 
+    /**
+     * Sets the driver lane
+     * @param value String lane value
+     */
     public void setLane(String value) {
         this.lane = value;
     }
@@ -275,30 +321,26 @@ public class Driver {
         return pt;
     }
 
-    /**
-     * Set's the path transition of this Driver instance with the passed in PathTransition
-     * @param pt PathTransition object
-     */
-    public void setPathTransition(PathTransition pt) {
-        this.pt = pt;
-    }
 
     /**
-     * Bounds listener
-     * @param listener ChangeListener for boundaries of the HBox
+     * Sets the driver's vehicle hazard lights based on the provided boolean value
+     * @param value True for hazard lights on, false for hazard lights off
      */
-    public void addNodeBoundsListener(ChangeListener<Bounds> listener) {
-        this.getHBox().boundsInParentProperty().addListener(listener);
-    }
-
     public void setHazLightsOn(boolean value) {
         this.hazLightsOn = value;
     }
 
+    /**
+     * Retrieve the value that determines whether the driver's vehicle hazard lights are on or not
+     * @return boolean value, true for hazard lights on, false for hazard lights off.
+     */
     public boolean getHazLightsOn() {
         return hazLightsOn;
     }
 
+    /**
+     * This method activates the hazard lights of the driver's vehicle
+     */
     public void activateHazardMode() {
         HBox h = this.getHBox();
         ImageView veh = (ImageView) h.getChildren().getFirst();
@@ -347,10 +389,11 @@ public class Driver {
      */
     @Override
     public String toString() {
-        return "Driver:[Vehicle=" + vehicle + ", HBox=" + h + ", routeList=" + routeList + ", lane=" + lane +
-                ", startNode=" + startNode + ", goalNode=" + goalNode + ", currentNode=" + currentNode +
-                ", goalReached=" + goalReached + ", step=" + step + ", openList=" + openList +
-                ", checkedList=" + checkedList + ", PathTransition=" + pt + "]";
+        return "Driver:[uniqueID=" + uniqueID + ", vehicle=" + vehicle + ", HBox(h)=" + h
+                + ", lane=" + lane + ", hazLightsOn=" + hazLightsOn + ", routeList=" + routeList
+                + ", startNode=" + startNode + ", goalNode=" + goalNode + ", currentNode=" + currentNode
+                + ", goalReached=" + goalReached + ", step=" + step + ", openList=" + openList + ", checkedList=" + checkedList
+                + ", PathTransition(pt)=" + pt + "]";
     }
 
 
@@ -358,38 +401,63 @@ public class Driver {
     // A* pathfinding related methods
     /////////////////////////////////
 
+    /**
+     * Set the start node to the provided GraphNode
+     * @param n GraphNode
+     */
     public void setStartNode(GraphNode n) {
         n.setAsStart(); // set this graphnode's StartNode identifier to true
         this.startNode = n;
         this.currentNode = startNode;
     }
 
+    /**
+     * Set the goal node to the provided GraphNode
+     * @param n GraphNode
+     */
     public void setGoalNode(GraphNode n) {
         n.setAsGoal(); // set this graphnode's GoalNode identifier to true
         this.goalNode = n;
     }
 
+    /**
+     * Set the current node to the provided GraphNode
+     * @param n GraphNode
+     */
     public void setCurrentNode(GraphNode n) {
         this.currentNode = n;
     }
 
+    /**
+     * Get the start node
+     * @return GraphNode
+     */
     public GraphNode getStartNode() {
         return startNode;
     }
 
+    /**
+     * Get the goal node
+     * @return GraphNode
+     */
     public GraphNode getGoalNode() {
         return goalNode;
     }
 
+    /**
+     * Get the current node
+     * @return GraphNode
+     */
     public GraphNode getCurrentNode() {
         return currentNode;
     }
 
 
-
-
-
-    // every driver needs to calculate its own path from start node to goal node
+    /**
+     * This method calculates the G, H and F costs for a GraphNode, based on the start and goal nodes.
+     * This method is required so every driver can calculate their path from start node to goal node
+     * @param n GraphNode
+     */
     public void getCost(GraphNode n) {
         // GET G COST (the distance of current node 'n' FROM the start node)
         double xDistance = Math.abs(n.getXCoordinate() - startNode.getXCoordinate());
@@ -410,6 +478,9 @@ public class Driver {
 //        }
     }
 
+    /**
+     * This method calculates the G, H and F costs for all GraphNodes in the scenario, based on the start and goal nodes.
+     */
     public void setCostOnAllNodes() {
         boolean destgoal = false;
         for (GraphNode n : this.getRouteList()) {
@@ -423,8 +494,6 @@ public class Driver {
         System.out.println("Destination goal nodes found: " + destgoal);
     }
 
-
-    // every time we call the search method we set the currentnode that the driver is on, as checked
     public void search() { // this method is called every time we evaluate & check a new graphnode
         // first we check if we have reached the goal or not
         if (goalReached == false && step < 300) {
@@ -504,6 +573,12 @@ public class Driver {
         step++;
     }
 
+
+    /**
+     * This method is the core part of the A* Pathfinding algorithm, this calculates the path of the GraphNodes the driver
+     * must take to reach the goal node from the start node
+     * @return An ArrayList<GraphNodes> that can be converted into a Path that can be inputted into a PathTransition to allow the Driver to move along the path.
+     */
     public ArrayList<GraphNode> autoSearch() { // a copy of the method above: search() but uses a while loop to find best node candidates until the goal is reached
         this.setNodesToDefaultState();
         setCostOnAllNodes();
@@ -617,6 +692,14 @@ public class Driver {
         return p; // return the final path from start node to goal node for the driver to drive on
     }
 
+
+
+    /**
+     * The openNode method adds a GraphNode to the openList so it can be evaluated.
+     * It must open the adjacent nodes of the currentNode, so that they can be checked to find the best node candidate
+     * that is closer to the goal node
+     * @param n GraphNode to be opened
+     */
     // say we're at the startnode, the beginning, the currentnode is also the startnode, so we need to evaluate
     // the adjacent nodes - when we first evaluate the node - first we change it to an OPEN state which means
     // this node is currently OPEN for evaluation and checking.
@@ -632,6 +715,13 @@ public class Driver {
          }
     }
 
+    /**
+     * A helper method that fetches the Node from the routeList based on the X & Y coordinates and Driver's lane
+     * @param x X coordinate of the GraphNode
+     * @param y Y coordinate of the GraphNode
+     * @param lane Driver's lane
+     * @return The GraphNode from the routeList, if not found then will return a GraphNode of X coordinate 0.0 and Y coordinate 0.0
+     */
     public GraphNode fetchNodeWithXAndY(double x, double y, String lane) {
         GraphNode foundNode = new GraphNode(0.0, 0.0); // initialize a temporary graphnode
         for (GraphNode n : this.getRouteList()) {
@@ -646,6 +736,14 @@ public class Driver {
         return foundNode; // return the graphnode that was found from the list of all nodes in the scenario
     }
 
+    /**
+     * This method is responsible for backtracking the path, once the goal has been reached, this method is called
+     * It adds the goalNode, which is the currentNode because the goal has been reached to an ArrayList of GraphNode called 'path'
+     * Then it backtracks by getting the parent node and then the parents of parents etc until it reaches the startNode again
+     * All the GraphNodes of this route are added into the arraylist 'path', the order of the elements is then reversed so it can be
+     * converted into a Path for a PathTransition.
+     * @return path, an ArrayList of type GraphNode that holds the route of GraphNodes from driver's start node to goal node
+     */
     // final method to backtrack the nodes to get the path
     public ArrayList<GraphNode> trackThePath() {
         ArrayList<GraphNode> path = new ArrayList<>();

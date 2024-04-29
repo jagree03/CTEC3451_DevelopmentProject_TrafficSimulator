@@ -1,28 +1,24 @@
 package model;
 
-import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
+import javafx.scene.image.ImageView;
 
 import java.io.File;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class TrafficLight {
-    private String currentSignal;
+    private String currentSignal; // string representing the current signal of the traffic light
 
-    private boolean activated;
-
-    private HBox h;
-    private Image sprite;
+    private boolean activated; // boolean represents if traffic lights activated or not
+    private Image sprite; // image of the traffic light
     private ImageView viewSprite;
 
 
-    // default constructor
+    /**
+     * Default constructor of a traffic light, sets a default image, current signal to none and activated to false
+     */
     public TrafficLight() {
         this.sprite = new Image("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
         this.viewSprite = new ImageView(this.sprite);
@@ -30,7 +26,10 @@ public class TrafficLight {
         this.activated = false;
     }
 
-    // Default constructor 2
+    /**
+     * Default constructor 2 of a traffic light, sets the Image to the passed in ImageView, currentSignal is none and activated is false.
+     * @param imgv ImageView
+     */
     public TrafficLight(ImageView imgv) {
         this.viewSprite = imgv;
         this.sprite = this.getImageView().getImage();
@@ -38,21 +37,26 @@ public class TrafficLight {
         this.activated = false;
     }
 
-    public TrafficLight(int redSignalHoldTime, int amberSignalHoldTime, int greenSignalHoldTime, int timeForTransition) {
-        File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
-        this.sprite = new Image(file.toURI().toString());
-        this.viewSprite = new ImageView(this.sprite);
-        this.activated = false;
-    }
-
+    /**
+     * Get the traffic light's image view.
+     * @return ImageView
+     */
     public ImageView getImageView() {
         return viewSprite;
     }
 
+    /**
+     * Get the current signal of the traffic light
+     * @return String value (either 'none','red', 'amber' or 'green').
+     */
     public String getCurrentSignal() {
         return currentSignal;
     }
 
+    /**
+     * Set the current signal of the traffic light
+     * @param value String value of the traffic light, can be 'none', 'red', 'amber' or 'green'.
+     */
     public void setCurrentSignal(String value) {
         this.currentSignal = value;
     }
@@ -61,22 +65,35 @@ public class TrafficLight {
         return activated;
     }
 
+    /**
+     * Set the activated status of the Traffic Light based on the passed in Boolean value
+     * @param value Boolean value, true to activate, false to not activate.
+     */
     public void setActivatedState(boolean value) {
         this.activated = value;
     }
 
+    /**
+     * Activates the Traffic Light's red signal, modifies the sprite and updates the currentSignal to 'red'.
+     */
     public void activateRedStopSignal() {
         File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight_RedStop.png");
         this.getImageView().setImage(new Image(file.toURI().toString()));
         this.setCurrentSignal("red");
     }
 
+    /**
+     * Activates the Traffic Light's amber signal, modifies the sprite and updates the currentSignal to 'amber'.
+     */
     public void activateAmberStopSignal() {
         File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight_YellowWait.png");
         this.getImageView().setImage(new Image(file.toURI().toString()));
         this.setCurrentSignal("amber");
     }
 
+    /**
+     * Activates the Traffic Light's green signal, modifies the sprite and updates the currentSignal to 'green'.
+     */
     public void activateGreenStopSignal() {
         File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight_GreenGo.png");
         this.getImageView().setImage(new Image(file.toURI().toString()));
@@ -94,7 +111,7 @@ public class TrafficLight {
      * or you can run tasks after a delay. This is helpful to activate a traffic light and control its transitions between
      * signals.
      * @param value Boolean value: True or false, true to activate the traffic light, false to disable
-     * @throws InterruptedException
+     * @throws InterruptedException Throw this exception if the ScheduledExecutorService is interleaved with another process.
      */
     public void activateTrafficLight(boolean value) throws InterruptedException {
         ScheduledExecutorService ses1 = Executors.newScheduledThreadPool(1);
@@ -128,8 +145,12 @@ public class TrafficLight {
         }
     }
 
+    /**
+     * ToString method, indicates the state of each of the data members of the TrafficLight class
+     * @return String representing states of the key variables of a TrafficLight.
+     */
     @Override
     public String toString() {
-        return "TrafficLight:[currentSignal=" + currentSignal + ", viewSprite=" + viewSprite.getImage().getUrl() + "]";
+        return "TrafficLight:[currentSignal=" + currentSignal + ", activated=" + activated + ", ImageView(viewSprite)_URI=" + viewSprite.getImage().getUrl() + "]";
     }
 }

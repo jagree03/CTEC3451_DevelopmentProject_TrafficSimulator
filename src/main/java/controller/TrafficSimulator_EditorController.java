@@ -36,25 +36,31 @@ public class TrafficSimulator_EditorController {
 
     private TrafficSimulator_EditorEditorPane tseep;
 
-    private AStarGraph graph;
+    private AStarGraph graph; // AStarGraph to store all graphnodes of the scenario
 
     private int CurrentRotationDegrees = 0; // current rotation value
-    private String currentPieceSelected = "";
+    private String currentPieceSelected = ""; // a string to store the URI of the selected piece from the bottom pane
 
-    private String pieceType = "";
+    private String pieceType = ""; // a string to store the type of the piece, e.g. hazard, decorative, road etc.
 
-    private int pieceCounter = 0; // does NOT include miscPieces such as decorative or hazard pieces.
-    private boolean muteSounds = false;
+    private int pieceCounter = 0; // a counter to reflect how many nodes have been added to the scenario, does NOT include miscPieces such as decorative or hazard pieces.
+    private boolean muteSounds = false; // a boolean variable to enable / disable sounds
 
-    private int nodesDisplayed = 0;
+    private int nodesDisplayed = 0; // an integer variable to represent the activation and de-activation of displaying the nodes of the roads in the scenario
 
-    private boolean isScenarioEmpty;
+    private boolean isScenarioEmpty; // a boolean variable that represents whether the scenario is empty or not.
 
     private Scene currentScene;
 
     private Scene scene;
 
 
+    /**
+     * Constructor for the Controller of the Environment Editor feature
+     * It accepts an instance of the editor scene and initializes all the necessary fields and methods
+     * Such as attaching the event handlers to each of the controls of the Editor View components
+     * @param view An instance of the TrafficSimulator_Editor scene
+     */
     public TrafficSimulator_EditorController(TrafficSimulator_Editor view) {
         //initialise view and model fields
         this.view = view;
@@ -73,8 +79,15 @@ public class TrafficSimulator_EditorController {
         setCurrentScene(tseep.getScene());
     }
 
+    /**
+     * This method attaches the event handlers to the respective controls in each of the editor related view classes that form the whole
+     * Environment Editor screen
+     */
     private void attachEventHandlers() {
-        //attach an event handler to the menu item of the menu bar that shows about author info about the program
+
+        /**
+         * This method attaces an event handler to the about menu item of the menu bar that shows info about the controls for the app.
+         */
         tse_menubar.addAboutHandler(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 Alert about = new Alert(Alert.AlertType.INFORMATION);
@@ -97,10 +110,14 @@ public class TrafficSimulator_EditorController {
             }
         });
 
-        //attach an event handler to the menu bar that closes the application
+        /**
+         * Attach an event handler to the menu bar's exit item that closes the application
+         */
         tse_menubar.addExitHandler(e -> System.exit(0));
 
-        //attach an event handler to the menu bar that allows the user to save the current scenario
+        /**
+         * Attach an event handler to the menu bar's save item that allows the user to save the current scenario
+         */
         tse_menubar.addSaveScenarioHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -126,6 +143,9 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the menu bar's load item, so it can load a scenario from a text file.
+         */
         tse_menubar.addLoadScenarioHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -149,6 +169,10 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the Mute Sounds menu bar item, so the sounds can be disabled at will by the user
+         * Such sounds disabled include: rotation sound, build/place piece sound and the invert lanes sound
+         */
         tse_menubar.addMuteSoundsHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -162,6 +186,10 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the Clear Scenario item to reset the scenario to a default state.
+         * This default state is 7 x 24 grid with all grass pieces
+         */
         tse_menubar.addClearScenarioHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -194,7 +222,7 @@ public class TrafficSimulator_EditorController {
         });
 
         /**
-         * A menu bar item that displays all nodes in the scenario
+         * Attach the event handler to the Display Nodes menu bar item that displays all nodes in the scenario
          */
         tse_menubar.addDisplayAllNodesHandler(new EventHandler<ActionEvent>() {
             @Override
@@ -223,6 +251,10 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the 4 button group (ButtonsPane), specifically to the Road Surface button so that it
+         * changes the pieces to the road pieces in the PieceSelection panel.
+         */
         tse_bottompane.getPiecesButtonsPane().addRoadSurfaceButtonOnClickHandler(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -238,6 +270,10 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the 4 button group (ButtonsPane), specifically the destinations button so that
+         * when it is clicked, display all the destination related pieces in the PieceSelection panel.
+         */
         tse_bottompane.getPiecesButtonsPane().addDestinationsButtonOnClickHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -255,6 +291,10 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the 4 button group (ButtonsPane) such that the Decorative Button, when
+         * clicked, will display all the decorative related pieces in the PieceSelection panel.
+         */
         tse_bottompane.getPiecesButtonsPane().addDecorativeButtonOnClickHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -272,6 +312,10 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the 4 button group (ButtonsPane) such that the Hazards button, when clicked,
+         * will display all the hazard related pieces in the PieceSelection panel.
+         */
         tse_bottompane.getPiecesButtonsPane().addHazardsButtonOnClickHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -289,6 +333,10 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the back button in the BottomPane, so that it swaps the scene of the current stage
+         * (Window) to the previous scene, which is the main menu where you can choose between Creating a scenario and Procedurally generating a scenario.
+         */
         tse_bottompane.addGoBackHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -303,6 +351,10 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to the finish button in the BottomPane, so that it swaps the scene of the current stage
+         * (Window) to the next scene, which is the simulation settings screen where you can tweak parameters.
+         */
         tse_bottompane.addFinishHandler(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -335,6 +387,12 @@ public class TrafficSimulator_EditorController {
             }
         });
 
+        /**
+         * Attach an event handler to each ImageView slot in the PieceSelection pane, which is a part of the BottomPane of the editor.
+         * This allows it such that when the click event of the slot is fired, it retrieves the source of the event, which is the specific
+         * ImageView control that was clicked and retrieving the image held in that ImageView and setting it as the 'selected' piece that
+         * will be placed, whenever the user places it in the scenario.
+         */
         tse_bottompane.getPiecesSelection().CursorOnClickHandler(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -361,21 +419,23 @@ public class TrafficSimulator_EditorController {
 
         /**
          * This method calls the add_BuildHandler class and provides an EventHandler declaration in the
-         * current editor pane instance of the application.
+         * current editor pane instance of the application, Attaching an event handler to each SLOT of the 7 x 24 EditorPane (GridPane) of ImageViewButtons.
          *
-         * First it must check if a piece is selected, if not then show error message and handle the exceptions.
+         * First it plays a sound effect, but it must check if sounds are muted, if so - then the sound won't play.
+         * Then check if a piece is selected, if not then show error message and handle the exceptions.
+         * The piece selected, should NOT BE OF DECORATIVE OR HAZARD TYPE, as these are free-form placed nodes handled seperately.
          *
          * It accepts the generated event from a node (clickable ImageViewButton in the editor pane) that is
-         * specifically a mouse event. It then checks if the current piece selected is from the Decorative type
-         * and if so, retrieve the X and Y coordinates of where the left click mouse action occurred within the editor pane
-         * This is required so when the decorative piece is added to the scenario (editor pane), it can be situated in the correct
-         * position akin to where the mouse was clicked, using these x and y coordinates from the generated event
-         * It then instantiates a new ImageView node, that takes in the selected decorative piece's image, by calling obj
-         * obj is a casted ImageViewButton variable that gets the source of the event (where the mouse event occurred) so this is
-         * one of the individual ImageViewButton's / Cell buttons.
+         * specifically a mouse event. It retrieves the source of the event, which is the specific ImageViewButton in the grid, and
+         * replaces the grass.png image it contains or whatever image it contains to the new one - using the URI from the currentPieceSelected variable but before that - if the piece beforehand
+         * contained an image that is not grass, it means it was either a road or destination, thus nodes were previously there. So using an iterator
+         * and bounds from the top left corner to the bottom right corner of the ImageViewButton, the nodes are consecutively removed.
          *
-         * Else, if the selected piece is NOT of decorative type, then proceed to set the cell button's image to the
-         * current selected piece (i.e. straight road) and assign the specific properties like width, height, preserve ratio.
+         * The currentPieceSelected variable, which is a String that holds the selected piece URI, is checked and the waypoints/nodes
+         * are specifically and accurately mapped to the piece by retrieving the default X and Y bounds of the ImageViewButton and manually
+         * tweaking the X and Y coordinates so the nodes are situated in the correct location. Each piece has nodes with an interval distance of 5 pixels between them.
+         * However, some pieces have an interval distance of 2 pixels.
+         *
          */
         tseep.add_BuildHandler(new EventHandler<MouseEvent>() {
             @Override
@@ -427,16 +487,16 @@ public class TrafficSimulator_EditorController {
                             }
                         }
                         obj.setImage(new Image(currentPieceSelected));
-                        //obj.setRotate(currentRotationDeg);
                         obj.setFitHeight(45);
                         obj.setFitWidth(40);
                         obj.setPreserveRatio(true);
-                        //System.out.println(currentPieceSelected);
                         Bounds bounds = tseep.getBoundsInParent();
                         Bounds b = obj.getBoundsInParent(); // gets the bounds/coordinates of each imageviewbutton/cellbutton inside the pane which is inside the entire VBox layout.
-                        //System.out.println(b.getMinX() + " " + b.getMinY());
 
 
+                        /**
+                         * Example of node mapping to the piece image, using bounds and tweaking X and Y coordinates.
+                         */
                         // if the currentPiece that was added is a straight road piece THEN
                         if (currentPieceSelected.contains("1_straightRoad.png")) {
                             // create a set of graph nodes, originally all placed at a default position of each ImageViewButton, then manually positioned using addition/subtraction
@@ -1825,11 +1885,19 @@ public class TrafficSimulator_EditorController {
                     alert.setContentText("Please select a piece to add into the scenario.");
                     alert.show();
                 }
-                //graph.getRouteListFormatted();
-                //debugDisplayAllNodesLocation();
             }
         });
 
+        /**
+         * This event handler handles the placement of free-form nodes, that are Hazard pieces and Decorative pieces.
+         * It checks if the pieces are of decorative OR hazard type, if so, retrieve the mouse event's X and Y coordinates,
+         * set the attributes of the image to ensure the image is displayed appropriately, then apply a translation to
+         * the piece before finally adding it to the main EditorPane (GridPane 7 x 24).
+         *
+         * if no piece selected, then display error.
+         *
+         * Specific pieces such as hazards or traffic lights may need specific adjustments in terms of their image/sprite.
+         */
         tseep.add_MiscPiecesHandler(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -1865,6 +1933,16 @@ public class TrafficSimulator_EditorController {
         });
     }
 
+    /**
+     * This event handler handles the events set by the previous scene's controller; the TrafficSimulatorController.
+     * The events are key presses. handleKeyPress() handles rotation, so if the R key is pressed on the keyboard.
+     * It will play the rotation sound (or won't, if sounds are muted), modifies the displayed rotation degrees label in the BottomPane
+     * and switches the currentPieceSelected URI (that is the selected piece) to its rotated variant based on the degrees.
+     *
+     * This is further reflected by re-setting the icon in the BottomPane, that displays to the user what the rotated piece looks like.
+     * @throws UnsupportedAudioFileException If the audio file is not supported, throw this exception.
+     * @throws IOException If the audio file is missing, throw this exception.
+     */
     public void handleKeyPress() throws UnsupportedAudioFileException, IOException { // rotation handling
         if (!(pieceType.equals("destination"))) {
             if (!(currentPieceSelected.contains("grass.png"))) { // disable rotation for grass piece, because that's for deleting other road pieces.
@@ -1912,6 +1990,15 @@ public class TrafficSimulator_EditorController {
         }
     }
 
+    /**
+     * This event handler attaches to the key press event set by the previous scene's controller: TrafficSimulatorController.
+     * If the V key is pressed on the keyboard, it will flip the lanes of the turn pieces. (NB: this feature only works on the TURN LEFT piece)
+     * It modifies the currentPieceSelected string, which holds the selected piece image URI so that it switches and points to the inverted version of the image/sprite.
+     *
+     * And it is able to switch back and forth between the standard variant of the piece and the inverted variant of the piece.
+     * @throws UnsupportedAudioFileException If audio file is not supported, throw this exception.
+     * @throws IOException If audio file is missing, throw this exception.
+     */
     public void handleKeyPressInvertLanes () throws UnsupportedAudioFileException, IOException {
         if (!(currentPieceSelected.contains("grass.png"))) {
             if (currentPieceSelected.contains("turnLeft")) {
@@ -1957,14 +2044,27 @@ public class TrafficSimulator_EditorController {
         }
     }
 
+    /**
+     * This event handler attaches to the key press event set by the previous scene's controller: TrafficSimulatorController.
+     * If the "F" key is pressed, this will deselect the piece, by setting currentPieceSelected variable to null and displaying this to the user
+     * appropriately, by disabling any effects upon the slots of the PieceSelection that indicate that a piece was selected via method resetSlotSelection();
+     */
     public void handleKeyPressDeselect () {
-        ImageView[] arrayOfSlots = tse_bottompane.getPiecesSelection().getSlots();
-        Arrays.stream(arrayOfSlots).forEach(x -> x.setEffect(null));
+        resetSlotSelection();
         currentPieceSelected = null;
         tse_bottompane.setRotationImage(new WritableImage(45, 45));
     }
 
 
+    /**
+     * This method accepts a path and writes the whole scenario to a .txt file, it essentially saves the scenario.
+     * Firstly, 2 arrays are made, the first array stores the ImageViewButtons (Road and destination pieces), the second array (which is an arraylist) stores
+     * the free-form placed nodes - these are hazard and destination pieces. It then writes out the contents of each to the text file.
+     *
+     * If the path supplied was null, then by default the scenario is written to scenario.txt in the root directory.
+     * @param path A path of type File, where the .txt file should be written to.
+     * @throws IOException if Path doesn't exist, throw this exception.
+     */
     private void writeScenarioDataToFile(File path) throws IOException {
         Node[][] gridPaneArray = new Node[7][24]; // 7 rows, 24 columns - holding ImageViewButton nodes
         ArrayList<ImageView> miscPieces = new ArrayList<ImageView>();
@@ -2007,6 +2107,10 @@ public class TrafficSimulator_EditorController {
         }
     }
 
+    /**
+     * This method writes out the GraphNodes to a text file called 'graphnodes.txt', each graph node's ID, X and Y coordinate.
+     * @throws IOException if it is not possible to write to graphnodes.txt in the root directory then throw this exception.
+     */
     private void writeGraphNodesToFile() throws IOException {
         FileWriter fileWriter = new FileWriter("graphnodes.txt");
         PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -2017,6 +2121,12 @@ public class TrafficSimulator_EditorController {
         fileWriter.close();
     }
 
+    /**
+     * This method writes the entire AStarGraph object instance to a .dat file using the ObjectOutputStream.
+     * Useful for saving scenarios.
+     * @param scenarioPath File path where the .dat file should be written and saved.
+     * @throws IOException If path cannot be accessed, then throw this exception.
+     */
     private void writeGraphObjectToFile(File scenarioPath) throws IOException {
         scenarioPath = new File(scenarioPath.getAbsolutePath().replace(".txt", ".dat"));
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(scenarioPath));
@@ -2025,6 +2135,14 @@ public class TrafficSimulator_EditorController {
         oos.close();
     }
 
+    /**
+     * This methods reads back in the .dat file from the ObjectOutputStream, this time an ObjectInputStream is used,
+     * it accepts the .dat file and re-assigns the current instance of AStarGraph to the object instance and its values from the .dat file.
+     * Useful for loading saved scenarios.
+     * @param scenarioPath The filepath where the .dat file can be found.
+     * @throws IOException If the path cannot be accessed, throw this exception.
+     * @throws ClassNotFoundException If the AStarGraph class is not available/found, throw this exception
+     */
     private void readGraphObjectFromFile(File scenarioPath) throws IOException, ClassNotFoundException {
         scenarioPath = new File(scenarioPath.getAbsolutePath().replace(".txt", ".dat"));
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(scenarioPath));
@@ -2032,6 +2150,11 @@ public class TrafficSimulator_EditorController {
         ois.close();
     }
 
+    /**
+     * This method checks if the scenario is empty, since the EditorPane (GridPane of 7 x 24) contains 168 ImageViewButton instances in each of the 168 cells
+     * It checks if all 168 ImageViewButton instances contain an image with URI contains grass.png, by simply adding all ImageViewButtons to an arraylist
+     * of ImageViewButtons and checking if the size equals 168, if so - the scenario is empty thus change isScenarioEmpty variable to true.
+     */
     private void checkIfScenarioIsEmpty() {
         ArrayList<ImageViewButton> totalGrassPieces = new ArrayList<>();
         for (Node node: tseep.getChildren()) {
@@ -2048,6 +2171,14 @@ public class TrafficSimulator_EditorController {
         }
     }
 
+    /**
+     * This method loads a scenario from a text file, reading in every line and mapping out the variables.
+     * Before loading, it must clear all the nodes of the EditorPane and then re-add every node based on the text file.
+     * It also contains a line counter, when there are more lines after line 168, this means there are free form nodes that exist, these are then
+     * added into the scenario.
+     * @param path File path to the .txt file containing the scenario
+     * @throws IOException If the path cannot be accessed, throw this exception.
+     */
     private void loadScenarioFromFile(File path) throws IOException {
         tseep.getChildren().removeAll();
         BufferedReader bufferedReader = null;
@@ -2102,39 +2233,66 @@ public class TrafficSimulator_EditorController {
         }
     }
 
+    /**
+     * This method disables the effects applied on the BottomPane piece selection slots, this indicates to the user that there is no current piece currently selected.
+     */
     private void resetSlotSelection() {
         ImageView[] arrayOfSlots = tse_bottompane.getPiecesSelection().getSlots();
         Arrays.stream(arrayOfSlots).forEach(x -> x.setEffect(null));
     }
 
+    /**
+     * This method mutes and un-mutes sound by accepting a boolean value and re-assigning muteSounds to that value.
+     * @param bool True or False value. True to mute sounds, false to un-mute sounds.
+     */
     public void setMuteSounds(Boolean bool) {
         this.muteSounds = bool;
     }
 
+    /**
+     * This method returns the value of muteSounds.
+     * @return Boolean value of muteSounds variable.
+     */
     public boolean getMuteSounds() {
         return muteSounds;
     }
 
+    /**
+     * This method increments the piece counter, the total number of added pieces currently in the scenario
+     */
     public void incrementPieceCounter() {
         this.pieceCounter++;
     }
 
+    /**
+     * This method retrieves the value of piece counter variable, total number of added pieces in the scenario.
+     * @return Integer value representing the total number of ADDED pieces in the scenario.
+     */
     public int getPieceCounterValue() {
         return this.pieceCounter;
     }
 
+    /**
+     * This method sets the current scene to a passed in scene instance.
+     * @param scene The scene that should be set as the current scene.
+     */
     public void setCurrentScene(Scene scene) {
         this.currentScene = scene;
     }
 
+    /**
+     * This method gets the current scene.
+     * @return The current scene instance.
+     */
     public Scene getCurrentScene() {
         return currentScene;
     }
 
     /**
-     * This is a method to check the location of each graphnode and to ensure it is mapped to the correct
-     * location within each road piece.
-     * @param n GraphNode of type N, graphnodes contain x and y coordinates.
+     * This is a debug method to check the location of each graphnode and to ensure it is mapped to the correct
+     * location within each road piece (or destination piece). It places circles that act as 'markers'.
+     * @param n GraphNode of type N (graphnodes contain x and y coordinates)
+     * @param c Colour of the circle/marker
      */
     public void debugDisplayNodeLocation(GraphNode n, Color c) {
         Circle circle = new Circle(n.getXCoordinate(), n.getYCoordinate(), 2.0f);
@@ -2148,6 +2306,11 @@ public class TrafficSimulator_EditorController {
         tseep.getChildren().add(circle);
     }
 
+    /**
+     * This is a debug method that creates circles (or markers) at every GraphNode in the scenario in order
+     * to check their position. This has become redundant and was later implemented as an official feature "Display All Nodes"
+     * as a menu bar item.
+     */
     public void debugDisplayAllNodesLocation() {
         for (GraphNode n : graph.getRouteList()) {
             Circle circle = new Circle(n.getXCoordinate(), n.getYCoordinate(), 2.0f);

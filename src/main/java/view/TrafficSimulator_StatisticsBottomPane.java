@@ -7,15 +7,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import model.Driver_Statistics;
 import model.PetrolStation;
 import model.Vehicle;
 
-import java.sql.Ref;
 import java.util.Iterator;
 
 public class TrafficSimulator_StatisticsBottomPane extends VBox {
@@ -54,7 +50,9 @@ public class TrafficSimulator_StatisticsBottomPane extends VBox {
 
     private Button refresh;
 
-
+    /**
+     * Default constructor
+     */
     public TrafficSimulator_StatisticsBottomPane() {
         this.setSpacing(5);
         this.setAlignment(Pos.TOP_LEFT);
@@ -104,6 +102,10 @@ public class TrafficSimulator_StatisticsBottomPane extends VBox {
         this.getChildren().add(refresh);
     }
 
+    /**
+     * Updates the labels of this layout to match the new values passed from the PetrolStation object
+     * @param p PetrolStation object instance
+     */
     public void updateLabels(PetrolStation p) {
         removeAllLabelsAndButtons();
 
@@ -122,6 +124,11 @@ public class TrafficSimulator_StatisticsBottomPane extends VBox {
         this.getChildren().add(refresh);
     }
 
+    /**
+     * When the refresh button is pressed, it'll call this method.
+     * This method removes all labels and buttons currently in this bottom pane, so they can be replaced.
+     * It uses an iterator to do so, preventing the Java ConcurrentModificationException from occurring.
+     */
     public void removeAllLabelsAndButtons() {
         // Remove any other labels
         Iterator<Node> iter = this.getChildren().iterator();
@@ -135,6 +142,10 @@ public class TrafficSimulator_StatisticsBottomPane extends VBox {
         }
     }
 
+    /**
+     * Add event handler to the refresh button so it updates the labels and values
+     * @param handler EventHandler<ActionEvent>
+     */
     public void addRefreshButtonHandler(EventHandler<ActionEvent> handler) {
         refresh.setOnAction(handler);
     }

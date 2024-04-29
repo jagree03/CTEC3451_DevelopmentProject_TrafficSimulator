@@ -1,21 +1,19 @@
 package view;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import jfxtras.scene.control.ImageViewButton;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 import java.io.File;
 
 public class TrafficSimulator_EditorEditorPane extends GridPane {
 
+    /**
+     * Default Constructor
+     */
     public TrafficSimulator_EditorEditorPane() {
 //        this.setPrefSize(800, 400);
 //        this.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -40,6 +38,10 @@ public class TrafficSimulator_EditorEditorPane extends GridPane {
         return this;
     }
 
+    /**
+     * Add the build handler and set each ImageViewButton instance in the EditorPane(GridPane) to fire Event that can be handled by the handler
+     * @param handler EventHandler<MouseEvent>
+     */
     public void add_BuildHandler(EventHandler<MouseEvent> handler) {
         GridPane editorPane = this.getCurrentEditorPane();
         for (Node n: editorPane.getChildren()) {
@@ -56,11 +58,4 @@ public class TrafficSimulator_EditorEditorPane extends GridPane {
         GridPane editorPane = this.getCurrentEditorPane();
         editorPane.setOnMouseClicked(handler);
     }
-
-
-    // moved to TrafficSimulatorController as Key Press Events are generated in the scene, not in the layout manager i.e. this pane.
-//    public void rotate_PieceHandler(EventHandler<KeyEvent> handler) {
-//        this.sceneProperty().getValue().setOnKeyPressed(handler);
-//    }
-
 }

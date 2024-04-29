@@ -13,6 +13,9 @@ public class TrafficSimulator_EditorMenuBar extends MenuBar {
 
 	private MenuItem aboutItem, exitItem, loadItem, saveItem, muteItem, clearScenarioItem, displayNodesItem;
 
+	/**
+	 * Default Constructor
+	 */
 	public TrafficSimulator_EditorMenuBar() {
 
 		//temp var for menus and menu items within this MenuBar
@@ -60,8 +63,8 @@ public class TrafficSimulator_EditorMenuBar extends MenuBar {
 		this.getMenus().add(menu); 
 	}
 
-	//these methods allow handlers to be externally attached to this menubar and used by the controller
-
+	//these methods allow handlers to be externally attached to this menubar and used by the controller so they can perform
+	//their respective functions like Saving scenarios, loading, muting sounds etc.
 	public void addSaveScenarioHandler(EventHandler<ActionEvent> handler) {
 		saveItem.setOnAction(handler);
 	}

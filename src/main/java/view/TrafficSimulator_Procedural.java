@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,6 +16,9 @@ public class TrafficSimulator_Procedural extends VBox {
     private Button Finish;
     private Button Back;
 
+    /**
+     * Default constructor
+     */
     public TrafficSimulator_Procedural() {
 
 
