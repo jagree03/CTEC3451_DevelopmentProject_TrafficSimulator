@@ -128,7 +128,9 @@ public class TrafficSimulator_SimulatorSettingsController {
                         + "\n"
                         + "Car Spawn Chance - The chance that drivers have cars."
                         + "\n"
-                        + "Van Spawn Chance - The chance that drivers have vans.");
+                        + "Van Spawn Chance - The chance that drivers have vans."
+                        + "\n"
+                        + "Fuel Level - Set a fuel level for all driver vehicles.");
                 about.show();
             }
         });
@@ -249,7 +251,8 @@ public class TrafficSimulator_SimulatorSettingsController {
 
             printWriter.println(tss_bottompane.getNumberOfDrivers() + ", " +
                     tss_bottompane.getCarSpawnChanceSliderValue() + ", " +
-                    tss_bottompane.getVanSpawnChanceSliderValue() + ", ");
+                    tss_bottompane.getVanSpawnChanceSliderValue() + ", " +
+                    tss_bottompane.getUserFuelLevel());
 
             printWriter.close();
             fileWriter.close();

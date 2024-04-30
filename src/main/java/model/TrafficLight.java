@@ -20,7 +20,8 @@ public class TrafficLight {
      * Default constructor of a traffic light, sets a default image, current signal to none and activated to false
      */
     public TrafficLight() {
-        this.sprite = new Image("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
+        File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
+        this.sprite = new Image(file.toURI().toString());
         this.viewSprite = new ImageView(this.sprite);
         this.currentSignal = "none";
         this.activated = false;
@@ -116,6 +117,7 @@ public class TrafficLight {
     public void activateTrafficLight(boolean value) throws InterruptedException {
         ScheduledExecutorService ses1 = Executors.newScheduledThreadPool(1);
         if (value) {
+            this.setActivatedState(true);
             Runnable activation = () -> {
                 ScheduledExecutorService ses2 = Executors.newScheduledThreadPool(1);
 

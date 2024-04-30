@@ -50,6 +50,8 @@ public class TrafficSimulator_SimulationController {
 
     private int vanSpawnChance; // holds the chance that vans will spawn as integer
 
+    private double userFuelLevel; // holds the user specified fuel level.
+
     //private int numOfBuses;
 
     private ArrayList<Driver> drivers; // holds all drivers in arraylist
@@ -348,6 +350,7 @@ public class TrafficSimulator_SimulationController {
                 numOfDrivers = Integer.parseInt((array[0]));
                 carSpawnChance = Integer.parseInt((array[1]));
                 vanSpawnChance = Integer.parseInt((array[2]));
+                userFuelLevel = Double.parseDouble((array[3]));
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -446,6 +449,7 @@ public class TrafficSimulator_SimulationController {
             Vehicle v = new Vehicle();
             v.setARandomType((double) carSpawnChance / 100, (double) vanSpawnChance / 100);   // set the vehicle type based on the parameters of spawn chances, van or car?
             v.setColor(v.getRandomColour()); // give the vehicle a random colour
+            v.setFuelLevel(userFuelLevel);
             d.setVehicle(v);
 
             //debug
@@ -621,8 +625,8 @@ public class TrafficSimulator_SimulationController {
                             //System.out.println("petrol station detected");
                             double fuel = d.getVehicle().getFuelLevel(); // e.g. 4.80 L
                             if (petrolStations.get(p).getOutOfFuelValue() != true) {
-                                d.getVehicle().setFuelLevel(5.00); // refuel to 5.00 L (0.20L increment)
-                                double calc = 5.00 - fuel; // 5.00 - 4.80 = 0.20 L
+                                d.getVehicle().setFuelLevel(userFuelLevel); // refuel to 5.00 L (0.20L increment)
+                                double calc = userFuelLevel - fuel; // 5.00 - 4.80 = 0.20 L
                                 petrolStations.get(p).addSales(petrolStations.get(p).getPricePerLitre() * calc);
                                 petrolStations.get(p).reduceTotalFuel(calc);
                             }

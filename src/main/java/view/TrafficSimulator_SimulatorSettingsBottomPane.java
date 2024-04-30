@@ -25,6 +25,9 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
     private TextField vanSpawnChanceInput;
     private Slider vanSpawnChanceSlider;
 
+    private Label userFuelLevelLabel;
+    private TextField userFuelLevelInput;
+
     private Button Start;
     private Button Back;
 
@@ -58,9 +61,15 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
         vanSpawnChanceInput.setPrefWidth(50);
         vanSpawnChanceSlider = new Slider(0, 100, 50);
         vanSpawnChanceSlider.setOrientation(Orientation.HORIZONTAL);
-
         vanSpawnChance.getChildren().addAll(vanSpawnChanceLabel, vanSpawnChanceInput, vanSpawnChanceSlider);
-        fields_1.getChildren().addAll(numOfDrivers, carSpawnChance, vanSpawnChance);
+
+        HBox userFuelLevel = new HBox(20);
+        userFuelLevelLabel = new Label("Fuel Level (L): ");
+        userFuelLevelInput = new TextField("5.0");
+        userFuelLevelInput.setPrefWidth(50);
+        userFuelLevel.getChildren().addAll(userFuelLevelLabel, userFuelLevelInput);
+
+        fields_1.getChildren().addAll(numOfDrivers, carSpawnChance, vanSpawnChance, userFuelLevel);
 
 
         //busTransport = new CheckBox("Bus transportation");
@@ -168,4 +177,10 @@ public class TrafficSimulator_SimulatorSettingsBottomPane extends VBox {
     public int getNumberOfDrivers() {
         return Integer.parseInt(numOfDriversInput.getText());
     }
+
+    /**
+     * Get the user provided fuel level for all drivers that the user has assigned
+     * @return Double value
+     */
+    public double getUserFuelLevel() {return Double.parseDouble(userFuelLevelInput.getText());}
 }
