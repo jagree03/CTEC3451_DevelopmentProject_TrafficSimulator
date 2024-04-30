@@ -1,0 +1,7 @@
+3da4589e-b2d0-435b-882c-848877177a5d
+Shell
+file:/C:/Users/jagre/Documents/IntelliJ/Projects/TrafficSimulator_CTEC3451/img/2_EditorScreen/destinations/dest_1_petrolStation.png
+11.71
+1.04
+8.63
+false
