@@ -415,9 +415,9 @@ class Model_DriverTest {
     @Test
     void test_settingTheStartNode() {
         GraphNode n = new GraphNode(5.0, 5.0);
-        assertFalse(n.getStartValue(), "Start flag should be false");
-        n.setAsStart();
-        assertTrue(n.getStartValue(), "Start flag should be true");
+        Driver driver = new Driver();
+        driver.setStartNode(n);
+        assertEquals(n, driver.getStartNode(), "Graphnodes should be identical");
     }
 
     /**
@@ -427,9 +427,9 @@ class Model_DriverTest {
     @Test
     void test_settingTheGoalNode() {
         GraphNode n = new GraphNode(5.0, 5.0);
-        assertFalse(n.getGoalValue(), "Goal flag should be false");
-        n.setAsGoal();
-        assertTrue(n.getGoalValue(), "Goal flag should be true");
+        Driver driver = new Driver();
+        driver.setGoalNode(n);
+        assertEquals(n, driver.getGoalNode(), "Graphnodes should be identical");
     }
 
     /**
