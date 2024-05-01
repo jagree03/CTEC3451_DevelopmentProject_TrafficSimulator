@@ -87,7 +87,7 @@ class Model_AStarGraphTest {
                 "with 100 graphnodes");
 
         // execute clear method
-        graph.clearGraphNodeList();;
+        graph.clearGraphNodeList();
 
         assertEquals(0, graph.getRouteList().size(), "After executing the clear method, the routeList should now be empty.");
         assertTrue(graph.getRouteList().isEmpty(), "routeList in the AStarGraph instance should be empty.");
