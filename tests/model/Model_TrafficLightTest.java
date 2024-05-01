@@ -79,10 +79,10 @@ class Model_TrafficLightTest {
 
     /**
      * Test #6
-     * Description: set the activated state of the traffic light
+     * Description: set and get the activated state of the traffic light
      */
     @Test
-    void test_setActivatedState() {
+    void test_setAndGetActivatedState() {
         File file = new File("img\\2_EditorScreen\\trafficLight\\trafficLight.png");
         ImageView imgv = new ImageView(new Image(file.toURI().toString()));
 
