@@ -1,13 +1,9 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -25,10 +21,13 @@ public class TrafficSimulatorRootMenuButtons extends VBox {
     private Label lblEditor;
     private Label lblProcedural;
 
+    /**
+     * Default constructor
+     */
     public TrafficSimulatorRootMenuButtons() {
 
-        File editorLogo = new File("C:\\Users\\jagre\\Documents\\IntelliJ\\Projects\\TrafficSimulator_CTEC3451\\img\\1_MenuScreen\\EditorLogo.png");
-        File proceduralLogo = new File("C:\\Users\\jagre\\Documents\\IntelliJ\\Projects\\TrafficSimulator_CTEC3451\\img\\1_MenuScreen\\ProceduralLogo.png");
+        File editorLogo = new File("img\\1_MenuScreen\\EditorLogo.png");
+        File proceduralLogo = new File("img\\1_MenuScreen\\ProceduralLogo.png");
         imageGoToEditor = new Image(editorLogo.toURI().toString());
         imageGoToProcedural = new Image(proceduralLogo.toURI().toString());
 
@@ -67,25 +66,50 @@ public class TrafficSimulatorRootMenuButtons extends VBox {
         return showProcedural;
     }
 
+    /**
+     * Add an event handler to the ImageView, so when it's clicked - go to the Environment Editor screen
+     * @param handler EventHandler<MouseEvent>
+     */
     public void addEditorOnClickHandler(EventHandler<MouseEvent> handler) {
         showEditor.setOnMouseClicked(handler);
     }
 
+    /**
+     * Add an event handler to the ImageView, so when it's clicked - go to the Procedural Generation screen
+     * @param handler EventHandler<MouseEvent>
+     */
     public void addProceduralOnClickHandler(EventHandler<MouseEvent> handler) {
         showProcedural.setOnMouseClicked(handler);
     }
+
+    /**
+     * Add an event handler to the ImageView, so when the mouse entered the imageview, apply an effect
+     * @param handler EventHandler<MouseEvent>
+     */
     public void addEditorMouseEnteredHandler(EventHandler<MouseEvent> handler) {
         showEditor.setOnMouseEntered(handler);
     }
 
+    /**
+     * Add an event handler to the ImageView, so when the mouse exited the imageview, disable the effect
+     * @param handler EventHandler<MouseEvent>
+     */
     public void addEditorMouseExitedHandler(EventHandler<MouseEvent> handler) {
         showEditor.setOnMouseExited(handler);
     }
 
+    /**
+     * Add an event handler to the ImageView, so when the mouse entered the imageview, apply an effect
+     * @param handler EventHandler<MouseEvent>
+     */
     public void addProceduralMouseEnteredHandler(EventHandler<MouseEvent> handler) {
         showProcedural.setOnMouseEntered(handler);
     }
 
+    /**
+     * Add an event handler to the ImageView, so when the mouse exited the imageview, disable the effect
+     * @param handler EventHandler<MouseEvent>
+     */
     public void addProceduralMouseExitedHandler(EventHandler<MouseEvent> handler) {
         showProcedural.setOnMouseExited(handler);
     }
